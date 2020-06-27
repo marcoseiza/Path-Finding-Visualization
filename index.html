@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Block Visualization</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="main.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"></script>
+  <script src="src/vars.js"></script>
+  <script src="src/addScreenPositionFunction.js"></script>
+  <script src="src/block.js"></script>
+  <script src="src/algorithms/a_star.js"></script>
+  <script src="src/algorithms/djikstra.js"></script>
+  <script src="src/algorithms/greedySearch.js"></script>
+  <script src="src/algorithms/bi_dijkstra.js"></script>
+  <script src="src/algorithms/bi_a_star.js"></script>
+  <script src="src/algorithms/bi_a_star_retarg.js"></script>
+  <script src="src/mazes/recursive_division.js"></script>
+  <script src="src/mazes/dfs_maze.js"></script>
+</head>
+<body>
+  <!-- clip path -->
+  <svg viewBox="0 0 130 100" width="0" height="0">
+    <defs>
+      <clipPath id="slider_unit_clipPath" clipPathUnits="objectBoundingBox" transform="scale(0.01 0.0076923)">
+        <circle cx="50" cy="50" r="48"/>
+        <path d="M10 77 L50 128 L90 77 Z"/>
+      </clipPath>
+    </defs>
+  </svg>
+  <input type="checkbox" id="playPause">
+  <div class="optionsMenu">
+    <label for="playPause" class="optionsMenu__playPause" 
+    tabindex="1" onkeypress="if (event.keyCode == 13) document.getElementById('playPause').checked = !document.getElementById('playPause').checked">
+      <svg id="play" viewBox="0 0 20 20">
+        <path d="M18 10 L2 2 2 18 Z"/>
+      </svg>
+      <svg id="pause" viewBox="0 0 20 20">
+        <path d="M2 2 v16 h6 v -16 z"/>
+        <path d="M12 2 v16 h6 v -16 z"/>
+      </svg>
+      <div id="play_message">Play</div>
+      <div id="pause_message">Pause</div>
+    </label>
+    <button id="reset" tabindex="2">
+      <svg viewBox="-2 -2 22 22">
+        <path d="M2 10 c0 4.418277 3.581723 8 8 8 s8 -3.581723 8 -8 -3.581723 -8 -8 -8  h-4 l3 3 -3 -3 3 -3"/>
+      </svg>
+      <div>Reset</div>
+    </button>
+    <button id="clear" tabindex="3">
+      <svg viewBox="0 0 20 20">
+        <path d="M6 18 l-4 -4 11 -11 5 5 -8.7 8.7 -5 -5"/>
+        <path id="eraserPath" d="M16 18 h-10"/>
+      </svg>
+      <div>Clear</div>
+    </button>
+    <label for="algorithms" class="optionsMenu__algorithms optionsMenu__menu" tabindex="4">
+      <span>
+        Algorithm
+        <svg viewBox="0 0 10 7">
+          <path d="M2 2 L5 5 L8 2"/>
+        </svg>
+      </span>
+      <input type="checkbox" name="menus" id="algorithms" tabindex="4">
+      <div>
+        <li>
+          <label for="a_star">
+            A* Search
+            <input type="radio" name="algorithms" id="a_star" value="a_star">
+          </label>
+        </li>
+        <li>
+          <label for="dijkstra">
+            Dijkstra's
+            <input type="radio" name="algorithms" id="dijkstra" value="dijkstra">
+          </label>
+        </li>
+        <li>
+          <label for="greedy_search">
+            Greedy Search
+            <input type="radio" name="algorithms" id="greedy_search" value="greedy_search">
+          </label>
+        </li>
+        <li>
+          <label for="bidirectional_dijkstra">
+            Bidirectional Dijkstra
+            <input type="radio" name="algorithms" id="bidirectional_dijkstra" value="bidirectional_dijkstra">
+          </label>
+        </li>
+        <li>
+          <label for="bidirectional_a_star">
+            Bidirectional A*
+            <input type="radio" name="algorithms" id="bidirectional_a_star" value="bidirectional_a_star">
+          </label>
+        </li>
+      </div>
+    </label>
+    <label for="mazes" class="optionsMenu__menu" tabindex="5">
+      <span>
+        Mazes
+        <svg viewBox="0 0 10 7">
+          <path d="M2 2 L5 5 L8 2"/>
+        </svg>
+      </span>
+      <input type="checkbox" name="menus" id="mazes" tabindex="5">
+      <div>
+        <li>
+          <label for="recursive_division">
+            Recursive Division
+            <input type="button" name="recursive_division" id="recursive_division" class="optionsMenu__mazes">
+          </label>
+        </li>
+        <li>
+          <label for="dps_maze">
+            Depth First Search
+            <input type="button" name="dps_maze" id="dps_maze" class="optionsMenu__mazes">
+          </label>
+        </li>
+      </div>
+    </label>
+    <script>
+      let algo = document.getElementById('algorithms'),
+          maze = document.getElementById('mazes')
+
+      window.addEventListener('click', function(e) {
+        if (!algo.contains(e.target)) {
+          algo.checked = false
+        }
+        if (!maze.contains(e.target)) {
+          maze.checked = false
+        }
+      })
+    </script>
+    <div id="algo_title">No Algorithm</div>
+    <button id="start">Start</button>
+    <div id="algo_update">
+      <svg viewBox="0 0 26 15">
+        <g id="status_circle_default">
+          <path d="M2 13 c0 -6.07513225 4.92486775 -11 11 -11 s11 4.92486775 11 11"/>
+        </g>
+        <g id="status_circle_percent">
+          <path d="M2 13 c0 -6.07513225 4.92486775 -11 11 -11 s11 4.92486775 11 11"/>
+        </g>
+      </svg>
+      <span id="progressPercent"></span>
+    </div>
+    <label for="walls" class="optionsMenu__random optionsMenu__slider">
+      <input type="range" min="0" max="1" step="0.01" value ="0" id="random">
+      <div id="random_sld_value">
+        <span>14</span>
+      </div>
+      <span>Wall Coverage</span>
+    </label>
+    <label for="rows" class="optionsMenu__rows optionsMenu__slider">
+      <input type="range" min="3" max="40" step="1" value="21" id="rows">
+      <div id="rows_sld_value">
+        <span>14</span>
+      </div>
+      <span>Rows</span>
+    </label>
+    <label for="columns" class="optionsMenu__columns optionsMenu__slider">
+      <input type="range" min="3" max="40" step="1" value="21" id="columns">
+      <div id="columns_sld_value">
+        <span>14</span>
+      </div>
+      <span>Columns</span>
+    </label>
+    <div class="settings"></div>
+  </div>
+  <div for="playPause" class="pausedScreen">
+    <label for="playPause">
+      <span>Program Paused</span>
+      <svg id="pause" viewBox="0 0 20 20">
+        <path d="M2 2 v16 h6 v -16 z"/>
+        <path d="M12 2 v16 h6 v -16 z"/>
+      </svg>
+    </label>
+  </div>
+  <script src="src/main.js"></script>
+</body>
+</html>
