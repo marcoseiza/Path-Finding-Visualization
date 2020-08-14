@@ -25,7 +25,11 @@ button {
 .optionsMenu {
   padding: 0 10px;
   grid-area: 1 / 1 / 2 / -1;
-  position: relative;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: 90px;
+  z-index: 9999;
   display: grid;
   grid-template-columns: repeat(3, 70px) 10vw 9.5vw repeat(6, 1fr) 70px;
   background-color: rgb(38, 79, 112);
@@ -428,6 +432,44 @@ canvas {
       margin-top: 10px;
       width: 30px;
       fill: white;
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  body {
+    * { display: none !important; }
+    &::after {
+      content: "You must use a broswer window larger than 1226x625 pixels to see this project";
+      width: 100vw;
+      height: 100vh;
+      box-sizing: border-box;
+      font-size: 20px;
+      font-weight: 500;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5vh 5vw;
+    }
+  }
+}
+
+@media screen and (max-height: 600px) {
+  body {
+    * { display: none !important; }
+    &::after {
+      content: "You must use a broswer window larger than 1226x625 pixels to see this project";
+      width: 100vw;
+      height: 100vh;
+      box-sizing: border-box;
+      font-size: 20px;
+      font-weight: 500;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5vh 5vw;
     }
   }
 }
