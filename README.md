@@ -1,5 +1,7 @@
 # Path Finding and Maze Generation Visualization
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/eef8eed6-8fcd-4df6-906a-43a281ae88d8/deploy-status)](https://app.netlify.com/sites/ecstatic-lewin-ccba61/deploys)
+
 ## Overview
 This is a web app written in javascript with the [p5.js](http://p5js.org) library to visualize path finding and maze generation algorithms. 
 
