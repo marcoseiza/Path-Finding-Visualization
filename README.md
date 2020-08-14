@@ -3,6 +3,8 @@
 ## Overview
 This is a web app written in javascript with the [p5.js](http://p5js.org) library to visualize path finding and maze generation algorithms. 
 
+**LIVE LINK:** [Path Finding Visualization](http://path-finding-visualization.meizayaga.com/)
+
 The path finding algorithms currently available are:  
 * Djikstra's
 * A*
