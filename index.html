@@ -31,7 +31,7 @@
   </svg>
   <input type="checkbox" id="playPause">
   <div class="optionsMenu">
-    <label for="playPause" class="optionsMenu__playPause" 
+    <label for="playPause" class="optionsMenu__playPause" title="play/pause"
     tabindex="1" onkeypress="if (event.keyCode == 13) document.getElementById('playPause').checked = !document.getElementById('playPause').checked">
       <svg id="play" viewBox="0 0 20 20">
         <path d="M18 10 L2 2 2 18 Z"/>
@@ -40,21 +40,17 @@
         <path d="M2 2 v16 h6 v -16 z"/>
         <path d="M12 2 v16 h6 v -16 z"/>
       </svg>
-      <div id="play_message">Play</div>
-      <div id="pause_message">Pause</div>
     </label>
-    <button id="reset" tabindex="2">
+    <button id="reset" tabindex="2" title="reset">
       <svg viewBox="-2 -2 22 22">
         <path d="M2 10 c0 4.418277 3.581723 8 8 8 s8 -3.581723 8 -8 -3.581723 -8 -8 -8  h-4 l3 3 -3 -3 3 -3"/>
       </svg>
-      <div>Reset</div>
     </button>
-    <button id="clear" tabindex="3">
+    <button id="clear" tabindex="3" title="clear">
       <svg viewBox="0 0 20 20">
         <path d="M6 18 l-4 -4 11 -11 5 5 -8.7 8.7 -5 -5"/>
         <path id="eraserPath" d="M16 18 h-10"/>
       </svg>
-      <div>Clear</div>
     </button>
     <label for="algorithms" class="optionsMenu__algorithms optionsMenu__menu" tabindex="4">
       <span>
@@ -81,18 +77,6 @@
           <label for="greedy_search">
             Greedy Search
             <input type="radio" name="algorithms" id="greedy_search" value="greedy_search">
-          </label>
-        </li>
-        <li>
-          <label for="bidirectional_dijkstra">
-            Bidirectional Dijkstra
-            <input type="radio" name="algorithms" id="bidirectional_dijkstra" value="bidirectional_dijkstra">
-          </label>
-        </li>
-        <li>
-          <label for="bidirectional_a_star">
-            Bidirectional A*
-            <input type="radio" name="algorithms" id="bidirectional_a_star" value="bidirectional_a_star">
           </label>
         </li>
       </div>
