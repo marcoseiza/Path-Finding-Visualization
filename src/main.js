@@ -1,162 +1,161 @@
 function setup() {
-  createCanvas(1100, 1100, WEBGL)
+  createCanvas(1100, 1100, WEBGL);
   addScreenPositionFunction();
 
   // Camera Position Orthi View
-  xr = -atan(1/sqrt(2)),
-  yr = QUARTER_PI,
-  camZ = (height/2) / tan(PI/6),
-  camP = createVector(cos(xr)*sin(yr)*camZ, -sin(xr)*camZ, cos(xr)*cos(yr)*camZ)
+  xr = -atan(1/sqrt(2));
+  yr = QUARTER_PI;
+  camZ = (height/2) / tan(PI/6);
+  camP = createVector(cos(xr)*sin(yr)*camZ, -sin(xr)*camZ, cos(xr)*cos(yr)*camZ);
 
   // Setup Interactivity
   setupButtons();
 
   // Put blocks in list
-  setGrid()
+  setGrid();
 
-  start = blocks[1][1]
-  start.start = true
-  end = blocks[19][19]
-  end.end = true
+  start = blocks[1][1];
+  start.start = true;
+  end = blocks[19][19];
+  end.end = true;
 
-  rows = rows_sld.value()
-  columns = columns_sld.value()
-  recalcNeighbors()
+  rows = rows_sld.value();
+  columns = columns_sld.value();
+  recalcNeighbors();
 }
 
 function draw() {
   // Define rows and columns
   if (!playAlgo) {
-    rows = rows_sld.value()
-    columns = columns_sld.value()
+    rows = rows_sld.value();
+    columns = columns_sld.value();
   }
 
   // Camera Position Ortho View
-  let offsetX = rows * size / 2
-  let offsetY = columns * size / 2
+  let offsetX = rows * size / 2;
+  let offsetY = columns * size / 2;
   ortho((-width / 3) * zoom, (width / 3) * zoom, (height / 3) * zoom, (-height / 3) * zoom, 0, 1300);
-  camera((camP.x - offsetX), camP.y, (camP.z - offsetY), -offsetX, 0, -offsetY, 0, 1, 0)
+  camera((camP.x - offsetX), camP.y, (camP.z - offsetY), -offsetX, 0, -offsetY, 0, 1, 0);
 
   if (playAlgo) {  
 
     // order openSet to have smallest fa at the front
     if (openSet.length > 0) {
-      let winner_i = 0, closest_i = 0
+      let winner_i = 0, closest_i = 0;
       for (var i = 0; i < openSet.length; i++) {
         if (openSet[i].fa < openSet[winner_i].fa) {
-          winner_i = i
+          winner_i = i;
         }
         if (openSet[i].ha < openSet[closest_i].ha) {
-          closest_i = i
+          closest_i = i;
         }
       }
       //Get the winner to the front
-      openSet.unshift(openSet.splice(winner_i, 1)[0])
+      openSet.unshift(openSet.splice(winner_i, 1)[0]);
 
 
       //Percent done by how close the closest block is to the end compared to the start
-      let startEndDist = distance(start, end)
-      let estimate = map(openSet[closest_i].ha / startEndDist, 1, 0, 0, 1)
+      let startEndDist = distance(start, end);
+      let estimate = map(openSet[closest_i].ha / startEndDist, 1, 0, 0, 1);
       if (estimate < previousEstimate) {
-        estimate = previousEstimate
+        estimate = previousEstimate;
       } else {
-        previousEstimate = estimate
+        previousEstimate = estimate;
       }
-      previousEstimate = estimate
-      progressPercent.innerText = Math.round(((estimate) + Number.EPSILON) * 100) + '%'
-      dash = map(estimate, 0, 1, 35, 0)
-      progressBar.style.stroke = 'rgb(92, 185, 88)'
-      progressBar.style.strokeDashoffset = dash
+      previousEstimate = estimate;
+      progressPercent.innerText = Math.round(((estimate) + Number.EPSILON) * 100) + '%';
+      dash = map(estimate, 0, 1, 35, 0);
+      progressBar.style.stroke = 'rgb(92, 185, 88)';
+      progressBar.style.strokeDashoffset = dash;
     }
 
     if (openFor.length > 0) {
-      let winner_i = 0
+      let winner_i = 0;
       for (var i = 0; i < openFor.length; i++) {
         if (openFor[i].fa < openFor[winner_i].fa) {
-          winner_i = i
+          winner_i = i;
         }
       }
-      openFor.unshift(openFor.splice(winner_i, 1)[0])
+      openFor.unshift(openFor.splice(winner_i, 1)[0]);
     }
     if (openBack.length > 0) {
-      let winner_i = 0
+      let winner_i = 0;
       for (var i = 0; i < openBack.length; i++) {
         if (openBack[i].fa < openBack[winner_i].fa) {
-          winner_i = i
+          winner_i = i;
         }
       }
-      openBack.unshift(openBack.splice(winner_i, 1)[0])
+      openBack.unshift(openBack.splice(winner_i, 1)[0]);
     }
 
     if (algoName == 'a_star') {
-      playAlgo = aStarStepped()
+      playAlgo = aStarStepped();
     } else if (algoName == 'dijkstra') {
-      playAlgo = djik()
+      playAlgo = djik();
     } else if (algoName == 'greedy_search') {
-      playAlgo = greedySearch()
+      playAlgo = greedySearch();
     } else if (algoName == 'bidirectional_dijkstra') {
-      playAlgo = biDijkstra()
+      playAlgo = biDijkstra();
     } else if (algoName == 'bidirectional_a_star') {
-      playAlgo = biAStar()
+      playAlgo = biAStar();
     }
   } else {
-
-    if (runRecursiveDivision) {
-      runRecursiveDivision = recursiveDivision()
+    if (runRecursiveDivision && !runDFSMaze) {
+      runRecursiveDivision = recursiveDivision();
     }
-    if (runDFSMaze) {
-      runDFSMaze = dfsMaze()
+    if (runDFSMaze && !runRecursiveDivision) {
+      runDFSMaze = dfsMaze();
     }
   }
 
   // Draw Canvas
   for (var i = 0; i < openSet.length; i++) {
-    openSet[i].color = color(0, 200, 0)
+    openSet[i].color = color(0, 200, 0);
   }
   for (var i = 0; i < openFor.length; i++) {
-    openFor[i].color = color(0, 155, 0)
+    openFor[i].color = color(0, 155, 0);
   }
   for (var i = 0; i < openBack.length; i++) {
-    openBack[i].color = color(0, 200, 0)
+    openBack[i].color = color(0, 200, 0);
   }
   for (var i = 0; i < closedSet.length; i++) {
-    closedSet[i].color = color(200, 0, 0)
+    closedSet[i].color = color(200, 0, 0);
   }
   for (var i = 0; i < closedFor.length; i++) {
-    closedFor[i].color = color(155, 0, 0)
+    closedFor[i].color = color(155, 0, 0);
   }
   for (var i = 0; i < closedBack.length; i++) {
-    closedBack[i].color = color(200, 0, 0)
+    closedBack[i].color = color(200, 0, 0);
   }
   for (var i = 0; i < path.length; i++) {
-    path[i].color = color(0,0,200)
+    path[i].color = color(0,0,200);
   }
-  background('rgb(221, 221, 221)')
-  push()
+  background('rgb(221, 221, 221)');
+  push();
   for(let z=0; z<columns; z+= 1) {
     for(let x=0; x<rows; x+= 1) {
       if (mouseIsPressed) {
 
         // If the first click is on the start or end block set moveEnd or moveStart to true
         if (blocks[z][x].start || blocks[z][x].end) {
-          isStartEnd = blocks[z][x].collision(mouseX - width/2, mouseY - height/2)
+          isStartEnd = blocks[z][x].collision(mouseX - width/2, mouseY - height/2);
           if (isStartEnd == 'start') {
-            moveStart = true
-            playAlgo = false
+            moveStart = true;
+            playAlgo = false;
           } else if (isStartEnd == 'end') {
-            moveEnd = true
-            playAlgo = false
+            moveEnd = true;
+            playAlgo = false;
           }
         }
 
         // If the first click wasn't the start or the end, then make walls
         if (!moveStart && !moveEnd) {
           if (blocks[z][x].collision(mouseX - width/2, mouseY - height/2)) {
-            blocks[z][x].clicked = true
+            blocks[z][x].clicked = true;
           } else {
             if (blocks[z][x].clicked) {
               if (!blocks[z][x].end && !blocks[z][x].start) {
-                blocks[z][x].wall = !blocks[z][x].wall
+                blocks[z][x].wall = !blocks[z][x].wall;
                 blocks[z][x].clicked = false;
               }
             }
@@ -164,59 +163,59 @@ function draw() {
 
         // Else if the first click was start or end, get the logic to move the block
         } else {
-          blocks[z][x].setColor()
-          openSet = []
-          openFor = []
-          openBack = []
-          closedFor = []
-          closedBack = []
-          closedSet = []
-          path = []
-          progressBar.style.strokeDashoffset = 35
-          progressPercent.innerHTML = ''
+          blocks[z][x].setColor();
+          openSet = [];
+          openFor = [];
+          openBack = [];
+          closedFor = [];
+          closedBack = [];
+          closedSet = [];
+          path = [];
+          progressBar.style.strokeDashoffset = 35;
+          progressPercent.innerHTML = '';
           
           if (moveStart) {
             if (blocks[z][x].collision(mouseX - width/2, mouseY - height/2)) {
               if (!blocks[z][x].start && !blocks[z][x].end) {
-                start.start = false
-                start = blocks[z][x]
-                blocks[z][x].start = true
-                blocks[z][x].wall = false
+                start.start = false;
+                start = blocks[z][x];
+                blocks[z][x].start = true;
+                blocks[z][x].wall = false;
               }
             }
           }
           if (moveEnd) {
             if (blocks[z][x].collision(mouseX - width/2, mouseY - height/2)) {
               if (!blocks[z][x].start && !blocks[z][x].end) {
-                end.end = false
-                end = blocks[z][x]
-                blocks[z][x].end = true
-                blocks[z][x].wall = false
+                end.end = false;
+                end = blocks[z][x];
+                blocks[z][x].end = true;
+                blocks[z][x].wall = false;
               }
             }
           }
         }
       } else {
         if ((blocks[z][x].start || blocks[z][x].end) && blocks[z][x].wall_offsetHeight > 0) {
-          blocks[z][x].wall_offsetHeight -= 0.3 / 7
+          blocks[z][x].wall_offsetHeight -= 0.3 / 7;
         }
       }
-      blocks[z][x].draw()
+      blocks[z][x].draw();
     }
   }
-  pop()
+  pop();
 }
 
 // functions
 
 function mouseReleased() {
-  moveStart = moveEnd = false
+  moveStart = moveEnd = false;
   for(let z=0; z<columns; z+= 1) {
     for(let x=0; x<rows; x+= 1) {
       if (blocks[z][x].clicked) {
         if (!blocks[z][x].start && !blocks[z][x].end) {
-          blocks[z][x].wall = !blocks[z][x].wall
-          blocks[z][x].clicked = false
+          blocks[z][x].wall = !blocks[z][x].wall;
+          blocks[z][x].clicked = false;
         }
       }
     }
@@ -225,11 +224,11 @@ function mouseReleased() {
 
 function mouseWheel(event) {
   if (!playPause_btn.checked()){
-    zoom_offset = event.delta
-    let max = 100
+    zoom_offset = event.delta;
+    let max = 100;
     zoom_offset = (zoom_offset > max)? max: event.delta;
     zoom_offset = (zoom_offset < -max)? -max: event.delta;
-    zoom += map(zoom_offset, -max, max, -0.8, 0.8)
+    zoom += map(zoom_offset, -max, max, -0.8, 0.8);
     zoom = (zoom <= 0.8)? 0.8: zoom;
   }
 }
@@ -239,30 +238,30 @@ function distance(neighbor, end) {
 }
 
 function setupButtons() {
-  progressPercent = document.getElementById('progressPercent')
-  progressBar = document.getElementById('status_circle_percent')
-  rows_sld = select('#rows')
-  columns_sld = select('#columns')
-  playPause_btn = select('#playPause')
-  reset_btn = select('#reset')
-  start_btn = select('#start')
-  random_sld = select('#random')
-  clear_btn = select('#clear')
-  algorithms_rdos = document.getElementsByName('algorithms')
-  maze_options = document.getElementsByClassName('optionsMenu__mazes')
+  progressPercent = document.getElementById('progressPercent');
+  progressBar = document.getElementById('status_circle_percent');
+  rows_sld = select('#rows');
+  columns_sld = select('#columns');
+  playPause_btn = select('#playPause');
+  reset_btn = select('#reset');
+  start_btn = select('#start');
+  random_sld = select('#random');
+  clear_btn = select('#clear');
+  algorithms_rdos = document.getElementsByName('algorithms');
+  maze_options = document.getElementsByClassName('optionsMenu__mazes');
 
-  reset_btn.mouseClicked(resetBoard)
-  clear_btn.mouseClicked(clearBoard)
-  playPause_btn.changed(playPauseBoard)
-  start_btn.mouseClicked(startAlgo)
-  random_sld.input(randomWalls)
-  sliderCounterElt(random_sld)
-  rows_sld.input(sliderCounter)
-  rows_sld.mouseReleased(recalcNeighbors)
-  sliderCounterElt(rows_sld)
-  columns_sld.input(sliderCounter)
-  columns_sld.mouseReleased(recalcNeighbors)
-  sliderCounterElt(columns_sld)
+  reset_btn.mouseClicked(resetBoard);
+  clear_btn.mouseClicked(clearBoard);
+  playPause_btn.changed(playPauseBoard);
+  start_btn.mouseClicked(startAlgo);
+  random_sld.input(randomWalls);
+  sliderCounterElt(random_sld);
+  rows_sld.input(sliderCounter);
+  rows_sld.mouseReleased(recalcNeighbors);
+  sliderCounterElt(rows_sld);
+  columns_sld.input(sliderCounter);
+  columns_sld.mouseReleased(recalcNeighbors);
+  sliderCounterElt(columns_sld);
 
   for (let i=0; i < algorithms_rdos.length; i++) {
     algorithms_rdos[i].oninput = function() {changeAlgorithm(algorithms_rdos[i])}
@@ -273,12 +272,13 @@ function setupButtons() {
 }
 
 function runMaze(el) {
+  runRecursiveDivision = false;
+  runDFSMaze = false;
   mazeSetup();
   if (el.id == 'recursive_division') {
     runRecursiveDivision = true;
     mazeStack.push([[1, 1], [columns - 2, rows - 2]]);
   } else if (el.id == 'dps_maze') {
-    closedSet = [];
     runDFSMaze = true;
     for (let i = 0; i < columns; i++) {
       for (let j = 0; j < rows; j++) {
@@ -291,7 +291,7 @@ function runMaze(el) {
     }
     start.wall = false;
     end.wall = false;
-    mazeStack.push(blocks[Math.floor(random(1, columns-1) / 2) * 2 + 1][Math.floor(random(1, rows-1) / 2) * 2 + 1])
+    mazeStack.push(blocks[Math.floor(random(1, columns-1) / 2) * 2 + 1][Math.floor(random(1, rows-1) / 2) * 2 + 1]);
   }
 }
 
@@ -299,7 +299,7 @@ function recalcNeighbors() {
   for(let z=0; z<columns; z++) {
     for(let x=0; x<rows; x++) {
       blocks[z][x].neighbors = []
-      blocks[z][x].addNeighbors(blocks, rows, columns)
+      blocks[z][x].addNeighbors(blocks, rows, columns);
     }
   }
 }
@@ -307,19 +307,19 @@ function recalcNeighbors() {
 function changeAlgorithm(el) {
   let titlePreview = document.getElementById('algo_title');
   if (!playAlgo) {
-    titlePreview.innerHTML = el.parentNode.innerText
-    algoName = el.value
+    titlePreview.innerHTML = el.parentNode.innerText;
+    algoName = el.value;
   } else if (algoName != el.value) {
-    el.checked = false
-    titlePreview.style.backgroundColor = 'rgb(255, 71, 71)'
+    el.checked = false;
+    titlePreview.style.backgroundColor = 'rgb(255, 71, 71)';
     window.setTimeout(function() {
-      titlePreview.style.backgroundColor = ''
+      titlePreview.style.backgroundColor = '';
     }, 200)
   }
 }
 
 function sliderCounterElt(el) {
-  el.elt.nextElementSibling.querySelector('span').innerHTML = el.value()
+  el.elt.nextElementSibling.querySelector('span').innerHTML = el.value();
   const newVal = Number(((el.elt.value - el.elt.min) * 100) / (el.elt.max - el.elt.min));
   el.elt.nextElementSibling.style.left = `calc(${newVal}% + (${-2 - newVal * 0.13}px))`;
 }
@@ -327,107 +327,107 @@ function sliderCounterElt(el) {
 function moveStartEnd() {
   // This handles the case where the end or start blocks end up outside of the grid because of the grid resizing
   if (end.i > columns - 1) {
-    end.end = false
+    end.end = false;
     if (blocks[columns - 1][end.j].wall) blocks[columns - 1][end.j].wall = false;
     if (blocks[columns - 1][end.j].start) {
-      blocks[columns - 1][end.j].start = false
-      blocks[columns - 2][end.j].start = true
-      start = blocks[columns - 2][end.j]
+      blocks[columns - 1][end.j].start = false;
+      blocks[columns - 2][end.j].start = true;
+      start = blocks[columns - 2][end.j];
     }
-    blocks[columns - 1][end.j].end = true
-    end = blocks[columns - 1][end.j]
+    blocks[columns - 1][end.j].end = true;
+    end = blocks[columns - 1][end.j];
   } else if (end.j > rows - 1) {
-    end.end = false
+    end.end = false;
     if (blocks[end.i][rows - 1].wall) blocks[end.i][rows - 1].wall = false;
     if (blocks[end.i][rows - 1].start) {
-      blocks[end.i][rows - 1].start = false
-      blocks[end.i][rows - 2].start = true
-      start = blocks[end.i][rows - 2]
+      blocks[end.i][rows - 1].start = false;
+      blocks[end.i][rows - 2].start = true;
+      start = blocks[end.i][rows - 2];
     }
-    blocks[end.i][rows - 1].end = true
-    end = blocks[end.i][rows - 1]
+    blocks[end.i][rows - 1].end = true;
+    end = blocks[end.i][rows - 1];
   }
   if (start.i > columns - 1) {
-    start.start = false
+    start.start = false;
     if (blocks[columns - 1][start.j].wall) blocks[columns - 1][start.j].wall = false;
     if (blocks[columns - 1][start.j].end) {
-      blocks[columns - 1][start.j].end = false
-      blocks[columns - 2][start.j].end = true
-      end = blocks[columns - 2][start.j]
+      blocks[columns - 1][start.j].end = false;
+      blocks[columns - 2][start.j].end = true;
+      end = blocks[columns - 2][start.j];
     }
-    blocks[columns - 1][start.j].start = true
-    start = blocks[columns - 1][start.j]
+    blocks[columns - 1][start.j].start = true;
+    start = blocks[columns - 1][start.j];
   } else if (start.j > rows - 1) {
-    start.start = false
+    start.start = false;
     if (blocks[start.i][rows - 1].wall) blocks[start.i][rows - 1].wall = false;
     if (blocks[start.i][rows - 1].end) {
-      blocks[start.i][rows - 1].end = false
-      blocks[start.i][rows - 2].end = true
-      end = blocks[start.i][rows - 2]
+      blocks[start.i][rows - 1].end = false;
+      blocks[start.i][rows - 2].end = true;
+      end = blocks[start.i][rows - 2];
     }
-    blocks[start.i][rows - 1].start = true
-    start = blocks[start.i][rows - 1]
+    blocks[start.i][rows - 1].start = true;
+    start = blocks[start.i][rows - 1];
   }
 }
 
 function sliderCounter() {
   if (!playAlgo) {
-    rows = rows_sld.value()
-    columns = columns_sld.value()
+    rows = rows_sld.value();
+    columns = columns_sld.value();
   }
-  moveStartEnd()
-  this.elt.nextElementSibling.querySelector('span').innerHTML = this.value()
+  moveStartEnd();
+  this.elt.nextElementSibling.querySelector('span').innerHTML = this.value();
   const newVal = Number(((this.elt.value - this.elt.min) * 100) / (this.elt.max - this.elt.min));
   this.elt.nextElementSibling.style.left = `calc(${newVal}% + (${-2 - newVal * 0.13}px))`;
 }
 
 function playPauseBoard() {
   if (playPause_btn.checked()) {
-    noLoop()
+    noLoop();
   } else {
-    loop()
+    loop();
   }
 }
 
 function clearBoard() {
   for(let z=0; z<blocks.length; z++) {
     for(let x=0; x<blocks[z].length; x++) {
-      blocks[z][x].setColor()
-      blocks[z][x].wall = false
-      openSet = []
-      openFor = []
-      openBack = []
-      closedSet = []
-      closedFor = []
-      closedBack = []
-      path = []
+      blocks[z][x].setColor();
+      blocks[z][x].wall = false;
+      openSet = [];
+      openFor = [];
+      openBack = [];
+      closedSet = [];
+      closedFor = [];
+      closedBack = [];
+      path = [];
     }
   }
 }
 
 function randomWalls() {
-  sliderCounterElt(this)
+  sliderCounterElt(this);
   if (!playAlgo) {
     for(let z=0; z<columns; z++) {
       for(let x=0; x<rows; x++) {
         blocks[z][x].wall = random(0, 1) >= (1-random_sld.value());
-        blocks[z][x].wall_offsetHeight = 0
+        blocks[z][x].wall_offsetHeight = 0;
       }
     }
-    start.wall = end.wall = false
+    start.wall = end.wall = false;
   }
 }
 
 function setupAlgo(algoName) {
   for(let z=0; z<blocks.length; z++) {
     for(let x=0; x<blocks[z].length; x++) {
-      blocks[z][x].ga = blocks[z][x].fa = 0
-      blocks[z][x].ha = distance(blocks[z][x], end)
+      blocks[z][x].ga = blocks[z][x].fa = 0;
+      blocks[z][x].ha = distance(blocks[z][x], end);
       blocks[z][x].visited = false;
       if (!blocks[z][x].wall) {
-        blocks[z][x].setColor()
+        blocks[z][x].setColor();
       }
-      blocks[z][x].previous = undefined
+      blocks[z][x].previous = undefined;
     }
   }
   openSet = [];
@@ -444,70 +444,76 @@ function setupAlgo(algoName) {
     openFor.push(start);
     openBack.push(end);
   }
-  openSet.push(start)
+  openSet.push(start);
 }
 
 function startAlgo() {
-  if (!playAlgo) {
+  if (!playAlgo && !runDFSMaze && !runRecursiveDivision) {
     if (algoName != undefined) {
-      setupAlgo(algoName)
-      playAlgo = true
-      playPause_btn.elt.checked = false
+      setupAlgo(algoName);
+      playAlgo = true;
+      playPause_btn.elt.checked = false;
       playPauseBoard()
     } else {
-      this.elt.style.backgroundColor = 'rgb(211, 39, 39)'
-      button = this.elt
+      this.elt.style.backgroundColor = 'rgb(211, 39, 39)';
+      button = this.elt;
       window.setTimeout(function() {
-        button.style.backgroundColor = ''
+        button.style.backgroundColor = '';
       }, 200)
     }
+  } else {
+    this.elt.style.backgroundColor = 'rgb(211, 39, 39)';
+    button = this.elt;
+    window.setTimeout(function() {
+      button.style.backgroundColor = '';
+    }, 200)
   }
 }
 
 function resetBoard() {
-  playAlgo = false
-  rows_sld.value(40)
-  columns_sld.value(40)
-  rows = rows_sld.value()
-  columns = columns_sld.value()
+  playAlgo = false;
+  rows_sld.value(40);
+  columns_sld.value(40);
+  rows = rows_sld.value();
+  columns = columns_sld.value();
   setGrid();
-  random_sld.value(0)
-  rows_sld.value(21)
-  columns_sld.value(21)
-  sliderCounterElt(random_sld)
-  sliderCounterElt(rows_sld)
-  sliderCounterElt(columns_sld)
-  rows = rows_sld.value()
-  columns = columns_sld.value()
-  openSet = []
-  openFor = []
-  openBack = []
-  closedSet = []
-  closedFor = []
-  closedBack = []
-  path = []
-  start = blocks[1][1]
-  start.start = true
-  end = blocks[columns-2][rows-2]
-  end.end = true
-  playPause_btn.elt.checked = false
-  playPauseBoard()
+  random_sld.value(0);
+  rows_sld.value(21);
+  columns_sld.value(21);
+  sliderCounterElt(random_sld);
+  sliderCounterElt(rows_sld);
+  sliderCounterElt(columns_sld);
+  rows = rows_sld.value();
+  columns = columns_sld.value();
+  openSet = [];
+  openFor = [];
+  openBack = [];
+  closedSet = [];
+  closedFor = [];
+  closedBack = [];
+  path = [];
+  start = blocks[1][1];
+  start.start = true;
+  end = blocks[columns-2][rows-2];
+  end.end = true;
+  playPause_btn.elt.checked = false;
+  playPauseBoard();
 }
 
 function setGrid() {
-  blocks = []
+  blocks = [];
   for(let z=0; z<columns; z+= 1) {
-    row = []
+    row = [];
     for(let x=0; x<rows; x+= 1) {
-      row[x] = new Block(size, size, size, z, x, gap)
+      row[x] = new Block(size, size, size, z, x, gap);
     }
-    blocks[z] = row
+    blocks[z] = row;
   }
-  rows = rows_sld.value()
-  columns = columns_sld.value()
+  rows = rows_sld.value();
+  columns = columns_sld.value();
   for(let z=0; z<columns; z++) {
     for(let x=0; x<rows; x++) {
-      blocks[z][x].addNeighbors(blocks, rows, columns)
+      blocks[z][x].addNeighbors(blocks, rows, columns);
     }
   }
 }

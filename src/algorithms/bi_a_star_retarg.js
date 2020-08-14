@@ -4,9 +4,6 @@ let depth = 0,
 function biAStarRetarg() {
   if (openFor.length > 0 && openBack.length > 0) {
     current = openFor[0]
-
-    
-    
     return true
   } else {
     // no solution
