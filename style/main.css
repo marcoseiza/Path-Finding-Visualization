@@ -10,8 +10,8 @@ body {
   position: relative;
   display: -ms-grid;
   display: grid;
-  -ms-grid-rows: 10vh 90vh;
-      grid-template-rows: 10vh 90vh;
+  -ms-grid-rows: auto 1fr;
+      grid-template-rows: auto 1fr;
   background-color: #dddddd;
   font-family: Montserrat;
 }
@@ -26,19 +26,21 @@ button {
 }
 
 .optionsMenu {
-  padding: 0 10px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 0 1vw;
   -ms-grid-row: 1;
   -ms-grid-row-span: 1;
   grid-area: 1 / 1 / 2 / -1;
-  position: absolute;
-  top: 0;
   width: 100vw;
   height: 90px;
-  z-index: 9999;
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (70px)[3] 10vw 9.5vw (1fr)[6] 70px;
-      grid-template-columns: repeat(3, 70px) 10vw 9.5vw repeat(6, 1fr) 70px;
+  -ms-grid-columns: (1.1fr)[3] (2.85fr)[2] 3.5fr auto (3.8fr)[3] 1.1fr;
+      grid-template-columns: repeat(3, 1.1fr) repeat(2, 2.85fr) 3.5fr auto repeat(3, 3.8fr) 1.1fr;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   background-color: #264f70;
   color: white;
 }
@@ -49,6 +51,8 @@ button {
       align-self: center;
   -ms-grid-column-align: center;
       justify-self: center;
+  text-align: center;
+  margin: 0 1em;
   padding: 7px 9px;
   border-radius: 10px;
   background-color: white;
@@ -102,7 +106,7 @@ button {
       justify-self: center;
   font-size: 1em;
   background: none;
-  color: white;
+  color: inherit;
   border: none;
   margin: 0;
 }
@@ -110,14 +114,14 @@ button {
 .optionsMenu button:hover, .optionsMenu button:focus {
   outline: none;
   cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .optionsMenu button:focus {
-  border: 2.5px solid rgba(16, 95, 241, 0.801);
+  -webkit-box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
+          box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
 }
 
-.optionsMenu #reset {
+.optionsMenu #reset, .optionsMenu #clear {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -132,15 +136,22 @@ button {
   border-radius: 5px;
 }
 
-.optionsMenu #reset:hover div, .optionsMenu #reset:focus div {
-  opacity: 1;
-  -webkit-transition: opacity 200ms ease-in-out 1.5s;
-  transition: opacity 200ms ease-in-out 1.5s;
+.optionsMenu #reset:hover, .optionsMenu #reset:focus, .optionsMenu #clear:hover, .optionsMenu #clear:focus {
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .optionsMenu #reset:hover svg, .optionsMenu #reset:focus svg {
   -webkit-animation: rotate 1.2s ease-in-out forwards;
           animation: rotate 1.2s ease-in-out forwards;
+}
+
+.optionsMenu #reset svg {
+  fill: none;
+  stroke: white;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  width: 35px;
 }
 
 @-webkit-keyframes rotate {
@@ -165,52 +176,24 @@ button {
   }
 }
 
-.optionsMenu #reset div {
-  opacity: 0;
-  position: absolute;
-  z-index: 99;
-  top: 100%;
-  padding: 0.5em 0.8em;
-  padding-top: 1em;
-  background-color: #27343f;
-  -webkit-clip-path: polygon(50% 0%, 65% 20%, 100% 20%, 100% 100%, 0 100%, 0 20%, 35% 20%);
-          clip-path: polygon(50% 0%, 65% 20%, 100% 20%, 100% 100%, 0 100%, 0 20%, 35% 20%);
+.optionsMenu #clear:hover, .optionsMenu #clear:focus {
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
-.optionsMenu #reset svg {
-  fill: none;
-  stroke: white;
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  width: 35px;
-}
-
-.optionsMenu #clear {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  padding: 8px 10px;
-  border-radius: 5px;
-}
-
-.optionsMenu #clear:hover svg #eraserPath {
+.optionsMenu #clear:hover svg #eraserPath, .optionsMenu #clear:focus svg #eraserPath {
   -webkit-transform: translate(-5px, 0) scaleX(1.5);
           transform: translate(-5px, 0) scaleX(1.5);
   -webkit-animation: eraser 1s ease-in-out infinite;
           animation: eraser 1s ease-in-out infinite;
 }
 
-.optionsMenu #clear:hover div, .optionsMenu #clear:focus div {
-  opacity: 1;
-  -webkit-transition: opacity 200ms ease-in-out 1.5s;
-  transition: opacity 200ms ease-in-out 1.5s;
+.optionsMenu #clear svg {
+  fill: none;
+  stroke: white;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  width: 40px;
 }
 
 @-webkit-keyframes eraser {
@@ -243,27 +226,6 @@ button {
   }
 }
 
-.optionsMenu #clear div {
-  opacity: 0;
-  position: absolute;
-  z-index: 99;
-  top: 100%;
-  padding: 0.5em 0.8em;
-  padding-top: 1em;
-  background-color: #27343f;
-  -webkit-clip-path: polygon(50% 0%, 65% 20%, 100% 20%, 100% 100%, 0 100%, 0 20%, 35% 20%);
-          clip-path: polygon(50% 0%, 65% 20%, 100% 20%, 100% 100%, 0 100%, 0 20%, 35% 20%);
-}
-
-.optionsMenu #clear svg {
-  fill: none;
-  stroke: white;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  width: 40px;
-}
-
 .optionsMenu__menu {
   position: relative;
   display: -ms-grid;
@@ -278,13 +240,30 @@ button {
 
 .optionsMenu__menu:focus {
   outline: none;
-  border: 2.5px solid rgba(16, 95, 241, 0.801);
+  -webkit-box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
+          box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
 }
 
-.optionsMenu__menu:focus div {
-  top: calc(100% + 2.5px);
-  left: -2.5px;
-  min-width: calc(100% + 5px);
+.optionsMenu__menu input {
+  display: none;
+}
+
+.optionsMenu__menu input:checked + span svg {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+
+.optionsMenu__menu input:checked ~ ul {
+  max-height: 400px;
+  -webkit-transition: max-height 200ms ease-in-out;
+  transition: max-height 200ms ease-in-out;
+}
+
+.optionsMenu__menu input:checked ~ ul li {
+  pointer-events: all;
+  opacity: 1;
+  -webkit-transition: opacity 200ms ease-in-out 100ms;
+  transition: opacity 200ms ease-in-out 100ms;
 }
 
 .optionsMenu__menu span {
@@ -301,23 +280,18 @@ button {
   width: 20px;
   fill: none;
   stroke: white;
-  stroke-width: 1.5;
+  stroke-width: 1;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-.optionsMenu__menu input {
-  display: none;
-}
-
-.optionsMenu__menu input:checked + div {
+.optionsMenu__menu ul {
+  padding: 0;
+  margin: 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-}
-
-.optionsMenu__menu div {
-  display: none;
+  max-height: 0;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -329,9 +303,39 @@ button {
   top: 100%;
   left: 0;
   min-width: 100%;
+  -webkit-transition: max-height 200ms ease-in-out 100ms;
+  transition: max-height 200ms ease-in-out 100ms;
 }
 
-.optionsMenu__menu div li:first-of-type:after {
+.optionsMenu__menu ul li {
+  pointer-events: none;
+  opacity: 0;
+  position: relative;
+  list-style: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-transition: opacity 200ms ease-in-out;
+  transition: opacity 200ms ease-in-out;
+}
+
+.optionsMenu__menu ul li button {
+  width: 100%;
+  padding: 0.8em 1em;
+  white-space: nowrap;
+  border: none;
+  text-align: left;
+}
+
+.optionsMenu__menu ul li button:hover {
+  background-color: rgba(24, 47, 66, 0.3);
+}
+
+.optionsMenu__menu ul li:first-of-type button:after {
   content: '';
   display: block;
   position: absolute;
@@ -344,49 +348,18 @@ button {
           clip-path: polygon(0 100%, 50% 0, 100% 100%);
 }
 
-.optionsMenu__menu div li:first-of-type:hover:after {
+.optionsMenu__menu ul li:first-of-type button:hover:after {
   background-color: #b9c0c6;
 }
 
-.optionsMenu__menu div li {
-  position: relative;
-  list-style: none;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-}
-
-.optionsMenu__menu div li button {
-  padding: 0.8em 1em;
-  white-space: nowrap;
-  border: none;
-}
-
-.optionsMenu__menu div li button:hover {
-  background-color: rgba(24, 47, 66, 0.3);
-}
-
-.optionsMenu__menu div li label {
-  padding: 0.8em 1em;
-  white-space: nowrap;
-}
-
-.optionsMenu__menu div li label:hover {
-  background-color: rgba(24, 47, 66, 0.3);
-}
-
-.optionsMenu #start {
+.optionsMenu #startButton {
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
   -ms-grid-column-align: center;
       justify-self: center;
   font-size: 1.3em;
-  margin: 0 0.5em;
+  margin: 0 1em;
   padding: 0.5em 1em;
   background-color: #5cb958;
   -webkit-transition: background-color 50ms linear;
@@ -394,9 +367,19 @@ button {
   border-radius: 0.7em;
 }
 
-.optionsMenu #start:hover, .optionsMenu #start:focus {
+.optionsMenu #startButton:hover:not(:disabled), .optionsMenu #startButton:focus:not(:disabled) {
   background-color: #4dae49;
   cursor: pointer;
+}
+
+.optionsMenu #startButton:disabled {
+  -webkit-box-shadow: 0 0 0 3px #df0101 inset;
+          box-shadow: 0 0 0 3px #df0101 inset;
+  cursor: default;
+}
+
+.optionsMenu #startButton.error {
+  background-color: #df0101;
 }
 
 .optionsMenu__playPause {
@@ -418,7 +401,8 @@ button {
 
 .optionsMenu__playPause:focus {
   outline: none;
-  border: 2.5px solid rgba(16, 95, 241, 0.801);
+  -webkit-box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
+          box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
 }
 
 .optionsMenu__playPause:hover div, .optionsMenu__playPause:focus div {
@@ -461,7 +445,7 @@ button {
 .optionsMenu__slider {
   -ms-flex-item-align: end;
       align-self: flex-end;
-  margin: 0 4%;
+  margin: 0 1em;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -493,8 +477,8 @@ button {
 .optionsMenu__slider input:focus::-webkit-slider-thumb {
   -webkit-transform: scale(1.3);
           transform: scale(1.3);
-  -webkit-box-shadow: 0 0 0 2.5px rgba(16, 95, 241, 0.801);
-          box-shadow: 0 0 0 2.5px rgba(16, 95, 241, 0.801);
+  -webkit-box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
+          box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
 }
 
 .optionsMenu__slider input::-webkit-slider-thumb {
@@ -552,17 +536,200 @@ button {
   font-size: 0.8em;
 }
 
-canvas {
+.optionsMenu > input#settings {
+  display: none;
+}
+
+.optionsMenu > input#settings:checked ~ ul {
+  -webkit-transform: translate(0);
+          transform: translate(0);
+}
+
+.optionsMenu > input#settings:checked ~ ul .background {
+  opacity: 1;
+}
+
+.optionsMenu > input#settings:checked ~ label svg {
+  fill: #182f42;
+  -webkit-animation: none;
+          animation: none;
+}
+
+.optionsMenu__settings {
+  padding: 10px;
+  border-radius: 5px;
   -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
       align-self: center;
-  -ms-grid-column-align: center;
-      justify-self: center;
-  grid-area: 1 / 1 / -1 / -1;
+  justify-self: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.optionsMenu__settings:hover, .optionsMenu__settings:focus {
+  background-color: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.optionsMenu__settings:hover > svg, .optionsMenu__settings:focus > svg {
+  -webkit-animation: rotateSettings 1s ease-in-out forwards;
+          animation: rotateSettings 1s ease-in-out forwards;
+}
+
+.optionsMenu__settings > svg {
+  position: relative;
+  z-index: 999;
+  width: 35px;
+  height: auto;
+  fill: white;
+}
+
+@-webkit-keyframes rotateSettings {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(-180deg) translate(-1%);
+            transform: rotate(-180deg) translate(-1%);
+  }
+}
+
+@keyframes rotateSettings {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(-180deg) translate(-1%);
+            transform: rotate(-180deg) translate(-1%);
+  }
+}
+
+.optionsMenu__settings__menu {
+  padding: 0;
+  padding-top: 90px;
+  margin: 0;
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  background-color: white;
+  color: #182f42;
+  position: absolute;
+  z-index: 99;
+  top: 0;
+  right: 0;
+  min-width: 300px;
+  -webkit-transform-origin: right;
+          transform-origin: right;
+  -webkit-transform: translate(100%);
+          transform: translate(100%);
+  -webkit-transition: -webkit-transform 300ms ease-in;
+  transition: -webkit-transform 300ms ease-in;
+  transition: transform 300ms ease-in;
+  transition: transform 300ms ease-in, -webkit-transform 300ms ease-in;
+}
+
+.optionsMenu__settings__menu .background {
+  pointer-events: none;
+  position: absolute;
+  z-index: 9;
+  right: 100%;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.optionsMenu__settings__menu li {
+  position: relative;
+  list-style: none;
+  padding: 1em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.optionsMenu__settings__menu li:first-of-type {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.optionsMenu__settings__menu li span.title {
+  font-size: 1.2em;
+  font-weight: 500;
+  margin-bottom: 0.5em;
+}
+
+.optionsMenu__settings__menu li span.title svg {
+  display: inline-block;
+  vertical-align: text-bottom;
+  height: 1em;
+  margin-bottom: 0.1em;
+  margin-right: 0.5ch;
+  width: auto;
+  fill: #182f42;
+}
+
+.optionsMenu__settings__menu li span.title svg .a {
+  fill: rgba(24, 47, 66, 0.5);
+}
+
+.optionsMenu__settings__menu li span.title svg .b {
+  fill: rgba(24, 47, 66, 0.8);
+}
+
+.optionsMenu__settings__menu li div {
+  font-size: 0.8em;
+  border-radius: 0.7em;
+  background: rgba(24, 47, 66, 0.2);
+  overflow: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.optionsMenu__settings__menu li input {
+  display: none;
+}
+
+.optionsMenu__settings__menu li input:checked + label {
+  background: #264f70;
+}
+
+.optionsMenu__settings__menu li input:disabled + label {
+  background: rgba(172, 21, 21, 0.2);
+}
+
+.optionsMenu__settings__menu li label {
+  display: block;
+  padding: 0.6em 1em;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
 }
 
 #playPause {
-  opacity: 0;
+  display: none;
   position: absolute;
 }
 
@@ -590,10 +757,11 @@ canvas {
 .pausedScreen {
   pointer-events: none;
   opacity: 0;
-  -webkit-transition: opacity 200ms ease-in-out;
-  transition: opacity 200ms ease-in-out;
+  -webkit-transition: opacity 50ms ease-in-out;
+  transition: opacity 50ms ease-in-out;
   grid-area: 2 / 1 / -1 / -1;
   position: absolute;
+  z-index: 999;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.3);
@@ -633,6 +801,10 @@ canvas {
   margin-top: 10px;
   width: 30px;
   fill: white;
+}
+
+main {
+  grid-area: 2 / 1 / -1 / -1;
 }
 
 @media screen and (max-width: 1200px) {

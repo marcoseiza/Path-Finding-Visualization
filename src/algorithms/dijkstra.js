@@ -5,9 +5,6 @@ export function setup(canvas) {
 
   for (let i = 0; i < canvas.r; i++) {
     for (let j = 0; j < canvas.c; j++) {
-      canvas.calculateHa(canvas.blocks[i][j])
-      canvas.blocks[i][j].ga = 1;
-      canvas.blocks[i][j].fa = 0;
       canvas.blocks[i][j].visited = false;
       canvas.blocks[i][j].previous = undefined;
     }
@@ -16,11 +13,10 @@ export function setup(canvas) {
 
 export function algo(canvas) {
   if (canvas.open.length > 0) {
-    canvas.sortBlocks();
-
     let current = canvas.open[0];
 
     if (current == canvas.endBlock) {
+      
       if (canvas.path.length == 0)
         canvas.path.pushBlock(current);
 
@@ -35,25 +31,30 @@ export function algo(canvas) {
       }
     }
 
-    canvas.open.shiftBlock();
+    canvas.open.shiftBlock()
     canvas.closed.pushBlock(current);
+    current.visited = true;
 
     for (let i = 0; i < current.neighbors.length; i++) {
       let neighbor = current.neighbors[i];
-      if (!canvas.closed.includes(neighbor) && !neighbor.wall) {
-        if (!canvas.open.includes(neighbor)) {
+      if (!neighbor.visited && !neighbor.wall) {
+        let tentFa = current.fa + 1;
+        if (canvas.open.includes(neighbor)) {
+          if (tentFa < neighbor.fa) {
+            neighbor.fa = tentFa;
+          }
+        } else {
+          neighbor.fa = tentFa;
           canvas.open.pushBlock(neighbor);
         }
-        neighbor.fa = neighbor.ha;
         neighbor.previous = current;
       }
     }
-
     return true
   } else {
     // no solution
     canvas.successfulAlgo = false;
     canvas.updateAlgo = true;
-    return false;
+    return false
   }
 }

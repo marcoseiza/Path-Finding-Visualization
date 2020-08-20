@@ -1,74 +1,81 @@
-let mazeStack = []
-// width, height, offset
-
-function mazeSetup() {
+export function setup(canvas) {  
   // Make the grid odd or big enough to look good
-  rows = (rows == 40)? 39: (rows < 5)? 5: (rows % 2 == 0)? rows + 1: rows;
-  columns = (columns == 40)? 39: (columns < 5)? 5: (columns % 2 == 0)? columns + 1: columns;
-  rows_sld.value(rows);
-  sliderCounterElt(rows_sld);
-  columns_sld.value(columns);
-  sliderCounterElt(columns_sld);
-  recalcNeighbors();
-  openSet = [];
-  closedSet = [];
-  path = [];
+  canvas.r = (canvas.r == 40)? 39: (canvas.r < 5)? 5: canvas.r + 1 - (canvas.r % 2);
+  canvas.c = (canvas.c == 40)? 39: (canvas.c < 5)? 5: canvas.c + 1 - (canvas.c % 2);
 
-  for(let i = 0; i < columns; i++) {
-    for(let j = 0; j < rows; j++) {
-      blocks[i][j].setColor();
-      blocks[i][j].wall = false;
-      blocks[0][j].wall = true;
-      blocks[0][j].wall_offsetHeight = 0;
-      blocks[columns-1][j].wall = true;
-      blocks[columns-1][j].wall_offsetHeight = 0;
+  canvas.open = [ [[1, 1], [canvas.r - 2, canvas.c - 2]] ];
+  canvas.open.className = "wall";
+  canvas.closed = [];
+  canvas.path = [];
+
+  for(let i = 0; i < canvas.r; i++) {
+    for(let j = 0; j < canvas.c; j++) {
+      canvas.blocks[i][j].trans = false;
+      canvas.blocks[i][j].wall = false;
+
+      canvas.blocks[0][j].wall = true;
+      canvas.blocks[canvas.r-1][j].wall = true;
     }
-    blocks[i][0].wall = true;
-    blocks[i][0].wall_offsetHeight = 0;
-    blocks[i][rows-1].wall = true;
-    blocks[i][rows-1].wall_offsetHeight = 0;
+
+    canvas.blocks[i][0].wall = true;
+    canvas.blocks[i][canvas.c-1].wall = true;
   }
-  start.wall = false;
-  end.wall = false;
 }
 
-function recursiveDivision() {
-  // coord = Coordinates of the two points in the rectangle
-  if (mazeStack.length != 0) {
-    var coord = mazeStack.pop(),
+export function algo(canvas) {
+  // coord = Coordinates of two points in the rectangle
+  // coord = [[i1, j1], [i2, j2]]
+  if (canvas.open.length > 0) {
+    let coord = canvas.open.pop(),
         cMin = coord[0],
         cMax = coord[1];
 
     if (cMax[0] - cMin[0] > 1 && cMax[1] - cMin[1] > 1) {
 
-      var isHorizontal = (cMax[0] - cMin[0] < cMax[1] - cMin[1])? true: false;
-      // point, i and j, where there will be a hole
-      var point;
+      let isHorizontal = (cMax[0] - cMin[0] < cMax[1] - cMin[1])? true: false;
+
+      // a point, i and j, where there will be a hole in the wall
+      let point;
 
       if (isHorizontal) {
         point = [Math.floor(random(cMin[0], cMax[0]+1) / 2) * 2 + 1, Math.floor(random(cMin[1] + 1, cMax[1]+1) / 2) * 2];
+        
         for (let i = cMin[0]; i < cMax[0] + 1; i ++) {
-          if (i != point[0] && !blocks[i][point[1]].start && !blocks[i][point[1]].end) {
-            blocks[i][point[1]].wall = true;
-            blocks[i][point[1]].wall_offsetHeight = 0;
+          if (i != point[0] && !canvas.blocks[i][point[1]].start && !canvas.blocks[i][point[1]].end) {
+            canvas.blocks[i][point[1]].wall = true;
           }
         }
-        mazeStack.push([cMin, [cMax[0], point[1] - 1]]);
-        mazeStack.push([[cMin[0], point[1] + 1], cMax]);
+
+        canvas.open.push([cMin, [cMax[0], point[1] - 1]]);
+        canvas.open.push([[cMin[0], point[1] + 1], cMax]);
+
       } else {
         point = [Math.floor(random(cMin[0] + 1, cMax[0]+1) / 2) * 2, Math.floor(random(cMin[1], cMax[1]+1) / 2) * 2 + 1];
+        
         for (let j = cMin[1]; j < cMax[1] + 1; j ++) {
-          if (j != point[1] && !blocks[point[0]][j].start && !blocks[point[0]][j].end) {
-            blocks[point[0]][j].wall = true;
-            blocks[point[0]][j].wall_offsetHeight = 0;
+          if (j != point[1] && !canvas.blocks[point[0]][j].start && !canvas.blocks[point[0]][j].end) {
+            canvas.blocks[point[0]][j].wall = true;
           }
         }
-        mazeStack.push([cMin, [point[0] - 1 ,cMax[1]]]);
-        mazeStack.push([[point[0] + 1 ,cMin[1]], cMax]);
+
+        canvas.open.push([cMin, [point[0] - 1 ,cMax[1]]]);
+        canvas.open.push([[point[0] + 1 ,cMin[1]], cMax]);
+
       }
     }
     return true
   } else {
+
+    for(let i = 0; i < canvas.r; i++) {
+      for(let j = 0; j < canvas.c; j++) {
+        canvas.blocks[i][j].trans = true;
+      }
+    }
+
     return false
   }
+}
+
+function random(min, max) {
+  return Math.random() * (max - min) + min;
 }

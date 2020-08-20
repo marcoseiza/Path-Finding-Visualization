@@ -1,0 +1,122 @@
+body {
+  height: 100vh; width: 100vw;
+  margin: 0;
+  background: rgb(231, 231, 231);
+  overflow: hidden;
+}
+
+main {
+  pointer-events: none;
+  display: flex;
+  align-items: center; justify-content: center;
+  height: 100%; width: 100%;
+}
+
+#canvas {
+  pointer-events: all;
+  --size: 20px;
+  --scale: 1;
+  --rows: 2;
+  --cols: 2;
+  --anitime: 200ms;
+  position: relative;
+  z-index: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), var(--size));
+  grid-template-rows: repeat(var(--rows), var(--size));
+  transform-style: preserve-3d;
+  transform:  scale(var(--scale))
+              rotateZ(60deg) 
+              rotateX(35deg) 
+              rotateY(-45deg)
+              ;
+  transition: transform 200ms linear;
+
+  &.twoD {
+    transform-style: unset;
+    transform:  scale(var(--scale));
+  }
+}
+
+
+#canvas div {
+  user-select: none;
+  width: var(--size); height: var(--size);
+  background: beige;
+  box-shadow: inset 0 0 0 1px darken(beige, 5);
+  transform-style: preserve-3d;
+  transform: translateZ(0);
+  transition: transform var(--anitime) ease-in-out;
+
+  &.open {
+    background: green;
+    box-shadow: inset 0 0 0 1px darken(green, 5);
+  }
+  &.closed {
+    background: red;
+    box-shadow: inset 0 0 0 1px darken(red, 5);
+  }
+  &.path {
+    background: blue;
+    box-shadow: inset 0 0 0 1px darken(blue, 5);
+  }
+
+  &:hover {
+    box-shadow: inset 0 0 0 2px black;
+  }
+
+  &.endc::before, &.endr::after,
+  &.wall_down::before, &.wall_down::after,
+  &.wall::after, &.wall::before {
+    content: "";
+    position: absolute;
+    bottom: 0; right: 0;
+    pointer-events: none;
+    transform-style: preserve-3d;
+    width: var(--size); height: var(--size);
+  }
+
+  &::before { 
+    background: rgb(145, 145, 131);
+    transform-origin: bottom;
+    transform: rotateX(90deg);
+  }
+
+  &::after { 
+    background: rgb(214, 209, 192);
+    transform-origin: right;
+    transform: rotateY(-90deg);
+  }
+
+  &.no_trans {
+    transition: unset;
+  }
+
+  &.wall:not(#end):not(#start) {
+    background: rgb(104, 91, 68);
+    box-shadow: inset 0 0 0 0.5px lighten(rgb(104, 91, 68), 10);
+    border: none;
+    transform: scaleZ(1.25) translateZ(calc(var(--size) * 0.2));
+
+    &::before {
+      background: rgb(61, 54, 41);
+    }
+    &::after {
+      background: rgb(141, 124, 95);
+    }
+  }
+
+  &#start {
+    background-image: url('../svg/start.svg');
+  }
+  &#end {
+    background-image: url('../svg/end.svg');
+  }
+
+  &.hide {
+    display: none;
+  }
+  
+}
+
+@import "./canvas2d";

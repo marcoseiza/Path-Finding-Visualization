@@ -8,7 +8,7 @@ body {
   width: 100vw; height: 100vh;
   position: relative;
   display: grid;
-  grid-template-rows: 10vh 90vh;
+  grid-template-rows: auto 1fr;
   background-color: rgb(221, 221, 221);
   font-family: Montserrat;
 }
@@ -22,22 +22,27 @@ button {
   font-family: Montserrat;
 }
 
+@mixin focus {
+  box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
+}
+
 .optionsMenu {
-  padding: 0 10px;
+  box-sizing: border-box;
+  padding: 0 1vw;
   grid-area: 1 / 1 / 2 / -1;
-  position: absolute;
-  top: 0;
   width: 100vw;
   height: 90px;
-  z-index: 9999;
   display: grid;
-  grid-template-columns: repeat(3, 70px) 10vw 9.5vw repeat(6, 1fr) 70px;
+  grid-template-columns: repeat(3, 1.1fr) repeat(2, 2.85fr) 3.5fr auto repeat(3, 3.8fr) 1.1fr;
+  justify-content: center;
   background-color: rgb(38, 79, 112);
   color: white;
 
   #algo_title {
     align-self: center;
     justify-self: center;
+    text-align: center;
+    margin: 0 1em;
     padding: 7px 9px;
     border-radius: 10px;
     background-color: white;
@@ -83,47 +88,38 @@ button {
     justify-self: center;
     font-size: 1em;
     background: none;
-    color: white;
+    color: inherit;
     border: none;
     margin: 0;
     &:hover, &:focus {
       outline: none;
       cursor: pointer;
-      background-color: rgba(0,0,0,0.3);
     }
     &:focus {
-      border: 2.5px solid rgba(16, 95, 241, 0.801);
+      @include focus()
     }
   }
 
-  #reset { 
+  #reset, #clear{
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     padding: 10px;
     border-radius: 5px;
-    &:hover div, &:focus div {
-      opacity: 1;
-      transition: opacity 200ms ease-in-out 1.5s;
+
+    &:hover, &:focus {
+      background-color: rgba(0,0,0,0.3);
     }
-    &:hover svg, &:focus svg{
-      animation: rotate 1.2s ease-in-out forwards;
+  }
+
+  #reset {
+    &:hover, &:focus {
+      svg {
+        animation: rotate 1.2s ease-in-out forwards;
+      }
     }
-    @keyframes rotate {
-      from {transform: rotate(0);}
-      to {transform: rotate(-360deg);}
-    }
-    div {
-      opacity: 0;
-      position: absolute;
-      z-index: 99;
-      top: 100%;
-      padding:  0.5em 0.8em;
-      padding-top: 1em;
-      background-color: rgb(39, 52, 63);
-      clip-path: polygon(50% 0%, 65% 20%, 100% 20%, 100% 100%, 0 100%, 0 20%, 35% 20%);
-    }
+
     svg {
       fill: none;
       stroke: white;
@@ -132,22 +128,31 @@ button {
       stroke-linejoin: round;
       width: 35px;
     }
+
+    @keyframes rotate {
+      from {transform: rotate(0);}
+      to {transform: rotate(-360deg);}
+    }
   }
 
   #clear {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 10px;
-    border-radius: 5px;
-    &:hover svg #eraserPath {
-      transform: translate(-5px, 0) scaleX(1.5);
-      animation: eraser 1s ease-in-out infinite;
+    &:hover, &:focus {
+      background-color: rgba(0,0,0,0.3);
+      svg #eraserPath {
+        transform: translate(-5px, 0) scaleX(1.5);
+        animation: eraser 1s ease-in-out infinite;
+      }
     }
-    &:hover div, &:focus div {
-      opacity: 1;
-      transition: opacity 200ms ease-in-out 1.5s;
+
+    svg {
+      fill: none;
+      stroke: white;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      width: 40px;
     }
+
     @keyframes eraser {
       0% {
         transform: translate(0, 0) scaleX(1);
@@ -158,24 +163,6 @@ button {
       100% {
         transform: translate(0, 0) scaleX(1);
       }
-    }
-    div {
-      opacity: 0;
-      position: absolute;
-      z-index: 99;
-      top: 100%;
-      padding:  0.5em 0.8em;
-      padding-top: 1em;
-      background-color: rgb(39, 52, 63);
-      clip-path: polygon(50% 0%, 65% 20%, 100% 20%, 100% 100%, 0 100%, 0 20%, 35% 20%);
-    }
-    svg {
-      fill: none;
-      stroke: white;
-      stroke-width: 1.8;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      width: 40px;
     }
   }
 
@@ -189,13 +176,28 @@ button {
     }
     &:focus {
       outline: none;
-      border: 2.5px solid rgba(16, 95, 241, 0.801);
-      div {
-        top: calc(100% + 2.5px);
-        left: -2.5px;
-        min-width: calc(100% + 5px);
+      @include focus();
+    }
+
+    input {
+      display: none;
+      &:checked {
+        & + span svg {
+          transform: rotate(180deg);
+        }
+        & ~ ul {
+          max-height: 400px;
+          transition: max-height 200ms ease-in-out;
+          li {
+            pointer-events: all;
+            opacity: 1;
+            transition: opacity 200ms ease-in-out 100ms;
+          }
+        }
+        
       }
     }
+
     span {
       align-self: center;
       justify-self: center;
@@ -205,19 +207,17 @@ button {
         width: 20px;
         fill: none;
         stroke: white;
-        stroke-width: 1.5;
+        stroke-width: 1;
         stroke-linecap: round;
         stroke-linejoin: round;
       }
     }
-    input {
-      display: none;
-      &:checked + div {
-        display: flex
-      }
-    }
-    div {
-      display: none;
+   
+    ul {
+      padding: 0;
+      margin: 0;
+      display: flex;
+      max-height: 0;
       flex-direction: column;
       background-color: white;
       color: rgb(24, 47, 66);
@@ -226,58 +226,66 @@ button {
       top: 100%;
       left: 0;
       min-width: 100%;
+      transition: max-height 200ms ease-in-out 100ms;
 
-      li:first-of-type {
-        &:after {
-          content: '';
-          display: block;
-          position: absolute;
-          bottom: 99%; left: 10%;
-          width: 30px; height: 10px;
-          background-color: white;
-          clip-path: polygon(0 100%, 50% 0, 100% 100%);
-        }
-        &:hover:after {
-          background-color: rgb(185, 192, 198);
-        }
-      }
-      
       li {
+        pointer-events: none;
+        opacity: 0;
         position: relative;
         list-style: none;
         display: flex;
         flex-direction: column;
+        transition: opacity 200ms ease-in-out;
+
         button {
+          width: 100%;
           padding: 0.8em 1em;
           white-space: nowrap;
           border: none;
+          text-align: left;
           &:hover {
             background-color: rgba(24, 47, 66, 0.3);
           }
         }
-        label {
-          padding: 0.8em 1em;
-          white-space: nowrap;
-          &:hover {
-            background-color: rgba(24, 47, 66, 0.3);
+
+        &:first-of-type {
+          button:after {
+            content: '';
+            display: block;
+            position: absolute;
+            bottom: 99%; left: 10%;
+            width: 30px; height: 10px;
+            background-color: white;
+            clip-path: polygon(0 100%, 50% 0, 100% 100%);
+          }
+          button:hover:after {
+            background-color: rgb(185, 192, 198);
           }
         }
       }
     }
   }
 
-  #start {
+  #startButton {
     align-self: center;
     justify-self: center;
     font-size: 1.3em;
-    margin: 0 0.5em;
+    margin: 0 1em;
     padding: 0.5em 1em;
     background-color: rgb(92, 185, 88);
     transition: background-color 50ms linear;
     border-radius: 0.7em;
-    &:hover, &:focus {
+
+    &:hover:not(:disabled), &:focus:not(:disabled) {
       background-color: darken($color: rgb(92, 185, 88), $amount: 5);
       cursor: pointer;
+    }
+    &:disabled {
+      box-shadow: 0 0 0 3px rgb(223, 1, 1) inset;
+      cursor: default;
+    }
+    &.error {
+      background-color: rgb(223, 1, 1);
     }
   }
 
@@ -293,7 +301,7 @@ button {
     }
     &:focus {
       outline: none;
-      border: 2.5px solid rgba(16, 95, 241, 0.801);
+      @include focus();
     }
     &:hover div, &:focus div {
       opacity: 1;
@@ -328,7 +336,7 @@ button {
 
   &__slider {
     align-self: flex-end;
-    margin: 0 4%;
+    margin: 0 1em;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -345,7 +353,7 @@ button {
         outline: none;
         &::-webkit-slider-thumb {
           transform: scale(1.3);
-          box-shadow: 0 0 0 2.5px rgba(16, 95, 241, 0.801);
+          @include focus();
         }
       }
       
@@ -389,16 +397,152 @@ button {
       font-size: 0.8em;
     }
   }
-}
 
-canvas {
-  align-self: center;
-  justify-self: center;
-  grid-area: 1 / 1 / -1 / -1;
+  > input#settings {
+    display: none;
+    &:checked {
+      & ~ ul {
+        transform: translate(0);
+        .background {
+          opacity: 1;
+        }
+      }
+      & ~ label svg {
+        fill: rgb(24, 47, 66);
+        animation: none;
+      }
+    }
+  }
+
+  &__settings {
+    padding: 10px;
+    border-radius: 5px;
+    align-self: center;
+    justify-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover, &:focus {
+      background-color: rgba(0,0,0,0.3);
+      cursor: pointer;
+      > svg {
+        animation: rotateSettings 1s ease-in-out forwards;
+      }
+    }
+
+    > svg {
+      position: relative;
+      z-index: 999;
+      width: 35px;
+      height: auto;
+      fill: white;
+    }
+
+    @keyframes rotateSettings {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(-180deg) translate(-1%);
+      }
+    }
+
+    &__menu {
+      padding: 0;
+      padding-top: 90px;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      color: rgb(24, 47, 66);
+      position: absolute;
+      z-index: 99;
+      top: 0;
+      right: 0;
+      min-width: 300px;
+      transform-origin: right;
+      transform: translate(100%);
+      transition: transform 300ms ease-in;
+
+      .background {
+        pointer-events: none;
+        position: absolute;
+        z-index: 9;
+        right: 100%;
+        top: 0;
+        width: 100vw; height: 100vh;
+        opacity: 0;
+        background-color: rgba(0,0,0,0.3);
+      }
+
+      li {
+        position: relative;
+        list-style: none;
+        padding: 1em;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+
+        &:first-of-type {
+          border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        span.title {
+          font-size: 1.2em;
+          font-weight: 500;
+          margin-bottom: 0.5em;
+          svg {
+            display: inline-block;
+            vertical-align: text-bottom;
+            height: 1em;
+            margin-bottom: 0.1em;
+            margin-right: 0.5ch;
+            width: auto;
+            fill: rgb(24, 47, 66);
+            .a {
+              fill: rgba(24, 47, 66, 0.5);
+            }
+            .b {
+              fill: rgba(24, 47, 66, 0.8);
+            }
+          }
+        }
+
+        div {
+          font-size: 0.8em;
+          border-radius: 0.7em;
+          background: rgba(24, 47, 66, 0.2);
+          overflow: hidden;
+          display: flex;
+        }
+
+        input {
+          display: none;
+          &:checked + label {
+            background: rgb(38, 79, 112);
+          }
+          &:disabled + label {
+            background: rgba(172, 21, 21, 0.2);
+          }
+        }
+
+        label {
+          display: block;
+          padding: 0.6em 1em;
+          font-weight: 500;
+          color: white;
+          cursor: pointer;
+        }
+      }
+    }
+  }
 }
 
 #playPause {
-  opacity: 0;
+  display: none;
   position: absolute;
   &:checked + .optionsMenu #play {display: initial;}
   &:checked + .optionsMenu #pause {display: none;}
@@ -413,9 +557,10 @@ canvas {
 .pausedScreen {
   pointer-events: none;
   opacity: 0;
-  transition: opacity 200ms ease-in-out;
+  transition: opacity 50ms ease-in-out;
   grid-area: 2 / 1 / -1 / -1;
   position: absolute;
+  z-index: 999;
   width: 100%; height: 100%;
   background-color: rgba(0,0,0,0.3);
   display: flex;
@@ -434,6 +579,10 @@ canvas {
       fill: white;
     }
   }
+}
+
+main {
+  grid-area: 2 / 1 / -1 / -1;
 }
 
 @media screen and (max-width: 1200px) {
