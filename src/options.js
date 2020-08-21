@@ -108,7 +108,8 @@ export default function setupOptionButtons(canvas) {
   }
 
   let row_slider = document.getElementById("row_slider"),
-      column_slider = document.getElementById("column_slider");
+      column_slider = document.getElementById("column_slider"),
+      size_slider = document.getElementById("size_slider");
 
   sliderCounter(row_slider);
   row_slider.oninput = (e) => {
@@ -126,6 +127,15 @@ export default function setupOptionButtons(canvas) {
   }
   column_slider.onmouseup = (e) => {
     canvas.c = parseInt(e.target.value);
+  }
+
+  sliderCounter(size_slider);
+  size_slider.oninput = (e) => {
+    sliderCounter(e.target);
+    canvas.s = parseInt(e.target.value);
+  }
+  size_slider.onmouseup = (e) => {
+    canvas.s = parseInt(e.target.value);
   }
 
   document.getElementById("recursive_division").onclick = function() {

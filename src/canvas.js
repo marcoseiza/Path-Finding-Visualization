@@ -6,7 +6,7 @@ export default class Canvas {
     this._c = cols;
     this.max_r = max_r;
     this.max_c = max_c;
-    this.s = size;
+    this._s = size;
     this.el.style.setProperty("--size", this.s + "px");
 
     // em == edit_mode
@@ -44,6 +44,14 @@ export default class Canvas {
 
   set c(value) {
     this.readjustSize(this.r, value)
+  }
+
+
+  get s() {return this._s}
+
+  set s(value) {
+    this._s = value;
+    this.el.style.setProperty("--size", value + "px");
   }
 
 
