@@ -6,13 +6,14 @@ body {
 }
 
 main {
-  pointer-events: none;
+  cursor: grab;
   display: flex;
   align-items: center; justify-content: center;
   height: 100%; width: 100%;
 }
 
 #canvas {
+  cursor: default;
   pointer-events: all;
   --size: 20px;
   --scale: 1;
