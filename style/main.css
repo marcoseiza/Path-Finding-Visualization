@@ -233,7 +233,7 @@ main {
   color: #182f42;
   position: absolute;
   z-index: 9;
-  top: 100%;
+  top: calc(100% + 5px);
   left: 0;
   min-width: 100%;
   -webkit-transition: max-height 200ms ease-in-out;

@@ -11,6 +11,8 @@ export default function setupOptionButtons(canvas) {
 
 
   document.getElementById("startButton").onclick = function() {
+    if (document.getElementById("playPause").checked)
+      document.getElementById("playPause").checked = false;
     canvas.startAlgo();
   }
 
@@ -18,7 +20,8 @@ export default function setupOptionButtons(canvas) {
     if (e.target.checked) {
       clearInterval(canvas.algoTimer)
     } else {
-      canvas.startAlgo();
+      if (canvas.runningAlgo)
+        canvas.startAlgo();
     }
   }
 
