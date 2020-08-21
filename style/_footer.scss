@@ -4,8 +4,10 @@ footer {
   z-index: 999;
   display: flex;
   justify-content: space-between;
+  pointer-events: none;
 
   section {
+    pointer-events: all;
     display: flex;
     padding: 10px;
     padding-bottom: 8px;

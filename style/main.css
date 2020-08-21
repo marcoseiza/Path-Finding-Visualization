@@ -93,7 +93,7 @@ button {
 }
 
 main {
-  grid-area: 2 / 1 / -1 / -1;
+  grid-area: 1 / 1 / -1 / -1;
 }
 
 .optionsMenu {
@@ -113,6 +113,7 @@ main {
       -ms-flex-pack: justify;
           justify-content: space-between;
   color: white;
+  pointer-events: none;
 }
 
 .optionsMenu button {
@@ -137,6 +138,7 @@ main {
 }
 
 .optionsMenu .menu_section {
+  pointer-events: all;
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: (1fr)[4];
@@ -360,9 +362,11 @@ footer {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  pointer-events: none;
 }
 
 footer section {
+  pointer-events: all;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

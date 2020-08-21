@@ -137,7 +137,7 @@ export default class Canvas {
       }
     }
 
-    // this.buildZoom();
+    this.buildDragDrop();
   }
 
   
@@ -216,6 +216,41 @@ export default class Canvas {
 
       time = Date.now();
     }
+  }
+
+  buildDragDrop() {
+    let wrap = this.el.parentElement,
+        main = wrap.parentElement;
+
+    main.onmousedown = (e) => {
+      if (!e.path.includes(this.el))  {
+        main.style.cursor = "grabbing";
+
+        let dx = e.clientX - wrap.getBoundingClientRect().left;
+        let dy = e.clientY - wrap.getBoundingClientRect().top;
+      
+        wrap.style.position = 'absolute';
+      
+        moveAt(e.pageX, e.pageY);
+      
+        function moveAt(px, py) {
+          wrap.style.left = px - dx + 'px';
+          wrap.style.top = py - dy + 'px';
+        }
+      
+        main.onmousemove = (e) => {
+          moveAt(e.pageX, e.pageY);
+        }
+        
+        main.onmouseleave = function() {
+          main.onmousemove = null;
+        }
+        main.onmouseup = function() {
+          main.onmousemove = null;
+          main.style.cursor = "grab";
+        };
+      }
+    };
   }
 
   buildBlockEventListeners(block) {

@@ -169,7 +169,11 @@ export default function setupOptionButtons(canvas) {
   })
 
   document.getElementsByName("canvas_dimensions").forEach(el => {
-    el.onchange = function(e) {
+    el.onchange = function() {
+      console.log(
+        canvas.el.getBoundingClientRect().left,
+        canvas.el.getBoundingClientRect().top
+      )
       canvas.el.classList.remove("twoD")
       if (el.value != "")
         canvas.el.classList.add(el.value);

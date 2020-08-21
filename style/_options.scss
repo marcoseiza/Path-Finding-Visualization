@@ -8,6 +8,7 @@
   display: flex;
   justify-content: space-between;
   color: white;
+  pointer-events: none;
 
   button {
     align-self: center;
@@ -26,6 +27,7 @@
   }
 
   .menu_section {
+    pointer-events: all;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
