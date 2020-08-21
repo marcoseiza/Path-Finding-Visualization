@@ -47,6 +47,16 @@
               Greedy BFS
             </button>
           </li>
+          <li>
+            <button id="bfs">
+              Breadth First
+            </button>
+          </li>
+          <li>
+            <button id="dfs">
+              Depth First
+            </button>
+          </li>
         </ul>
       </label>
 
@@ -66,27 +76,15 @@
           </li>
           <li>
             <button id="dps_maze">
-              Depth First Search
+              Depth First
             </button>
           </li>
         </ul>
       </label>
       <div id="algo_title">No Algorithm</div>
 
-      <script>
-        window.addEventListener('click', function(e) {
-          if (!document.getElementById('algorithms').contains(e.target) && !document.querySelector('.optionsMenu__algorithms').contains(e.target)) {
-            document.getElementById('algorithms').checked = false;
-          }
-          if (!document.getElementById('mazes').contains(e.target) && !document.querySelector('.optionsMenu__mazes').contains(e.target)) {
-            document.getElementById('mazes').checked = false;
-          }
-        })
-      </script>
-    </section>
-
-    <section class="start_section">
       <button id="startButton">VISUALIZE</button>
+
     </section>
 
   </div>

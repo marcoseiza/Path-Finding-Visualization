@@ -15,6 +15,8 @@ export function setup(canvas) {
 }
 
 export function algo(canvas) {
+  console.log(canvas.endBlock.visited, canvas.endBlock);
+  
   if (canvas.open.length > 0) {
     canvas.sortBlocks();
 

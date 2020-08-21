@@ -119,8 +119,6 @@ main {
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
-  -ms-grid-column-align: center;
-      justify-self: center;
   font-size: 1em;
   background: none;
   color: inherit;
@@ -138,29 +136,16 @@ main {
           box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
 }
 
-.optionsMenu section {
-  padding: 10px;
-  padding-top: 8px;
-  background-color: #264f70;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.optionsMenu section:first-of-type {
-  border-bottom-right-radius: 10px;
-}
-
-.optionsMenu section:last-of-type {
-  border-bottom-left-radius: 10px;
-}
-
 .optionsMenu .menu_section {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: 1fr 1fr 1fr;
-      grid-template-columns: 1fr 1fr 1fr;
+  -ms-grid-columns: (1fr)[4];
+      grid-template-columns: repeat(4, 1fr);
   gap: 10px;
+  padding: 10px;
+  padding-top: 8px;
+  background-color: #264f70;
+  border-bottom-right-radius: 10px;
 }
 
 .optionsMenu .menu_section > * {
@@ -334,7 +319,7 @@ main {
   color: #264f70;
 }
 
-.optionsMenu #startButton {
+.optionsMenu .menu_section #startButton {
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
@@ -347,113 +332,19 @@ main {
   border-radius: 10px;
 }
 
-.optionsMenu #startButton:hover:not(:disabled), .optionsMenu #startButton:focus:not(:disabled) {
+.optionsMenu .menu_section #startButton:hover:not(:disabled), .optionsMenu .menu_section #startButton:focus:not(:disabled) {
   background-color: #4dae49;
   cursor: pointer;
 }
 
-.optionsMenu #startButton:disabled {
+.optionsMenu .menu_section #startButton:disabled {
   -webkit-box-shadow: 0 0 0 3px #df0101 inset;
           box-shadow: 0 0 0 3px #df0101 inset;
   cursor: default;
 }
 
-.optionsMenu #startButton.error {
+.optionsMenu .menu_section #startButton.error {
   background-color: #df0101;
-}
-
-.optionsMenu__slider {
-  -ms-flex-item-align: end;
-      align-self: flex-end;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  position: relative;
-}
-
-.optionsMenu__slider input {
-  margin-top: 10px;
-  display: block;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-  width: 100%;
-  height: 2px;
-  border-radius: 1px;
-}
-
-.optionsMenu__slider input:focus {
-  outline: none;
-}
-
-.optionsMenu__slider input:focus::-webkit-slider-thumb {
-  -webkit-transform: scale(1.3);
-          transform: scale(1.3);
-  -webkit-box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
-          box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
-}
-
-.optionsMenu__slider input::-webkit-slider-thumb {
-  -webkit-appearance: none;
-          appearance: none;
-  border: none;
-  width: 13px;
-  height: 13px;
-  border-radius: 50%;
-  background-color: white;
-  -webkit-transition: -webkit-transform 100ms ease-in;
-  transition: -webkit-transform 100ms ease-in;
-  transition: transform 100ms ease-in;
-  transition: transform 100ms ease-in, -webkit-transform 100ms ease-in;
-}
-
-.optionsMenu__slider input::-webkit-slider-thumb:hover, .optionsMenu__slider input::-webkit-slider-thumb:active {
-  -webkit-transform: scale(1.3);
-          transform: scale(1.3);
-}
-
-.optionsMenu__slider div {
-  position: absolute;
-  bottom: 94%;
-  -webkit-clip-path: url(#slider_unit_clipPath);
-          clip-path: url(#slider_unit_clipPath);
-  width: 2ch;
-  height: 26px;
-  color: #264f70;
-  background-color: white;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-}
-
-.optionsMenu__slider div#random_sld_value {
-  width: 2.5ch;
-  height: 3ch;
-}
-
-.optionsMenu__slider div span {
-  font-size: 0.3em;
-  font-weight: 600;
-  margin: 0;
-  margin-top: 0.7em;
-}
-
-.optionsMenu__slider span {
-  margin: 10px 3px;
-  font-size: 0.8em;
 }
 
 footer {
