@@ -27,7 +27,6 @@ export default class Block {
     if (!this.end) {
       this._start = bool;
       if (bool) {
-        this.wall = false;
         this.el.id = "start";
       } else {
         this.el.id = "";
@@ -41,7 +40,6 @@ export default class Block {
     if (!this.start) {
       this._end = bool;
       if (bool) {
-        this.wall = false;
         this.el.id = "end";
       } else {
         this.el.id = "";
@@ -49,14 +47,17 @@ export default class Block {
     }
   }
 
-  get wall() { return this._wall;}
+  get wall() { 
+    if (this.start || this.end) {
+      return false;
+    }
+    return this._wall;
+  }
 
   set wall(bool) {
-    if (bool) {
-      if (!this.start && !this.end) {
-        this._wall = bool;
-        this.el.classList.add("wall");
-      }
+    if (bool && !this.start && !this.end) {
+      this._wall = bool;
+      this.el.classList.add("wall");
     } else {
       this._wall = bool;
       this.el.classList.remove("wall");
