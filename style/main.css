@@ -10,8 +10,8 @@ body {
   position: relative;
   display: -ms-grid;
   display: grid;
-  -ms-grid-rows: auto 1fr;
-      grid-template-rows: auto 1fr;
+  -ms-grid-rows: auto minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr);
   background-color: #dddddd;
   font-family: Montserrat;
 }

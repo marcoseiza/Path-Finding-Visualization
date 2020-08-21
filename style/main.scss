@@ -7,8 +7,8 @@ body {
   margin: 0;
   width: 100vw; height: 100vh;
   position: relative;
-  display: grid;
-  grid-template-rows: auto 1fr;
+  display: grid;  
+  grid-template-rows: auto minmax(0, 1fr);
   background-color: rgb(221, 221, 221);
   font-family: Montserrat;
 }
