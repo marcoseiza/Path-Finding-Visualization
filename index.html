@@ -13,154 +13,84 @@
   <link rel="shortcut icon" href="images/fav1.png" type="image/x-icon">
   
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="main.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"></script>
-  <script src="src/vars.js"></script>
-  <script src="src/addScreenPositionFunction.js"></script>
-  <script src="src/block.js"></script>
-  <script src="src/algorithms/a_star.js"></script>
-  <script src="src/algorithms/djikstra.js"></script>
-  <script src="src/algorithms/greedySearch.js"></script>
-  <script src="src/algorithms/bi_dijkstra.js"></script>
-  <script src="src/algorithms/bi_a_star.js"></script>
-  <script src="src/algorithms/bi_a_star_retarg.js"></script>
-  <script src="src/mazes/recursive_division.js"></script>
-  <script src="src/mazes/dfs_maze.js"></script>
+  <link rel="stylesheet" href="style/main.css">
+  <link rel="stylesheet" href="style/canvas.css">
 </head>
 <body>
-  <!-- clip path -->
-  <svg viewBox="0 0 130 100" width="0" height="0">
-    <defs>
-      <clipPath id="slider_unit_clipPath" clipPathUnits="objectBoundingBox" transform="scale(0.01 0.0076923)">
-        <circle cx="50" cy="50" r="48"/>
-        <path d="M10 77 L50 128 L90 77 Z"/>
-      </clipPath>
-    </defs>
-  </svg>
-  <input type="checkbox" id="playPause">
-  <div class="optionsMenu">
-    <label for="playPause" class="optionsMenu__playPause" title="play/pause"
-    tabindex="1" onkeypress="if (event.keyCode == 13) document.getElementById('playPause').checked = !document.getElementById('playPause').checked">
-      <svg id="play" viewBox="0 0 20 20">
-        <path d="M18 10 L2 2 2 18 Z"/>
-      </svg>
-      <svg id="pause" viewBox="0 0 20 20">
-        <path d="M2 2 v16 h6 v -16 z"/>
-        <path d="M12 2 v16 h6 v -16 z"/>
-      </svg>
-    </label>
-    <button id="reset" tabindex="2" title="reset">
-      <svg viewBox="-2 -2 22 22">
-        <path d="M2 10 c0 4.418277 3.581723 8 8 8 s8 -3.581723 8 -8 -3.581723 -8 -8 -8  h-4 l3 3 -3 -3 3 -3"/>
-      </svg>
-    </button>
-    <button id="clear" tabindex="3" title="clear">
-      <svg viewBox="0 0 20 20">
-        <path d="M6 18 l-4 -4 11 -11 5 5 -8.7 8.7 -5 -5"/>
-        <path id="eraserPath" d="M16 18 h-10"/>
-      </svg>
-    </button>
-    <label for="algorithms" class="optionsMenu__algorithms optionsMenu__menu" tabindex="4">
-      <span>
-        Algorithm
-        <svg viewBox="0 0 10 7">
-          <path d="M2 2 L5 5 L8 2"/>
-        </svg>
-      </span>
-      <input type="checkbox" name="menus" id="algorithms" tabindex="4">
-      <div>
-        <li>
-          <label for="a_star">
-            A* Search
-            <input type="radio" name="algorithms" id="a_star" value="a_star">
-          </label>
-        </li>
-        <li>
-          <label for="dijkstra">
-            Dijkstra's
-            <input type="radio" name="algorithms" id="dijkstra" value="dijkstra">
-          </label>
-        </li>
-        <li>
-          <label for="greedy_search">
-            Greedy Search
-            <input type="radio" name="algorithms" id="greedy_search" value="greedy_search">
-          </label>
-        </li>
-      </div>
-    </label>
-    <label for="mazes" class="optionsMenu__menu" tabindex="5">
-      <span>
-        Mazes
-        <svg viewBox="0 0 10 7">
-          <path d="M2 2 L5 5 L8 2"/>
-        </svg>
-      </span>
-      <input type="checkbox" name="menus" id="mazes" tabindex="5">
-      <div>
-        <li>
-          <label for="recursive_division">
-            Recursive Division
-            <input type="button" name="recursive_division" id="recursive_division" class="optionsMenu__mazes">
-          </label>
-        </li>
-        <li>
-          <label for="dps_maze">
-            Depth First Search
-            <input type="button" name="dps_maze" id="dps_maze" class="optionsMenu__mazes">
-          </label>
-        </li>
-      </div>
-    </label>
-    <script>
-      let algo = document.getElementById('algorithms'),
-          maze = document.getElementById('mazes')
 
-      window.addEventListener('click', function(e) {
-        if (!algo.contains(e.target)) {
-          algo.checked = false
-        }
-        if (!maze.contains(e.target)) {
-          maze.checked = false
-        }
-      })
-    </script>
-    <div id="algo_title">No Algorithm</div>
-    <button id="start">Start</button>
-    <div id="algo_update">
-      <svg viewBox="0 0 26 15">
-        <g id="status_circle_default">
-          <path d="M2 13 c0 -6.07513225 4.92486775 -11 11 -11 s11 4.92486775 11 11"/>
-        </g>
-        <g id="status_circle_percent">
-          <path d="M2 13 c0 -6.07513225 4.92486775 -11 11 -11 s11 4.92486775 11 11"/>
-        </g>
-      </svg>
-      <span id="progressPercent"></span>
-    </div>
-    <label for="walls" class="optionsMenu__random optionsMenu__slider">
-      <input type="range" min="0" max="1" step="0.01" value ="0" id="random">
-      <div id="random_sld_value">
-        <span>14</span>
-      </div>
-      <span>Wall Coverage</span>
-    </label>
-    <label for="rows" class="optionsMenu__rows optionsMenu__slider">
-      <input type="range" min="3" max="40" step="1" value="21" id="rows">
-      <div id="rows_sld_value">
-        <span>14</span>
-      </div>
-      <span>Rows</span>
-    </label>
-    <label for="columns" class="optionsMenu__columns optionsMenu__slider">
-      <input type="range" min="3" max="40" step="1" value="21" id="columns">
-      <div id="columns_sld_value">
-        <span>14</span>
-      </div>
-      <span>Columns</span>
-    </label>
-    <div class="settings"></div>
+  <input type="checkbox" id="playPause">
+
+  <div class="optionsMenu">
+
+    <section class="menu_section">
+      <input type="checkbox" name="menus" id="algorithms" tabindex="4">
+      <label for="algorithms" class="optionsMenu__algorithms dropdown" tabindex="4">
+        <span>
+          Algorithms
+          <svg viewBox="0 0 10 7">
+            <path d="M2 2 L5 5 L8 2"/>
+          </svg>
+        </span>
+        <ul>
+          <li>
+            <button id="a_star">
+              A* Search
+            </button>
+          </li>
+          <li>
+            <button id="dijkstra">
+              Dijkstra's
+            </button>
+          </li>
+          <li>
+            <button id="greedy_search">
+              Greedy Search
+            </button>
+          </li>
+        </ul>
+      </label>
+
+      <input type="checkbox" name="menus" id="mazes" tabindex="5">
+      <label for="mazes" class="optionsMenu__mazes dropdown" tabindex="5">
+        <span>
+          Mazes
+          <svg viewBox="0 0 10 7">
+            <path d="M2 2 L5 5 L8 2"/>
+          </svg>
+        </span>
+        <ul>
+          <li>
+            <button id="recursive_division">
+              Recursive Division
+            </button>
+          </li>
+          <li>
+            <button id="dps_maze">
+              Depth First Search
+            </button>
+          </li>
+        </ul>
+      </label>
+      <div id="algo_title">No Algorithm</div>
+
+      <script>
+        window.addEventListener('click', function(e) {
+          if (!document.getElementById('algorithms').contains(e.target) && !document.querySelector('.optionsMenu__algorithms').contains(e.target)) {
+            document.getElementById('algorithms').checked = false;
+          }
+          if (!document.getElementById('mazes').contains(e.target) && !document.querySelector('.optionsMenu__mazes').contains(e.target)) {
+            document.getElementById('mazes').checked = false;
+          }
+        })
+      </script>
+    </section>
+
+    <section class="start_section">
+      <button id="startButton">VISUALIZE</button>
+    </section>
+
   </div>
+
   <div for="playPause" class="pausedScreen">
     <label for="playPause">
       <span>Program Paused</span>
@@ -170,6 +100,130 @@
       </svg>
     </label>
   </div>
-  <script src="src/main.js"></script>
+
+  <main>
+    <div id="canvas"></div>
+  </main>
+
+  <footer>
+    <section class="buttons">
+      <label for="playPause" class="playPause" title="play/pause"
+      tabindex="1" onkeypress="if (event.keyCode == 13) document.getElementById('playPause').checked = !document.getElementById('playPause').checked">
+        <svg id="play" viewBox="0 0 20 20">
+          <path d="M18 10 L2 2 2 18 Z"/>
+        </svg>
+        <svg id="pause" viewBox="0 0 20 20">
+          <path d="M2 2 v16 h6 v -16 z"/>
+          <path d="M12 2 v16 h6 v -16 z"/>
+        </svg>
+      </label>
+
+      <button id="reset" tabindex="2" title="reset">
+        <svg viewBox="-2 -2 22 22">
+          <path d="M2 10 c0 4.418277 3.581723 8 8 8 s8 -3.581723 8 -8 -3.581723 -8 -8 -8  h-4 l3 3 -3 -3 3 -3"/>
+        </svg>
+      </button>
+
+      <button id="clear" tabindex="3" title="clear">
+        <svg viewBox="0 0 20 20">
+          <path d="M6 18 l-4 -4 11 -11 5 5 -8.7 8.7 -5 -5"/>
+          <path id="eraserPath" d="M16 18 h-10"/>
+        </svg>
+      </button>
+    </section>
+    
+    <section class="settings">
+      <input type="checkbox" name="settings" id="settings">
+
+      <label class="settings__toggle" for="settings">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+          <path d="M93.3652,60.6534a74.4955,74.4955,0,0,0-5.5-5.2363,37.933,37.933,0,0,0,0-10.8343,74.4537,74.4537,0,0,0,5.5-5.2363c1.4478-1.5287,2.7543-3.0377,3.9312-4.4982a2.3122,2.3122,0,0,0,.1861-2.6063L89.12,17.7579a2.3119,2.3119,0,0,0-2.35-1.1419c-1.8533.2889-3.8134.6659-5.8611,1.1554a74.5022,74.5022,0,0,0-7.2914,2.1471,38.199,38.199,0,0,0-9.3767-5.4227,74.442,74.442,0,0,0-1.7843-7.3779c-.6-2.0182-1.2535-3.9042-1.93-5.6536A2.3121,2.3121,0,0,0,58.3624,0H41.6376a2.3121,2.3121,0,0,0-2.1641,1.4643c-.6764,1.7494-1.33,3.6354-1.93,5.6536a74.442,74.442,0,0,0-1.7843,7.3779,38.199,38.199,0,0,0-9.3767,5.4227,74.5022,74.5022,0,0,0-7.2914-2.1471c-2.0477-.4895-4.0078-.8665-5.8611-1.1554a2.312,2.312,0,0,0-2.35,1.1419L2.5176,32.242a2.312,2.312,0,0,0,.186,2.6063c1.1769,1.46,2.4835,2.9695,3.9313,4.4982a74.4164,74.4164,0,0,0,5.5,5.2364,37.9226,37.9226,0,0,0,0,10.8342,74.4349,74.4349,0,0,0-5.5,5.2363c-1.4478,1.5287-2.7544,3.0378-3.9313,4.4982a2.312,2.312,0,0,0-.186,2.6063L10.88,82.242a2.3121,2.3121,0,0,0,2.35,1.142c1.8533-.289,3.8134-.6659,5.8611-1.1554a74.4769,74.4769,0,0,0,7.2915-2.1471,38.1984,38.1984,0,0,0,9.3766,5.4227,74.4337,74.4337,0,0,0,1.7843,7.3778c.6,2.0182,1.2535,3.9042,1.93,5.6536A2.3121,2.3121,0,0,0,41.6376,100H58.3624a2.3121,2.3121,0,0,0,2.1641-1.4644c.6764-1.7494,1.33-3.6354,1.93-5.6536a74.427,74.427,0,0,0,1.7843-7.3778,38.1958,38.1958,0,0,0,9.3767-5.4227,74.4746,74.4746,0,0,0,7.2914,2.1471c2.0477.49,4.0078.8664,5.8611,1.1554a2.312,2.312,0,0,0,2.35-1.142l8.3624-14.4841a2.312,2.312,0,0,0-.1861-2.6062C96.12,63.6912,94.813,62.1821,93.3652,60.6534ZM50,68.1035A18.1035,18.1035,0,1,1,68.1035,50,18.1036,18.1036,0,0,1,50,68.1035Z"/>
+        </svg>
+        <script>
+          window.onclick = function(e) {
+            if (e.target != document.getElementById("settings") && !document.querySelector(".settings__toggle").contains(e.target) && !document.querySelector(".settings__menu").contains(e.target)) {
+              document.getElementById("settings").checked = false;
+            }
+          }
+        </script>
+      </label>
+
+      <ul class="settings__menu">
+        <div class="background"></div>
+        <li>
+          <span class="title">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M16.5,2.4A10.8,10.8,0,0,0,10.7,0V3.1a6.1,6.1,0,0,1,3.7,1.5Z"/><path d="M20,9.2a10.8,10.8,0,0,0-2.4-5.7L15.4,5.6a6.1,6.1,0,0,1,1.5,3.6Z"/><path d="M16.9,10.8A6.9,6.9,0,0,1,10,17a7,7,0,0,1-7-7A6.9,6.9,0,0,1,9.2,3.1V0A10,10,0,1,0,20,10.8Z"/><path d="M14.4,5.6,9.3,8.5h0A1.6,1.6,0,0,0,8.4,10,1.6,1.6,0,0,0,10,11.6a1.6,1.6,0,0,0,1.5-.9h0Z"/></svg>
+            SPEED
+          </span>
+          <div class="options">
+            <input type="radio" name="speed" id="slow_speed" value="45">
+            <label for="slow_speed">
+              SLOW
+            </label>
+            <input type="radio" name="speed" id="avg_speed" value="30">
+            <label for="avg_speed">
+              MEDIUM
+            </label>
+            <input type="radio" name="speed" id="fast_speed"  value="15" checked>
+            <label for="fast_speed">
+              FAST
+            </label>
+          </div>
+        </li>
+        <li>
+          <span class="title">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10,11H9.5L1.7,6.4a1.1,1.1,0,0,1,0-1.8L9.5.1h1l7.8,4.5a1.1,1.1,0,0,1,0,1.8l-7.8,4.5ZM4.3,5.5,10,8.8l5.7-3.3L10,2.3Z"/><path d="M10,20H9.5A1.2,1.2,0,0,1,9,19V10a1.1,1.1,0,0,1,.5-.9l7.7-4.5a1.1,1.1,0,0,1,1.1,0,1.1,1.1,0,0,1,.5.9v9a1.1,1.1,0,0,1-.5.9l-7.8,4.5Zm1-9.4v6.5l5.7-3.2V7.3Z"/><path d="M10,20H9.5L1.7,15.4a1.1,1.1,0,0,1-.5-.9v-9a1.1,1.1,0,0,1,.5-.9,1.1,1.1,0,0,1,1.1,0l7.7,4.5a1.1,1.1,0,0,1,.5.9v9a1.2,1.2,0,0,1-.5.9ZM3.3,13.9,9,17.1V10.6L3.3,7.3Z"/></svg>
+            RENDERING
+          </span>
+          <div class="options">
+            <input type="radio" name="canvas_dimensions" id="twoD_canvas" value="twoD">
+            <label for="twoD_canvas">
+              2D
+            </label>
+            <input type="radio" name="canvas_dimensions" id="threeD_canvas" value="" checked>
+            <label for="threeD_canvas">
+              3D
+            </label>
+          </div>
+        </li>
+        <li>
+          <span class="title">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><circle cx="1.9" cy="1.9" r="1.5"/><circle cx="10" cy="1.9" r="1.5"/><circle cx="18.1" cy="1.9" r="1.5"/><circle cx="1.9" cy="18.1" r="1.5"/><circle cx="10" cy="18.1" r="1.5"/><circle cx="18.1" cy="18.1" r="1.5"/><circle cx="1.9" cy="10" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="18.1" cy="10" r="1.5"/><path class="a" d="M12.2,8.1H12c-.1-.1-.1-.2,0-.4l3.8-3.7c.1-.1.2-.1.4,0a.3.3,0,0,1,0,.4L12.4,8Z"/><path class="a" d="M14.5,4.5a.3.3,0,0,1-.3-.3.3.3,0,0,1,.3-.3h1.4a.3.3,0,0,1,.3.3.2.2,0,0,1-.2.2l-1.5.2Z"/><path class="a" d="M15.8,5.8h0c-.1,0-.3-.1-.2-.3V4.1a.3.3,0,0,1,.3-.3c.1,0,.2.2.2.3V5.6C16.1,5.7,16,5.8,15.8,5.8Z"/><path class="a" d="M8.1,7.8c0,.1,0,.1-.1.2H7.6L3.9,4.2c-.1-.1-.1-.2,0-.4h.4L8,7.6Z"/><path class="a" d="M4.5,5.5a.3.3,0,0,1-.3.3.3.3,0,0,1-.3-.3V4.1a.3.3,0,0,1,.3-.3.2.2,0,0,1,.2.2l.2,1.5Z"/><path class="a" d="M5.8,4.2h0c0,.1-.1.3-.3.2H4.1A.3.3,0,0,1,3.8,4c0-.1.2-.2.3-.2H5.6C5.7,3.9,5.8,4,5.8,4.2Z"/><path class="a" d="M7.8,11.9H8c.1.1.1.2,0,.4L4.2,16.1H3.8a.3.3,0,0,1,0-.4L7.6,12Z"/><path class="a" d="M5.5,15.5a.3.3,0,0,1,.3.3.3.3,0,0,1-.3.3H4.1a.3.3,0,0,1-.3-.3.2.2,0,0,1,.2-.2l1.5-.2Z"/><path class="a" d="M4.2,14.2h0c.1,0,.3.1.2.3v1.4a.3.3,0,0,1-.3.3c-.1,0-.2-.2-.2-.3V14.4C3.9,14.3,4,14.2,4.2,14.2Z"/><path class="a" d="M11.9,12.2V12h.4l3.7,3.8c.1.1.1.2,0,.4a.3.3,0,0,1-.4,0L12,12.4C11.9,12.3,11.9,12.3,11.9,12.2Z"/><path class="a" d="M15.5,14.5a.3.3,0,0,1,.3-.3.3.3,0,0,1,.3.3v1.4a.3.3,0,0,1-.3.3.2.2,0,0,1-.2-.2l-.2-1.5Z"/><path class="a" d="M14.2,15.8h0c0-.1.1-.3.3-.2h1.4a.3.3,0,0,1,.3.3c0,.1-.2.2-.3.2H14.4C14.3,16.1,14.2,16,14.2,15.8Z"/><path class="b" d="M10,8c-.1,0-.3-.1-.3-.2V4.1l.3-.2a.2.2,0,0,1,.2.2V7.8A.2.2,0,0,1,10,8Z"/><path class="b" d="M10.9,5.5h-.2L9.8,4.3a.3.3,0,0,1,0-.4c.1-.1.3,0,.4.1l.9,1.1a.2.2,0,0,1,0,.3Z"/><path class="b" d="M9.1,5.5H8.9a.2.2,0,0,1,0-.3L9.8,4c.1-.1.3-.2.4-.1a.3.3,0,0,1,0,.4L9.3,5.4Z"/><path class="b" d="M8,10c0,.1-.1.3-.2.3H4.1c-.1,0-.2-.2-.2-.3l.2-.2H7.8Z"/><path class="b" d="M5.5,9.1v.2l-1.1.9a.3.3,0,0,1-.4,0c-.1-.1,0-.3.1-.4l1.1-.9h.3C5.5,8.9,5.5,9,5.5,9.1Z"/><path class="b" d="M5.5,10.9c0,.1,0,.2-.1.2H5.1L4,10.2c-.1-.1-.2-.3-.1-.4a.3.3,0,0,1,.4,0l1.1.9Z"/><path class="b" d="M10,12l.3.2v3.7l-.3.2a.2.2,0,0,1-.2-.2V12.2Z"/><path class="b" d="M9.1,14.5h.2l.9,1.1a.3.3,0,0,1,0,.4c-.1.1-.3,0-.4-.1l-.9-1.1a.2.2,0,0,1,0-.3Z"/><path class="b" d="M10.9,14.5h.2a.2.2,0,0,1,0,.3L10.2,16c-.1.1-.3.2-.4.1a.3.3,0,0,1,0-.4l.9-1.1Z"/><path class="b" d="M12,10c0-.1.1-.3.2-.3h3.7c.1,0,.2.2.2.3l-.2.2H12.2Z"/><path class="b" d="M14.5,10.9v-.2l1.1-.9a.3.3,0,0,1,.4,0c.1.1,0,.3-.1.4l-1.1.9h-.3C14.5,11.1,14.5,11,14.5,10.9Z"/><path class="b" d="M14.5,9.1c0-.1,0-.2.1-.2h.3l1.1.9c.1.1.2.3.1.4a.3.3,0,0,1-.4,0l-1.1-.9Z"/></svg>
+            NEIGHBORS
+          </span>
+          <div class="options">
+            <input type="radio" name="neighbors" id="orthogonal_neighbor" value="false" checked>
+            <label for="orthogonal_neighbor">
+              ORTHOGONAL
+            </label>
+            <input type="radio" name="neighbors" id="diagonal_neighbor" value="true">
+            <label for="diagonal_neighbor">
+              ORTHOGONAL + DIAGONAL
+            </label>
+          </div>
+        </li>
+        <li>
+          <span class="title">Rows</span>
+          <label for="rows" class="slider">
+            <input type="range" min="3" max="40" step="1" value="21" id="row_slider">
+            <div id="rows_sld_value">
+              <span>21</span>
+            </div>
+          </label>
+        </li>
+        <li>
+          <span class="title">Columns</span>
+          <label for="columns" class="slider">
+            <input type="range" min="3" max="40" step="1" value="21" id="column_slider">
+            <div id="columns_sld_value">
+              <span>21</span>
+            </div>
+          </label>
+        </li>
+      </ul>
+    </section>
+  </footer>
+  
+  <script src="src/main.js" type="module"></script>
 </body>
 </html>

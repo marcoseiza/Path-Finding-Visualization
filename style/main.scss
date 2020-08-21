@@ -1,0 +1,71 @@
+html {
+  overflow: hidden;
+  height: 100vh;
+}
+
+body {
+  margin: 0;
+  width: 100vw; height: 100vh;
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background-color: rgb(221, 221, 221);
+  font-family: Montserrat;
+}
+
+canvas {
+  width: 100% !important;
+  height: auto !important;
+}
+
+button {
+  font-family: Montserrat;
+}
+
+@mixin focus {
+  box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
+}
+
+#playPause {
+  display: none;
+  position: absolute;
+  &:checked ~ footer #play {display: initial;}
+  &:checked ~ footer #pause {display: none;}
+  &:checked ~ .pausedScreen {
+    pointer-events: initial;
+    opacity: 1;
+  }
+}
+
+.pausedScreen {
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 50ms ease-in-out;
+  grid-area: 1 / 1 / -1 / -1;
+  position: absolute;
+  z-index: 9;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    svg {
+      margin-top: 10px;
+      width: 30px;
+      fill: white;
+    }
+  }
+}
+
+main {
+  grid-area: 2 / 1 / -1 / -1;
+}
+
+@import "_options.scss", "./footer";

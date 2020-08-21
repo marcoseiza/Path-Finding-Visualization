@@ -1,0 +1,232 @@
+body {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  background: #e7e7e7;
+  overflow: hidden;
+}
+
+main {
+  pointer-events: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+#canvas {
+  pointer-events: all;
+  --size: 20px;
+  --scale: 1;
+  --rows: 2;
+  --cols: 2;
+  --anitime: 200ms;
+  position: relative;
+  z-index: 0;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (var(--size))[var];
+      grid-template-columns: repeat(var(--cols), var(--size));
+  -ms-grid-rows: (var(--size))[var];
+      grid-template-rows: repeat(var(--rows), var(--size));
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  -webkit-transform: scale(var(--scale)) rotateZ(60deg) rotateX(35deg) rotateY(-45deg);
+          transform: scale(var(--scale)) rotateZ(60deg) rotateX(35deg) rotateY(-45deg);
+  -webkit-transition: -webkit-transform 200ms linear;
+  transition: -webkit-transform 200ms linear;
+  transition: transform 200ms linear;
+  transition: transform 200ms linear, -webkit-transform 200ms linear;
+}
+
+#canvas.twoD {
+  -webkit-transform-style: unset;
+          transform-style: unset;
+  -webkit-transform: scale(var(--scale));
+          transform: scale(var(--scale));
+}
+
+#canvas div {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  width: var(--size);
+  height: var(--size);
+  background: beige;
+  -webkit-box-shadow: inset 0 0 0 1px #efefc8;
+          box-shadow: inset 0 0 0 1px #efefc8;
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+  -webkit-transition: -webkit-transform var(--anitime) ease-in-out;
+  transition: -webkit-transform var(--anitime) ease-in-out;
+  transition: transform var(--anitime) ease-in-out;
+  transition: transform var(--anitime) ease-in-out, -webkit-transform var(--anitime) ease-in-out;
+}
+
+#canvas div.open {
+  background: green;
+  -webkit-box-shadow: inset 0 0 0 1px #006700;
+          box-shadow: inset 0 0 0 1px #006700;
+}
+
+#canvas div.closed {
+  background: red;
+  -webkit-box-shadow: inset 0 0 0 1px #e60000;
+          box-shadow: inset 0 0 0 1px #e60000;
+}
+
+#canvas div.path {
+  background: blue;
+  -webkit-box-shadow: inset 0 0 0 1px #0000e6;
+          box-shadow: inset 0 0 0 1px #0000e6;
+}
+
+#canvas div:hover {
+  -webkit-box-shadow: inset 0 0 0 2px black;
+          box-shadow: inset 0 0 0 2px black;
+}
+
+#canvas div.endc::before, #canvas div.endr::after, #canvas div.wall_down::before, #canvas div.wall_down::after, #canvas div.wall::after, #canvas div.wall::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  pointer-events: none;
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  width: var(--size);
+  height: var(--size);
+}
+
+#canvas div::before {
+  background: #919183;
+  -webkit-transform-origin: bottom;
+          transform-origin: bottom;
+  -webkit-transform: rotateX(90deg);
+          transform: rotateX(90deg);
+}
+
+#canvas div::after {
+  background: #d6d1c0;
+  -webkit-transform-origin: right;
+          transform-origin: right;
+  -webkit-transform: rotateY(-90deg);
+          transform: rotateY(-90deg);
+}
+
+#canvas div.no_trans {
+  -webkit-transition: unset;
+  transition: unset;
+}
+
+#canvas div.wall:not(#end):not(#start) {
+  background: #685b44;
+  -webkit-box-shadow: inset 0 0 0 0.5px #877658;
+          box-shadow: inset 0 0 0 0.5px #877658;
+  border: none;
+  -webkit-transform: scaleZ(1.25) translateZ(calc(var(--size) * 0.2));
+          transform: scaleZ(1.25) translateZ(calc(var(--size) * 0.2));
+}
+
+#canvas div.wall:not(#end):not(#start)::before {
+  background: #3d3629;
+}
+
+#canvas div.wall:not(#end):not(#start)::after {
+  background: #8d7c5f;
+}
+
+#canvas div#start {
+  background-image: url("../svg/start.svg");
+}
+
+#canvas div#end {
+  background-image: url("../svg/end.svg");
+}
+
+#canvas div.hide {
+  display: none;
+}
+
+#canvas.twoD div {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  width: var(--size);
+  height: var(--size);
+  background-color: beige;
+  -webkit-box-shadow: inset 0 0 0 1px #efefc8;
+          box-shadow: inset 0 0 0 1px #efefc8;
+  -webkit-transform-style: unset;
+          transform-style: unset;
+  -webkit-transform: unset;
+          transform: unset;
+  -webkit-transition: background-color var(--anitime) ease-in-out;
+  transition: background-color var(--anitime) ease-in-out;
+}
+
+#canvas.twoD div.open {
+  background-color: green;
+  -webkit-box-shadow: inset 0 0 0 1px #006700;
+          box-shadow: inset 0 0 0 1px #006700;
+}
+
+#canvas.twoD div.closed {
+  background-color: red;
+  -webkit-box-shadow: inset 0 0 0 1px #e60000;
+          box-shadow: inset 0 0 0 1px #e60000;
+}
+
+#canvas.twoD div.path {
+  background-color: blue;
+  -webkit-box-shadow: inset 0 0 0 1px #0000e6;
+          box-shadow: inset 0 0 0 1px #0000e6;
+}
+
+#canvas.twoD div:hover {
+  -webkit-box-shadow: inset 0 0 0 2px black;
+          box-shadow: inset 0 0 0 2px black;
+}
+
+#canvas.twoD div.endc::before, #canvas.twoD div.endr::after, #canvas.twoD div.wall_down::before, #canvas.twoD div.wall_down::after, #canvas.twoD div.wall::after, #canvas.twoD div.wall::before {
+  display: none;
+  content: unset;
+}
+
+#canvas.twoD div.no_trans {
+  -webkit-transition: unset;
+  transition: unset;
+}
+
+#canvas.twoD div.wall:not(#end):not(#start) {
+  background-color: #685b44;
+  -webkit-box-shadow: inset 0 0 0 0.5px #877658;
+          box-shadow: inset 0 0 0 0.5px #877658;
+  border: none;
+  -webkit-transform: unset;
+          transform: unset;
+}
+
+#canvas.twoD div#start {
+  background-image: url("../svg/start.svg");
+}
+
+#canvas.twoD div#end {
+  background-image: url("../svg/end.svg");
+}
+
+#canvas.twoD div.hide {
+  display: none;
+}
+/*# sourceMappingURL=canvas.css.map */
