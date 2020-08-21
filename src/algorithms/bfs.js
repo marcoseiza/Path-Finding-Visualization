@@ -5,8 +5,8 @@ export function setup(canvas) {
 
   for (let i = 0; i < canvas.r; i++) {
     for (let j = 0; j < canvas.c; j++) {
-      canvas.blocks[i][j].visited = false;
-      canvas.blocks[i][j].previous = undefined;
+      canvas.blocks[canvas.index(i, j)].visited = false;
+      canvas.blocks[canvas.index(i, j)].previous = undefined;
     }
   }
 }

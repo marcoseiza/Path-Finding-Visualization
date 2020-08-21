@@ -32,21 +32,21 @@ export default function setupOptionButtons(canvas) {
     canvas.path = [];
     canvas.closed = [];
     canvas.startBlock.start = false;
-    canvas.blocks[19][19].start = true;
-    canvas.startBlock = canvas.blocks[19][19];
+    canvas.blocks[canvas.index(19, 19)].start = true;
+    canvas.startBlock = canvas.blocks[canvas.index(19, 19)];
     canvas.endBlock.end = false;
-    canvas.blocks[1][1].end = true;
-    canvas.endBlock= canvas.blocks[1][1];
+    canvas.blocks[canvas.index(1, 1)].end = true;
+    canvas.endBlock= canvas.blocks[canvas.index(1, 1)];
     for (let i = 0; i < canvas.r; i++) {
       for (let j = 0; j < canvas.c; j++) {
-        canvas.blocks[i][j].trans = false;
-        canvas.blocks[i][j].wall = false;
+        canvas.blocks[canvas.index(i, j)].trans = false;
+        canvas.blocks[canvas.index(i, j)].wall = false;
       }
     }
     setTimeout(function() {
       for (let i = 0; i < canvas.r; i++) {
         for (let j = 0; j < canvas.c; j++) {
-          canvas.blocks[i][j].trans = true;
+          canvas.blocks[canvas.index(i, j)].trans = true;
         }
       }
     }, 500)
@@ -58,14 +58,14 @@ export default function setupOptionButtons(canvas) {
     canvas.closed = [];
     for (let i = 0; i < canvas.r; i++) {
       for (let j = 0; j < canvas.c; j++) {
-        canvas.blocks[i][j].trans = false;
-        canvas.blocks[i][j].wall = false;
+        canvas.blocks[canvas.index(i, j)].trans = false;
+        canvas.blocks[canvas.index(i, j)].wall = false;
       }
     }
     setTimeout(function() {
       for (let i = 0; i < canvas.r; i++) {
         for (let j = 0; j < canvas.c; j++) {
-          canvas.blocks[i][j].trans = true;
+          canvas.blocks[canvas.index(i, j)].trans = true;
         }
       }
     }, 500)
