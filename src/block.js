@@ -52,9 +52,11 @@ export default class Block {
   get wall() { return this._wall;}
 
   set wall(bool) {
-    if (bool && !this.start && !this.end) {
-      this._wall = bool;
-      this.el.classList.add("wall");
+    if (bool) {
+      if (!this.start && !this.end) {
+        this._wall = bool;
+        this.el.classList.add("wall");
+      }
     } else {
       this._wall = bool;
       this.el.classList.remove("wall");
