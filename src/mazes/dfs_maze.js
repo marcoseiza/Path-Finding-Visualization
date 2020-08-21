@@ -1,3 +1,5 @@
+let prevDiagonal = false;
+
 export function setup(canvas) {
   // Make the grid odd or big enough to look good
   canvas.r = (canvas.r == 40)? 39: (canvas.r < 5)? 5: canvas.r + 1 - (canvas.r % 2);
@@ -7,6 +9,8 @@ export function setup(canvas) {
   canvas.path = [];
   canvas.path.push(canvas.blocks[Math.floor(random(1, canvas.r - 1) / 2) * 2 + 1][Math.floor(random(1, canvas.c - 1) / 2) * 2 + 1])
   canvas.closed = [];
+  prevDiagonal = canvas.diagonal;
+  canvas.diagonal = false;
 
   for(let i = 0; i < canvas.r; i++) {
     for(let j = 0; j < canvas.c; j++) {
@@ -74,6 +78,7 @@ export function algo(canvas) {
         canvas.blocks[i][j].trans = true;
       }
     }
+    canvas.diagonal = prevDiagonal;
     return false
   }
 }
