@@ -9,8 +9,11 @@ export function setup(canvas) {
   canvas.path = [];
   canvas.path.push(canvas.blocks[Math.floor(random(1, canvas.r - 1) / 2) * 2 + 1][Math.floor(random(1, canvas.c - 1) / 2) * 2 + 1])
   canvas.closed = [];
-  prevDiagonal = canvas.diagonal;
-  canvas.diagonal = false;
+
+  if (canvas.diagonal) {
+    prevDiagonal = canvas.diagonal;
+    canvas.diagonal = false;
+  }
 
   for(let i = 0; i < canvas.r; i++) {
     for(let j = 0; j < canvas.c; j++) {
@@ -78,7 +81,8 @@ export function algo(canvas) {
         canvas.blocks[i][j].trans = true;
       }
     }
-    canvas.diagonal = prevDiagonal;
+    if (prevDiagonal)
+      canvas.diagonal = true;
     return false
   }
 }
