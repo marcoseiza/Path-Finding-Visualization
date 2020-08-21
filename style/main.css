@@ -25,76 +25,93 @@ button {
   font-family: Montserrat;
 }
 
+#playPause {
+  display: none;
+  position: absolute;
+}
+
+#playPause:checked ~ footer #play {
+  display: initial;
+}
+
+#playPause:checked ~ footer #pause {
+  display: none;
+}
+
+#playPause:checked ~ .pausedScreen {
+  pointer-events: initial;
+  opacity: 1;
+}
+
+.pausedScreen {
+  pointer-events: none;
+  opacity: 0;
+  -webkit-transition: opacity 50ms ease-in-out;
+  transition: opacity 50ms ease-in-out;
+  grid-area: 1 / 1 / -1 / -1;
+  position: absolute;
+  z-index: 9;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: white;
+}
+
+.pausedScreen label {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.pausedScreen label svg {
+  margin-top: 10px;
+  width: 30px;
+  fill: white;
+}
+
+main {
+  grid-area: 2 / 1 / -1 / -1;
+}
+
 .optionsMenu {
+  position: relative;
+  z-index: 999;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  padding: 0 1vw;
   -ms-grid-row: 1;
   -ms-grid-row-span: 1;
   grid-area: 1 / 1 / 2 / -1;
   width: 100vw;
-  height: 90px;
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-columns: (1.1fr)[3] (2.85fr)[2] 3.5fr auto (3.8fr)[3] 1.1fr;
-      grid-template-columns: repeat(3, 1.1fr) repeat(2, 2.85fr) 3.5fr auto repeat(3, 3.8fr) 1.1fr;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  background-color: #264f70;
-  color: white;
-}
-
-.optionsMenu #algo_title {
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
-  -ms-grid-column-align: center;
-      justify-self: center;
-  text-align: center;
-  margin: 0 1em;
-  padding: 7px 9px;
-  border-radius: 10px;
-  background-color: white;
-  color: #264f70;
-}
-
-.optionsMenu #algo_update {
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
-  -ms-grid-column-align: center;
-      justify-self: center;
-  position: relative;
-  width: 100px;
-  margin-top: 10.9px;
-}
-
-.optionsMenu #algo_update svg #status_circle_default {
-  stroke: white;
-  stroke-width: 1.4;
-  fill: none;
-  stroke-linecap: round;
-}
-
-.optionsMenu #algo_update svg #status_circle_percent {
-  position: relative;
-  z-index: 99999;
-  stroke: #5cb958;
-  stroke-width: 1.4;
-  stroke-linecap: round;
-  fill: none;
-  stroke-dasharray: 35;
-  stroke-dashoffset: 35;
-}
-
-.optionsMenu #algo_update > span {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  -webkit-transform: translate(-50%, 0);
-          transform: translate(-50%, 0);
-  font-size: 6;
+  height: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   color: white;
 }
 
@@ -121,152 +138,80 @@ button {
           box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
 }
 
-.optionsMenu #reset, .optionsMenu #clear {
+.optionsMenu section {
+  padding: 10px;
+  padding-top: 8px;
+  background-color: #264f70;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  position: relative;
-  padding: 10px;
-  border-radius: 5px;
 }
 
-.optionsMenu #reset:hover, .optionsMenu #reset:focus, .optionsMenu #clear:hover, .optionsMenu #clear:focus {
-  background-color: rgba(0, 0, 0, 0.3);
+.optionsMenu section:first-of-type {
+  border-bottom-right-radius: 10px;
 }
 
-.optionsMenu #reset:hover svg, .optionsMenu #reset:focus svg {
-  -webkit-animation: rotate 1.2s ease-in-out forwards;
-          animation: rotate 1.2s ease-in-out forwards;
+.optionsMenu section:last-of-type {
+  border-bottom-left-radius: 10px;
 }
 
-.optionsMenu #reset svg {
-  fill: none;
-  stroke: white;
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  width: 35px;
-}
-
-@-webkit-keyframes rotate {
-  from {
-    -webkit-transform: rotate(0);
-            transform: rotate(0);
-  }
-  to {
-    -webkit-transform: rotate(-360deg);
-            transform: rotate(-360deg);
-  }
-}
-
-@keyframes rotate {
-  from {
-    -webkit-transform: rotate(0);
-            transform: rotate(0);
-  }
-  to {
-    -webkit-transform: rotate(-360deg);
-            transform: rotate(-360deg);
-  }
-}
-
-.optionsMenu #clear:hover, .optionsMenu #clear:focus {
-  background-color: rgba(0, 0, 0, 0.3);
-}
-
-.optionsMenu #clear:hover svg #eraserPath, .optionsMenu #clear:focus svg #eraserPath {
-  -webkit-transform: translate(-5px, 0) scaleX(1.5);
-          transform: translate(-5px, 0) scaleX(1.5);
-  -webkit-animation: eraser 1s ease-in-out infinite;
-          animation: eraser 1s ease-in-out infinite;
-}
-
-.optionsMenu #clear svg {
-  fill: none;
-  stroke: white;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  width: 40px;
-}
-
-@-webkit-keyframes eraser {
-  0% {
-    -webkit-transform: translate(0, 0) scaleX(1);
-            transform: translate(0, 0) scaleX(1);
-  }
-  50% {
-    -webkit-transform: translate(-10px, 0) scaleX(1.7);
-            transform: translate(-10px, 0) scaleX(1.7);
-  }
-  100% {
-    -webkit-transform: translate(0, 0) scaleX(1);
-            transform: translate(0, 0) scaleX(1);
-  }
-}
-
-@keyframes eraser {
-  0% {
-    -webkit-transform: translate(0, 0) scaleX(1);
-            transform: translate(0, 0) scaleX(1);
-  }
-  50% {
-    -webkit-transform: translate(-10px, 0) scaleX(1.7);
-            transform: translate(-10px, 0) scaleX(1.7);
-  }
-  100% {
-    -webkit-transform: translate(0, 0) scaleX(1);
-            transform: translate(0, 0) scaleX(1);
-  }
-}
-
-.optionsMenu__menu {
-  position: relative;
+.optionsMenu .menu_section {
   display: -ms-grid;
   display: grid;
-  -ms-grid-rows: auto;
-      grid-template-rows: auto;
+  -ms-grid-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
 }
 
-.optionsMenu__menu:hover, .optionsMenu__menu:focus {
-  background-color: rgba(0, 0, 0, 0.3);
+.optionsMenu .menu_section > * {
+  border-radius: 10px;
 }
 
-.optionsMenu__menu:focus {
-  outline: none;
-  -webkit-box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
-          box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
-}
-
-.optionsMenu__menu input {
+.optionsMenu .menu_section > input#mazes, .optionsMenu .menu_section > input#algorithms {
   display: none;
 }
 
-.optionsMenu__menu input:checked + span svg {
+.optionsMenu .menu_section > input#mazes:checked + label span svg, .optionsMenu .menu_section > input#algorithms:checked + label span svg {
   -webkit-transform: rotate(180deg);
           transform: rotate(180deg);
 }
 
-.optionsMenu__menu input:checked ~ ul {
+.optionsMenu .menu_section > input#mazes:checked + label ul, .optionsMenu .menu_section > input#algorithms:checked + label ul {
   max-height: 400px;
   -webkit-transition: max-height 200ms ease-in-out;
   transition: max-height 200ms ease-in-out;
 }
 
-.optionsMenu__menu input:checked ~ ul li {
-  pointer-events: all;
-  opacity: 1;
-  -webkit-transition: opacity 200ms ease-in-out 100ms;
-  transition: opacity 200ms ease-in-out 100ms;
+.optionsMenu .menu_section > input#mazes:disabled + label, .optionsMenu .menu_section > input#algorithms:disabled + label {
+  background: rgba(172, 21, 21, 0.2);
+  -webkit-box-shadow: 0 0 0 3px #df0101 inset;
+          box-shadow: 0 0 0 3px #df0101 inset;
+  cursor: default;
 }
 
-.optionsMenu__menu span {
+.optionsMenu .menu_section .dropdown {
+  padding: 1em;
+  position: relative;
+  display: -ms-grid;
+  display: grid;
+  -webkit-transition: background-color 200ms ease-in-out;
+  transition: background-color 200ms ease-in-out;
+}
+
+.optionsMenu .menu_section .dropdown:hover, .optionsMenu .menu_section .dropdown:focus {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.optionsMenu .menu_section .dropdown:focus {
+  outline: none;
+  -webkit-box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
+          box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
+}
+
+.optionsMenu .menu_section .dropdown span {
+  font-size: 0.8em;
+  font-weight: 500;
+  text-transform: uppercase;
   -ms-flex-item-align: center;
       align-self: center;
   justify-self: center;
@@ -275,7 +220,7 @@ button {
   display: flex;
 }
 
-.optionsMenu__menu span svg {
+.optionsMenu .menu_section .dropdown span svg {
   margin-left: 10px;
   width: 20px;
   fill: none;
@@ -285,31 +230,46 @@ button {
   stroke-linejoin: round;
 }
 
-.optionsMenu__menu ul {
+.optionsMenu .menu_section .dropdown ul {
+  font-size: 0.8em;
   padding: 0;
   margin: 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   max-height: 0;
+  overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  background-color: white;
   color: #182f42;
   position: absolute;
   z-index: 9;
   top: 100%;
   left: 0;
   min-width: 100%;
-  -webkit-transition: max-height 200ms ease-in-out 100ms;
-  transition: max-height 200ms ease-in-out 100ms;
+  -webkit-transition: max-height 200ms ease-in-out;
+  transition: max-height 200ms ease-in-out;
 }
 
-.optionsMenu__menu ul li {
+.optionsMenu .menu_section .dropdown ul::before {
+  content: '';
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  display: block;
+  width: 30px;
+  height: 10px;
+  background-color: white;
+  -webkit-clip-path: polygon(0 100%, 50% 0, 100% 100%);
+          clip-path: polygon(0 100%, 50% 0, 100% 100%);
+}
+
+.optionsMenu .menu_section .dropdown ul li {
+  background-color: white;
   pointer-events: none;
-  opacity: 0;
+  overflow: hidden;
   position: relative;
   list-style: none;
   display: -webkit-box;
@@ -323,48 +283,68 @@ button {
   transition: opacity 200ms ease-in-out;
 }
 
-.optionsMenu__menu ul li button {
+.optionsMenu .menu_section .dropdown ul li:first-of-type {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.optionsMenu .menu_section .dropdown ul li:last-of-type {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.optionsMenu .menu_section .dropdown ul li button {
+  display: block;
+  pointer-events: all;
+  font-weight: 500;
+  text-transform: uppercase;
   width: 100%;
-  padding: 0.8em 1em;
+  padding: 1em 1em;
   white-space: nowrap;
   border: none;
   text-align: left;
+  -webkit-transition: -webkit-transform 200ms ease-in-out;
+  transition: -webkit-transform 200ms ease-in-out;
+  transition: transform 200ms ease-in-out;
+  transition: transform 200ms ease-in-out, -webkit-transform 200ms ease-in-out;
 }
 
-.optionsMenu__menu ul li button:hover {
-  background-color: rgba(24, 47, 66, 0.3);
+.optionsMenu .menu_section .dropdown ul li button:hover {
+  -webkit-transform: translate(0.3em);
+          transform: translate(0.3em);
 }
 
-.optionsMenu__menu ul li:first-of-type button:after {
-  content: '';
-  display: block;
-  position: absolute;
-  bottom: 99%;
-  left: 10%;
-  width: 30px;
-  height: 10px;
+.optionsMenu .menu_section .dropdown ul li button:focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.optionsMenu .menu_section #algo_title {
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  text-align: center;
+  padding: 1em;
+  border-radius: 10px;
   background-color: white;
-  -webkit-clip-path: polygon(0 100%, 50% 0, 100% 100%);
-          clip-path: polygon(0 100%, 50% 0, 100% 100%);
-}
-
-.optionsMenu__menu ul li:first-of-type button:hover:after {
-  background-color: #b9c0c6;
+  font-size: 0.8em;
+  font-weight: 500;
+  text-align: center;
+  text-transform: uppercase;
+  color: #264f70;
 }
 
 .optionsMenu #startButton {
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
-  -ms-grid-column-align: center;
-      justify-self: center;
-  font-size: 1.3em;
-  margin: 0 1em;
-  padding: 0.5em 1em;
+  font-size: 0.8em;
+  font-weight: 500;
+  padding: 1em;
   background-color: #5cb958;
-  -webkit-transition: background-color 50ms linear;
-  transition: background-color 50ms linear;
-  border-radius: 0.7em;
+  -webkit-transition: background-color 100ms linear;
+  transition: background-color 100ms linear;
+  border-radius: 10px;
 }
 
 .optionsMenu #startButton:hover:not(:disabled), .optionsMenu #startButton:focus:not(:disabled) {
@@ -382,70 +362,9 @@ button {
   background-color: #df0101;
 }
 
-.optionsMenu__playPause {
-  -ms-grid-column-align: center;
-      justify-self: center;
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
-  width: 35px;
-  height: 35px;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-.optionsMenu__playPause:hover, .optionsMenu__playPause:focus {
-  background-color: rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-}
-
-.optionsMenu__playPause:focus {
-  outline: none;
-  -webkit-box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
-          box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
-}
-
-.optionsMenu__playPause:hover div, .optionsMenu__playPause:focus div {
-  opacity: 1;
-  -webkit-transition: opacity 200ms ease-in-out 1.5s;
-  transition: opacity 200ms ease-in-out 1.5s;
-}
-
-.optionsMenu__playPause #pause {
-  display: initial;
-  fill: white;
-}
-
-.optionsMenu__playPause #play {
-  display: none;
-  fill: white;
-}
-
-.optionsMenu__playPause #pause_message {
-  display: initial;
-}
-
-.optionsMenu__playPause #play_message {
-  display: none;
-}
-
-.optionsMenu__playPause div {
-  opacity: 0;
-  position: absolute;
-  z-index: 99;
-  top: 100%;
-  left: 18px;
-  padding: 0.5em 0.8em;
-  padding-top: 1em;
-  background-color: #27343f;
-  -webkit-clip-path: polygon(25% 0%, 10% 20%, 100% 20%, 100% 100%, 0 100%, 0 20%, 40% 20%);
-          clip-path: polygon(25% 0%, 10% 20%, 100% 20%, 100% 100%, 0 100%, 0 20%, 40% 20%);
-}
-
 .optionsMenu__slider {
   -ms-flex-item-align: end;
       align-self: flex-end;
-  margin: 0 1em;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -505,7 +424,7 @@ button {
   bottom: 94%;
   -webkit-clip-path: url(#slider_unit_clipPath);
           clip-path: url(#slider_unit_clipPath);
-  width: 20px;
+  width: 2ch;
   height: 26px;
   color: #264f70;
   background-color: white;
@@ -521,14 +440,15 @@ button {
 }
 
 .optionsMenu__slider div#random_sld_value {
-  width: 22px;
+  width: 2.5ch;
+  height: 3ch;
 }
 
 .optionsMenu__slider div span {
   font-size: 0.3em;
   font-weight: 600;
   margin: 0;
-  margin-top: 5px;
+  margin-top: 0.7em;
 }
 
 .optionsMenu__slider span {
@@ -536,28 +456,239 @@ button {
   font-size: 0.8em;
 }
 
-.optionsMenu > input#settings {
+footer {
+  -ms-grid-row: 2;
+  -ms-grid-row-span: 1;
+  grid-area: 2 / 1 / 3 / -1;
+  -ms-flex-item-align: end;
+      align-self: end;
+  z-index: 999;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+footer section {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 10px;
+  padding-bottom: 8px;
+  background-color: #264f70;
+}
+
+footer section:first-of-type {
+  border-top-right-radius: 10px;
+}
+
+footer section:last-of-type {
+  border-top-left-radius: 10px;
+}
+
+footer section.buttons button {
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  -ms-grid-column-align: center;
+      justify-self: center;
+  font-size: 1em;
+  background: none;
+  color: inherit;
+  border: none;
+  margin: 0;
+}
+
+footer section.buttons button:hover, footer section.buttons button:focus {
+  outline: none;
+  cursor: pointer;
+}
+
+footer section.buttons button:focus {
+  -webkit-box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
+          box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
+}
+
+footer section.buttons .playPause {
+  -ms-grid-column-align: center;
+      justify-self: center;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  width: 30px;
+  height: 30px;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+footer section.buttons .playPause:hover, footer section.buttons .playPause:focus {
+  background-color: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+footer section.buttons .playPause:focus {
+  outline: none;
+  -webkit-box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
+          box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
+}
+
+footer section.buttons .playPause:hover div, footer section.buttons .playPause:focus div {
+  opacity: 1;
+  -webkit-transition: opacity 200ms ease-in-out 1.5s;
+  transition: opacity 200ms ease-in-out 1.5s;
+}
+
+footer section.buttons .playPause #pause {
+  display: initial;
+  fill: white;
+}
+
+footer section.buttons .playPause #play {
+  display: none;
+  fill: white;
+}
+
+footer section.buttons .playPause #pause_message {
+  display: initial;
+}
+
+footer section.buttons .playPause #play_message {
   display: none;
 }
 
-.optionsMenu > input#settings:checked ~ ul {
+footer section.buttons #reset, footer section.buttons #clear {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: relative;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+footer section.buttons #reset:hover, footer section.buttons #reset:focus, footer section.buttons #clear:hover, footer section.buttons #clear:focus {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+footer section.buttons #reset {
+  margin: 0 10px;
+}
+
+footer section.buttons #reset:hover svg, footer section.buttons #reset:focus svg {
+  -webkit-animation: rotate 1.2s ease-in-out forwards;
+          animation: rotate 1.2s ease-in-out forwards;
+}
+
+footer section.buttons #reset svg {
+  fill: none;
+  stroke: white;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  width: 30px;
+}
+
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+  to {
+    -webkit-transform: rotate(-360deg);
+            transform: rotate(-360deg);
+  }
+}
+
+@keyframes rotate {
+  from {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+  to {
+    -webkit-transform: rotate(-360deg);
+            transform: rotate(-360deg);
+  }
+}
+
+footer section.buttons #clear:hover, footer section.buttons #clear:focus {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+footer section.buttons #clear:hover svg #eraserPath, footer section.buttons #clear:focus svg #eraserPath {
+  -webkit-transform: translate(-5px, 0) scaleX(1.5);
+          transform: translate(-5px, 0) scaleX(1.5);
+  -webkit-animation: eraser 1s ease-in-out infinite;
+          animation: eraser 1s ease-in-out infinite;
+}
+
+footer section.buttons #clear svg {
+  fill: none;
+  stroke: white;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  width: 35px;
+}
+
+@-webkit-keyframes eraser {
+  0% {
+    -webkit-transform: translate(0, 0) scaleX(1);
+            transform: translate(0, 0) scaleX(1);
+  }
+  50% {
+    -webkit-transform: translate(-10px, 0) scaleX(1.7);
+            transform: translate(-10px, 0) scaleX(1.7);
+  }
+  100% {
+    -webkit-transform: translate(0, 0) scaleX(1);
+            transform: translate(0, 0) scaleX(1);
+  }
+}
+
+@keyframes eraser {
+  0% {
+    -webkit-transform: translate(0, 0) scaleX(1);
+            transform: translate(0, 0) scaleX(1);
+  }
+  50% {
+    -webkit-transform: translate(-10px, 0) scaleX(1.7);
+            transform: translate(-10px, 0) scaleX(1.7);
+  }
+  100% {
+    -webkit-transform: translate(0, 0) scaleX(1);
+            transform: translate(0, 0) scaleX(1);
+  }
+}
+
+footer section.settings > input#settings {
+  display: none;
+}
+
+footer section.settings > input#settings:checked ~ ul {
   -webkit-transform: translate(0);
           transform: translate(0);
 }
 
-.optionsMenu > input#settings:checked ~ ul .background {
+footer section.settings > input#settings:checked ~ ul .background {
   opacity: 1;
 }
 
-.optionsMenu > input#settings:checked ~ label svg {
+footer section.settings > input#settings:checked ~ label svg {
   fill: #182f42;
   -webkit-animation: none;
           animation: none;
 }
 
-.optionsMenu__settings {
+.settings__toggle {
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 10px;
   -ms-flex-item-align: center;
       align-self: center;
   justify-self: center;
@@ -572,19 +703,19 @@ button {
           justify-content: center;
 }
 
-.optionsMenu__settings:hover, .optionsMenu__settings:focus {
+.settings__toggle:hover, .settings__toggle:focus {
   background-color: rgba(0, 0, 0, 0.3);
   cursor: pointer;
 }
 
-.optionsMenu__settings:hover > svg, .optionsMenu__settings:focus > svg {
+.settings__toggle:hover > svg, .settings__toggle:focus > svg {
   -webkit-animation: rotateSettings 1s ease-in-out forwards;
           animation: rotateSettings 1s ease-in-out forwards;
 }
 
-.optionsMenu__settings > svg {
+.settings__toggle > svg {
   position: relative;
-  z-index: 999;
+  z-index: 9999;
   width: 35px;
   height: auto;
   fill: white;
@@ -612,9 +743,8 @@ button {
   }
 }
 
-.optionsMenu__settings__menu {
+.settings__menu {
   padding: 0;
-  padding-top: 90px;
   margin: 0;
   height: 100vh;
   display: -webkit-box;
@@ -627,7 +757,7 @@ button {
   background-color: white;
   color: #182f42;
   position: absolute;
-  z-index: 99;
+  z-index: 999;
   top: 0;
   right: 0;
   min-width: 300px;
@@ -641,7 +771,7 @@ button {
   transition: transform 300ms ease-in, -webkit-transform 300ms ease-in;
 }
 
-.optionsMenu__settings__menu .background {
+.settings__menu .background {
   pointer-events: none;
   position: absolute;
   z-index: 9;
@@ -653,7 +783,7 @@ button {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
-.optionsMenu__settings__menu li {
+.settings__menu li {
   position: relative;
   list-style: none;
   padding: 1em;
@@ -670,17 +800,18 @@ button {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.optionsMenu__settings__menu li:first-of-type {
+.settings__menu li:first-of-type {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.optionsMenu__settings__menu li span.title {
+.settings__menu li span.title {
   font-size: 1.2em;
   font-weight: 500;
   margin-bottom: 0.5em;
+  text-transform: uppercase;
 }
 
-.optionsMenu__settings__menu li span.title svg {
+.settings__menu li span.title svg {
   display: inline-block;
   vertical-align: text-bottom;
   height: 1em;
@@ -690,17 +821,17 @@ button {
   fill: #182f42;
 }
 
-.optionsMenu__settings__menu li span.title svg .a {
+.settings__menu li span.title svg .a {
   fill: rgba(24, 47, 66, 0.5);
 }
 
-.optionsMenu__settings__menu li span.title svg .b {
+.settings__menu li span.title svg .b {
   fill: rgba(24, 47, 66, 0.8);
 }
 
-.optionsMenu__settings__menu li div {
+.settings__menu li div.options {
   font-size: 0.8em;
-  border-radius: 0.7em;
+  border-radius: 10px;
   background: rgba(24, 47, 66, 0.2);
   overflow: hidden;
   display: -webkit-box;
@@ -708,19 +839,23 @@ button {
   display: flex;
 }
 
-.optionsMenu__settings__menu li input {
+.settings__menu li div.options input {
   display: none;
 }
 
-.optionsMenu__settings__menu li input:checked + label {
+.settings__menu li div.options input:checked + label {
   background: #264f70;
 }
 
-.optionsMenu__settings__menu li input:disabled + label {
+.settings__menu li div.options input:disabled + label {
   background: rgba(172, 21, 21, 0.2);
 }
 
-.optionsMenu__settings__menu li label {
+.settings__menu li div.options input:disabled:checked + label {
+  background: #ac1515;
+}
+
+.settings__menu li div.options label {
   display: block;
   padding: 0.6em 1em;
   font-weight: 500;
@@ -728,67 +863,78 @@ button {
   cursor: pointer;
 }
 
-#playPause {
-  display: none;
-  position: absolute;
+.settings__menu li .slider {
+  -ms-flex-item-align: stretch;
+      align-self: stretch;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: relative;
 }
 
-#playPause:checked + .optionsMenu #play {
-  display: initial;
-}
-
-#playPause:checked + .optionsMenu #pause {
-  display: none;
-}
-
-#playPause:checked + .optionsMenu #play_message {
-  display: initial;
-}
-
-#playPause:checked + .optionsMenu #pause_message {
-  display: none;
-}
-
-#playPause:checked ~ .pausedScreen {
-  pointer-events: initial;
-  opacity: 1;
-}
-
-.pausedScreen {
-  pointer-events: none;
-  opacity: 0;
-  -webkit-transition: opacity 50ms ease-in-out;
-  transition: opacity 50ms ease-in-out;
-  grid-area: 2 / 1 / -1 / -1;
-  position: absolute;
-  z-index: 999;
+.settings__menu li .slider input {
+  display: block;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   width: 100%;
-  height: 100%;
+  height: 4px;
+  border-radius: 2px;
+  margin-right: 1em;
   background-color: rgba(0, 0, 0, 0.3);
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+}
+
+.settings__menu li .slider input:focus {
+  outline: none;
+}
+
+.settings__menu li .slider input:focus::-webkit-slider-thumb {
+  -webkit-transform: scale(1.3);
+          transform: scale(1.3);
+  -webkit-box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
+          box-shadow: 0 0 0 3px rgba(16, 95, 241, 0.801) inset;
+}
+
+.settings__menu li .slider input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+          appearance: none;
+  border: none;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  background-color: #264f70;
+  -webkit-transition: -webkit-transform 100ms ease-in;
+  transition: -webkit-transform 100ms ease-in;
+  transition: transform 100ms ease-in;
+  transition: transform 100ms ease-in, -webkit-transform 100ms ease-in;
+}
+
+.settings__menu li .slider input::-webkit-slider-thumb:hover, .settings__menu li .slider input::-webkit-slider-thumb:active {
+  -webkit-transform: scale(1.3);
+          transform: scale(1.3);
+}
+
+.settings__menu li .slider div {
+  position: relative;
+  font-size: 1em;
+  font-weight: 400;
+  width: 1.7em;
+  height: 1.5em;
+  padding: 0.2em;
+  border-radius: 10px;
   color: white;
-}
-
-.pausedScreen label {
+  background-color: #264f70;
+  text-align: center;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -797,65 +943,22 @@ button {
           justify-content: center;
 }
 
-.pausedScreen label svg {
-  margin-top: 10px;
-  width: 30px;
-  fill: white;
+.settings__menu li .slider div span {
+  display: block;
 }
 
-main {
-  grid-area: 2 / 1 / -1 / -1;
-}
-
-@media screen and (max-width: 1200px) {
-  body * {
-    display: none !important;
-  }
-  body::after {
-    content: "You must use a broswer window larger than 1226x625 pixels to see this project";
-    width: 100vw;
-    height: 100vh;
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-    font-size: 20px;
-    font-weight: 500;
-    text-align: center;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-    padding: 5vh 5vw;
-  }
-}
-
-@media screen and (max-height: 600px) {
-  body * {
-    display: none !important;
-  }
-  body::after {
-    content: "You must use a broswer window larger than 1226x625 pixels to see this project";
-    width: 100vw;
-    height: 100vh;
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-    font-size: 20px;
-    font-weight: 500;
-    text-align: center;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-    padding: 5vh 5vw;
-  }
+.settings__menu li .slider div:after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  height: 85%;
+  width: 50%;
+  right: 75%;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  background-color: inherit;
+  -webkit-clip-path: polygon(100% 0, 0 50%, 100% 100%);
+          clip-path: polygon(100% 0, 0 50%, 100% 100%);
 }
 /*# sourceMappingURL=main.css.map */

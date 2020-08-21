@@ -18,7 +18,6 @@ export default class Block {
 
     this.visited = false;
     this.neighbors = [];
-    this.diagonal = false;
     this.previous = undefined;
   }
 
@@ -76,21 +75,6 @@ export default class Block {
       this.el.classList.remove("no_trans");
     } else {
       this.el.classList.add("no_trans");
-    }
-  }
-
-  setNeighbors(blocks, rows, cols) {
-    this.neighbors = [];
-    if (this.x > 0 && this.x < rows) {this.neighbors.push(blocks[this.x-1][this.y])}
-    if (this.y > 0 && this.y < cols) {this.neighbors.push(blocks[this.x][this.y-1])}
-    if (this.x < rows - 1) {this.neighbors.push(blocks[this.x+1][this.y])}
-    if (this.y < cols - 1) {this.neighbors.push(blocks[this.x][this.y+1])}
-
-    if (this.diagonal) {
-      if (this.x < rows - 1 && this.y < cols - 1) {this.neighbors.push(blocks[this.x+1][this.y+1]);}
-      if (this.x < rows - 1 && this.y > 0) {this.neighbors.push(blocks[this.x+1][this.y-1]);}
-      if (this.x > 0 && this.y < cols - 1) {this.neighbors.push(blocks[this.x-1][this.y+1]);}
-      if (this.x > 0 && this.y > 0) {this.neighbors.push(blocks[this.x-1][this.y-1]);}
     }
   }
 

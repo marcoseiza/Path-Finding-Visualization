@@ -5,6 +5,8 @@ export function setup(canvas) {
 
   for (let i = 0; i < canvas.r; i++) {
     for (let j = 0; j < canvas.c; j++) {
+      canvas.blocks[i][j].ga = 0;
+      canvas.blocks[i][j].fa = Infinity;
       canvas.blocks[i][j].visited = false;
       canvas.blocks[i][j].previous = undefined;
     }
@@ -38,15 +40,17 @@ export function algo(canvas) {
     for (let i = 0; i < current.neighbors.length; i++) {
       let neighbor = current.neighbors[i];
       if (!neighbor.visited && !neighbor.wall) {
-        let tentFa = current.fa + 1;
-        if (canvas.open.includes(neighbor)) {
-          if (tentFa < neighbor.fa) {
-            neighbor.fa = tentFa;
-          }
-        } else {
-          neighbor.fa = tentFa;
-          canvas.open.pushBlock(neighbor);
+        
+        let tentGa = current.ga + canvas.calcHa(neighbor, current);
+
+        if (!canvas.open.includes(neighbor)) {
+          canvas.open.pushBlock(neighbor)
+        } else if (tentGa >= neighbor.ga) {
+          continue
         }
+        
+        neighbor.ga = tentGa;
+        neighbor.fa = neighbor.ga;
         neighbor.previous = current;
       }
     }

@@ -7,6 +7,11 @@ import * as Dfs_Maze from './mazes/dfs_maze.js';
 export default function setupOptionButtons(canvas) {
   let algo_title = document.getElementById("algo_title");
 
+
+  document.getElementById("startButton").onclick = function() {
+    canvas.startAlgo();
+  }
+
   document.getElementById("playPause").oninput = function(e) {
     if (e.target.checked) {
       clearInterval(canvas.algoTimer)
@@ -61,10 +66,6 @@ export default function setupOptionButtons(canvas) {
     }, 500)
   }
 
-  document.getElementById("startButton").onclick = function() {
-    canvas.startAlgo();
-  }
-
   document.getElementById("a_star").onclick = function() {
     canvas.updateAlgo = false;
     canvas.algo = A_Star.algo; canvas.algoSetup = A_Star.setup;
@@ -81,15 +82,6 @@ export default function setupOptionButtons(canvas) {
     canvas.updateAlgo = false;
     canvas.algo = Greedy.algo; canvas.algoSetup = Greedy.setup;
     algo_title.innerText = this.innerText;
-  }
-
-  sliderCounter(document.getElementById("random_slider"));
-  document.getElementById("random_slider").oninput = (e) => {
-    sliderCounter(e.target);
-    canvas.randomWalls(e.target.value);
-  }
-  document.getElementById("random_slider").onmouseup = (e) => {
-    canvas.randomWallsTransitionReset();
   }
 
   let row_slider = document.getElementById("row_slider"),
@@ -146,8 +138,10 @@ export default function setupOptionButtons(canvas) {
   document.getElementsByName("speed").forEach(el => {
     el.onchange = function(e) {
       canvas.algoDelta = parseInt(el.value);
-      clearInterval(canvas.algoTimer);
-      canvas.startAlgo();
+      if (canvas.runningAlgo) {
+        clearInterval(canvas.algoTimer);
+        canvas.startAlgo();
+      }
     }
   })
 
@@ -161,19 +155,14 @@ export default function setupOptionButtons(canvas) {
 
   document.getElementsByName("neighbors").forEach(el => {
     el.onchange = function(e) {
-      for (let i = 0; i < canvas.r; i++) {
-        for (let j = 0; j < canvas.c; j++) {
-          canvas.blocks[i][j].diagonal = (el.value == "true");
-          canvas.blocks[i][j].setNeighbors(canvas.blocks, canvas.r, canvas.c);
-        }
-      }
+      canvas.diagonal = (el.value == "true");
     }
   })
 }
 
 function sliderCounter(el) {
   el.nextElementSibling.querySelector('span').innerHTML = el.value;
-  const newVal = Number(((el.value - el.min) * 100) / (el.max - el.min));
-  el.nextElementSibling.style.left = `calc(${newVal}% + (${-2 - newVal * 0.13}px))`;
+  // const newVal = Number(((el.value - el.min) * 100) / (el.max - el.min));
+  // el.nextElementSibling.style.left = `calc(${newVal}% + (${-2 - newVal * 0.13}px))`;
 }
 

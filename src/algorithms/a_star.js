@@ -5,9 +5,9 @@ export function setup(canvas) {
 
   for (let i = 0; i < canvas.r; i++) {
     for (let j = 0; j < canvas.c; j++) {
-      canvas.calculateHa(canvas.blocks[i][j])
-      canvas.blocks[i][j].ga = (canvas.blocks[i][j].diagonal)? Math.sqrt(2) : 1;
-      canvas.blocks[i][j].fa = 0;
+      canvas.blocks[i][j].ha = canvas.calcHa(canvas.blocks[i][j], canvas.endBlock);
+      canvas.blocks[i][j].ga = 0;
+      canvas.blocks[i][j].fa = Infinity;
       canvas.blocks[i][j].visited = false;
       canvas.blocks[i][j].previous = undefined;
     }
@@ -42,15 +42,16 @@ export function algo(canvas) {
     for (let i = 0; i < current.neighbors.length; i++) {
       let neighbor = current.neighbors[i];
       if (!neighbor.visited && !neighbor.wall) {
-        let tentGa = current.ga + 1;
-        if (canvas.open.includes(neighbor)) {
-          if (tentGa < neighbor.ga) {
-            neighbor.ga = tentGa;
-          }
-        } else {
-          neighbor.ga = tentGa;
+        
+        let tentGa = current.ga + canvas.calcHa(neighbor, current)
+
+        if (!canvas.open.includes(neighbor)) {
           canvas.open.pushBlock(neighbor)
+        } else if (tentGa >= neighbor.ga) {
+          continue
         }
+        
+        neighbor.ga = tentGa;
         neighbor.fa = neighbor.ga + neighbor.ha;
         neighbor.previous = current;
       }

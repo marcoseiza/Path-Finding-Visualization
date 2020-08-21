@@ -21,6 +21,7 @@ export default class Canvas {
     this._path.className = "path";
     this.startBlock = undefined;
     this.endBlock = undefined;
+    this._diagonal = false;
 
     this.algoSetup = undefined;
     this.algo = undefined;
@@ -128,9 +129,7 @@ export default class Canvas {
           }
         }
 
-        block.setNeighbors(this._blocks, this.r, this.c);
-
-        
+        this.setNeighbors(block);
 
         this.buildBlockEventListeners(block);
 
@@ -161,13 +160,44 @@ export default class Canvas {
   set runningAlgo(bool) {
     this._runningAlgo = bool;
     document.getElementById("startButton").disabled = bool;
+    document.getElementById("orthogonal_neighbor").disabled = bool;
+    document.getElementById("diagonal_neighbor").disabled = bool;
+    document.getElementById("algorithms").disabled = bool;
+    document.getElementById("mazes").disabled = bool;
+    
   }
 
-  calculateHa(block) {
-    if (block.diagonal) {
-      block.ha = Math.sqrt((this.endBlock.x - block.x) ^ 2 + (this.endBlock.y - block.y) ^ 2);
+  get diagonal() {return this._diagonal}
+
+  set diagonal(bool) {
+    this._diagonal = bool;
+    for (let i = 0; i < this.r; i++) {
+      for (let j = 0; j < this.c; j++) {
+        this.setNeighbors(this.blocks[i][j])
+      }
+    }
+  }
+
+  setNeighbors(block) {
+    block.neighbors = [];
+    if (block.x > 0 && block.x < this.r) {block.neighbors.push(this.blocks[block.x-1][block.y])}
+    if (block.y > 0 && block.y < this.c) {block.neighbors.push(this.blocks[block.x][block.y-1])}
+    if (block.x < this.r - 1) {block.neighbors.push(this.blocks[block.x+1][block.y])}
+    if (block.y < this.c - 1) {block.neighbors.push(this.blocks[block.x][block.y+1])}
+
+    if (this.diagonal) {
+      if (block.x > 0 && block.y > 0) {block.neighbors.push(this.blocks[block.x-1][block.y-1]);}
+      if (block.x < this.r - 1 && block.y > 0) {block.neighbors.push(this.blocks[block.x+1][block.y-1]);}
+      if (block.x < this.r - 1 && block.y < this.c - 1) {block.neighbors.push(this.blocks[block.x+1][block.y+1]);}
+      if (block.x > 0 && block.y < this.c - 1) {block.neighbors.push(this.blocks[block.x-1][block.y+1]);}
+    }
+  }
+
+  calcHa(a, b) {
+    if (this.diagonal) {
+      return Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2);
     } else {
-      block.ha = Math.abs(this.endBlock.x - block.x) + Math.abs(this.endBlock.y - block.y);
+      return Math.abs(b.x - a.x) + Math.abs(b.y - a.y);
     }
   }
 
@@ -281,8 +311,6 @@ export default class Canvas {
           this.algoDelta = 15;
         }
       } else {
-        this.algoSetup = this.algoSetup;
-        this.algo = this.algo;
         this.algoSetup(this);
         this.runningAlgo = true;
         this.startAlgo(this.algoSetup, this.algo);
@@ -335,7 +363,7 @@ export default class Canvas {
         if (j >= cols || i >= rows) {
           this.blocks[i][j].el.classList.add("hide");
         } else {
-          this.blocks[i][j].setNeighbors(this.blocks, rows, cols);
+          this.setNeighbors(this.blocks[i][j])
         }
 
         if (j == cols - 1 && i < rows) {
