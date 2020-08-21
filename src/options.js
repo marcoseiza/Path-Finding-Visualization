@@ -1,6 +1,8 @@
 import * as Dijk from './algorithms/dijkstra.js';
 import * as A_Star from './algorithms/a_star.js';
 import * as Greedy from './algorithms/greedySearch.js';
+import * as BFS from './algorithms/bfs.js';
+import * as DFS from './algorithms/dfs.js';
 import * as Recur_Div from './mazes/recursive_division.js';
 import * as Dfs_Maze from './mazes/dfs_maze.js';
 
@@ -66,6 +68,15 @@ export default function setupOptionButtons(canvas) {
     }, 500)
   }
 
+  window.addEventListener('click', function(e) {
+    if (!document.getElementById('algorithms').contains(e.target) && !document.querySelector('.optionsMenu__algorithms').contains(e.target)) {
+      document.getElementById('algorithms').checked = false;
+    }
+    if (!document.getElementById('mazes').contains(e.target)) {
+      document.getElementById('mazes').checked = false;
+    }
+  })
+
   document.getElementById("a_star").onclick = function() {
     canvas.updateAlgo = false;
     canvas.algo = A_Star.algo; canvas.algoSetup = A_Star.setup;
@@ -81,6 +92,18 @@ export default function setupOptionButtons(canvas) {
   document.getElementById("greedy_search").onclick = function() {
     canvas.updateAlgo = false;
     canvas.algo = Greedy.algo; canvas.algoSetup = Greedy.setup;
+    algo_title.innerText = this.innerText;
+  }
+
+  document.getElementById("bfs").onclick = function() {
+    canvas.updateAlgo = false;
+    canvas.algo = BFS.algo; canvas.algoSetup = BFS.setup;
+    algo_title.innerText = this.innerText;
+  }
+
+  document.getElementById("dfs").onclick = function() {
+    canvas.updateAlgo = false;
+    canvas.algo = DFS.algo; canvas.algoSetup = DFS.setup;
     algo_title.innerText = this.innerText;
   }
 
