@@ -114,10 +114,10 @@ export default class Canvas {
     for (let i = 0; i < this.max_r; i++) {
       for (let j = 0; j < this.max_c; j++) {
         
-        let block = this._blocks[i][j];
+        let block = this._blocks[this.index(i, j)];
 
         if (i >= this.r || j >= this.c) {
-          this.blocks[i][j].el.classList.add("hide")
+          this.blocks[this.index(i, j)].el.classList.add("hide")
         } else {
           if (j == this.c - 1) {
             block.el.classList.add("endr");
@@ -184,23 +184,27 @@ export default class Canvas {
     this._diagonal = bool;
     for (let i = 0; i < this.r; i++) {
       for (let j = 0; j < this.c; j++) {
-        this.setNeighbors(this.blocks[i][j])
+        this.setNeighbors(this.blocks[this.index(i, j)])
       }
     }
   }
 
+  index(i, j) {
+    return this.max_r * i + j;
+  }
+
   setNeighbors(block) {
     block.neighbors = [];
-    if (block.x > 0 && block.x < this.r) {block.neighbors.push(this.blocks[block.x-1][block.y])}
-    if (block.y > 0 && block.y < this.c) {block.neighbors.push(this.blocks[block.x][block.y-1])}
-    if (block.x < this.r - 1) {block.neighbors.push(this.blocks[block.x+1][block.y])}
-    if (block.y < this.c - 1) {block.neighbors.push(this.blocks[block.x][block.y+1])}
+    if (block.x > 0 && block.x < this.r) {block.neighbors.push(this.blocks[this.index(block.x-1, block.y)])}
+    if (block.y > 0 && block.y < this.c) {block.neighbors.push(this.blocks[this.index(block.x, block.y-1)])}
+    if (block.x < this.r - 1) {block.neighbors.push(this.blocks[this.index(block.x+1, block.y)])}
+    if (block.y < this.c - 1) {block.neighbors.push(this.blocks[this.index(block.x, block.y+1)])}
 
     if (this.diagonal) {
-      if (block.x > 0 && block.y > 0) {block.neighbors.push(this.blocks[block.x-1][block.y-1]);}
-      if (block.x < this.r - 1 && block.y > 0) {block.neighbors.push(this.blocks[block.x+1][block.y-1]);}
-      if (block.x < this.r - 1 && block.y < this.c - 1) {block.neighbors.push(this.blocks[block.x+1][block.y+1]);}
-      if (block.x > 0 && block.y < this.c - 1) {block.neighbors.push(this.blocks[block.x-1][block.y+1]);}
+      if (block.x > 0 && block.y > 0) {block.neighbors.push(this.blocks[this.index(block.x-1, block.y-1)]);}
+      if (block.x < this.r - 1 && block.y > 0) {block.neighbors.push(this.blocks[this.index(block.x+1, block.y-1)]);}
+      if (block.x < this.r - 1 && block.y < this.c - 1) {block.neighbors.push(this.blocks[this.index(block.x+1, block.y+1)]);}
+      if (block.x > 0 && block.y < this.c - 1) {block.neighbors.push(this.blocks[this.index(block.x-1, block.y+1)]);}
     }
   }
 
@@ -372,27 +376,27 @@ export default class Canvas {
 
     if (this.startBlock.x > rows - 2) {
       this.startBlock.start = false;
-      this.startBlock = this.blocks[Math.min(this.startBlock.x - 1, this.r - 1)][this.startBlock.y];
+      this.startBlock = this.blocks[this.index(Math.min(this.startBlock.x - 1, this.r - 1), this.startBlock.y)];
     } else if (this.startBlock.y > cols - 2) {
       this.startBlock.start = false;
-      this.startBlock = this.blocks[this.startBlock.x][Math.min(this.startBlock.y - 1, this.c - 1)];
+      this.startBlock = this.blocks[this.index(this.startBlock.x, Math.min(this.startBlock.y - 1, this.c - 1))];
     }
     
     if (this.endBlock.x > rows - 2) {
       this.endBlock.end = false;
-      this.endBlock = this.blocks[Math.min(this.endBlock.x - 1, this.r - 1)][this.endBlock.y];
+      this.endBlock = this.blocks[this.index(Math.min(this.endBlock.x - 1, this.r - 1), this.endBlock.y)];
     } else if (this.endBlock.y > cols - 2) {
       this.endBlock.end = false;
-      this.endBlock = this.blocks[this.endBlock.x][Math.min(this.endBlock.y - 1, this.c - 1)];
+      this.endBlock = this.blocks[this.index(this.endBlock.x, Math.min(this.endBlock.y - 1, this.c - 1))];
     }
 
     if (this.startBlock.end) {
       this.endBlock.end = false;
-      this.endBlock = this.blocks[this.endBlock.x - 1][this.endBlock.y]
+      this.endBlock = this.blocks[this.index(this.endBlock.x - 1, this.endBlock.y)]
     }
     if (this.endBlock.start) {
       this.startBlock.start = false;
-      this.startBlock = this.blocks[this.startBlock.x - 1][this.startBlock.y]
+      this.startBlock = this.blocks[this.index(this.startBlock.x - 1, this.startBlock.y)]
     }
 
     this.startBlock.start = true;
@@ -406,21 +410,24 @@ export default class Canvas {
 
     for (let i = minRow - 1; i < maxRow; i++) {
       for (let j = minCol - 1; j < maxCol; j++) {
-        this.blocks[i][j].el.classList.remove("hide")
-        this.blocks[i][j].el.classList.remove("endr");
-        this.blocks[i][j].el.classList.remove("endc");
+        if (!this.blocks[this.index(i, j)]) {
+          console.log(this.blocks, this.blocks[this.index(i, j)], this.index(i, j))
+        }
+        this.blocks[this.index(i, j)].el.classList.remove("hide")
+        this.blocks[this.index(i, j)].el.classList.remove("endr");
+        this.blocks[this.index(i, j)].el.classList.remove("endc");
 
         if (j >= cols || i >= rows) {
-          this.blocks[i][j].el.classList.add("hide");
+          this.blocks[this.index(i, j)].el.classList.add("hide");
         } else {
-          this.setNeighbors(this.blocks[i][j])
+          this.setNeighbors(this.blocks[this.index(i, j)])
         }
 
         if (j == cols - 1 && i < rows) {
-          this.blocks[i][j].el.classList.add("endr");
+          this.blocks[this.index(i, j)].el.classList.add("endr");
         }
         if (i == rows - 1 && j < cols) {
-          this.blocks[i][j].el.classList.add("endc");
+          this.blocks[this.index(i, j)].el.classList.add("endc");
         }
       }
     }
@@ -442,8 +449,8 @@ export default class Canvas {
     for (let i = 0; i < this.r; i++) {
       for (let j = 0; j < this.c; j++) {
         // Remove css transitions to make it faster
-        this.blocks[i][j].el.classList.add("no_trans");
-        this.blocks[i][j].wallNoTransSet((Math.random() < prob)? true: false)
+        this.blocks[this.index(i, j)].el.classList.add("no_trans");
+        this.blocks[this.index(i, j)].wallNoTransSet((Math.random() < prob)? true: false)
       }
     }
   }
@@ -452,7 +459,7 @@ export default class Canvas {
     for (let i = 0; i < this.r; i++) {
       for (let j = 0; j < this.c; j++) {
         // Reset css transitions ones the random slider stops giving inputs
-        this.blocks[i][j].el.classList.remove("no_trans");
+        this.blocks[this.index(i, j)].el.classList.remove("no_trans");
       }
     }
   }
