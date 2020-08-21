@@ -62,10 +62,6 @@ main {
     box-shadow: inset 0 0 0 1px darken(blue, 5);
   }
 
-  &:hover {
-    box-shadow: inset 0 0 0 2px black;
-  }
-
   &.endc::before, &.endr::after,
   &.wall_down::before, &.wall_down::after,
   &.wall::after, &.wall::before {
@@ -118,6 +114,10 @@ main {
     display: none;
   }
   
+}
+
+#canvas:not(.no_hover) div:hover {
+  box-shadow: inset 0 0 0 2px black;
 }
 
 @import "./canvas2d";

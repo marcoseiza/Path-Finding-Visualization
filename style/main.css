@@ -117,9 +117,6 @@ main {
 }
 
 .optionsMenu button {
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
   font-size: 1em;
   background: none;
   color: inherit;
@@ -159,8 +156,8 @@ main {
 }
 
 .optionsMenu .menu_section > input#mazes:checked + label span svg, .optionsMenu .menu_section > input#algorithms:checked + label span svg {
-  -webkit-transform: rotate(180deg);
-          transform: rotate(180deg);
+  -webkit-transform: rotateX(180deg);
+          transform: rotateX(180deg);
 }
 
 .optionsMenu .menu_section > input#mazes:checked + label ul, .optionsMenu .menu_section > input#algorithms:checked + label ul {
@@ -177,7 +174,7 @@ main {
 }
 
 .optionsMenu .menu_section .dropdown {
-  padding: 1em;
+  padding: 0.8em 1em;
   position: relative;
   display: -ms-grid;
   display: grid;
@@ -209,12 +206,16 @@ main {
 
 .optionsMenu .menu_section .dropdown span svg {
   margin-left: 10px;
-  width: 20px;
+  width: 15px;
   fill: none;
   stroke: white;
   stroke-width: 1;
   stroke-linecap: round;
   stroke-linejoin: round;
+  -webkit-transition: -webkit-transform 200ms ease-in-out;
+  transition: -webkit-transform 200ms ease-in-out;
+  transition: transform 200ms ease-in-out;
+  transition: transform 200ms ease-in-out, -webkit-transform 200ms ease-in-out;
 }
 
 .optionsMenu .menu_section .dropdown ul {
@@ -242,12 +243,14 @@ main {
 
 .optionsMenu .menu_section .dropdown ul::before {
   content: '';
+  position: relative;
+  top: 1px;
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
   display: block;
   width: 30px;
-  height: 10px;
+  height: 11px;
   background-color: white;
   -webkit-clip-path: polygon(0 100%, 50% 0, 100% 100%);
           clip-path: polygon(0 100%, 50% 0, 100% 100%);
@@ -307,27 +310,28 @@ main {
 }
 
 .optionsMenu .menu_section #algo_title {
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
-  text-align: center;
-  padding: 1em;
+  padding: 0.8em 1em;
   border-radius: 10px;
   background-color: white;
   font-size: 0.8em;
   font-weight: 500;
-  text-align: center;
   text-transform: uppercase;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   color: #264f70;
 }
 
 .optionsMenu .menu_section #startButton {
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
   font-size: 0.8em;
   font-weight: 500;
-  padding: 1em;
+  padding: 0.8em 1em;
   background-color: #5cb958;
   -webkit-transition: background-color 100ms linear;
   transition: background-color 100ms linear;
@@ -416,6 +420,8 @@ footer section.buttons .playPause {
   height: 30px;
   padding: 10px;
   border-radius: 10px;
+  -webkit-transition: background-color 200ms ease-in-out;
+  transition: background-color 200ms ease-in-out;
 }
 
 footer section.buttons .playPause:hover, footer section.buttons .playPause:focus {
@@ -466,6 +472,8 @@ footer section.buttons #reset, footer section.buttons #clear {
   position: relative;
   padding: 10px;
   border-radius: 10px;
+  -webkit-transition: background-color 200ms ease-in-out;
+  transition: background-color 200ms ease-in-out;
 }
 
 footer section.buttons #reset:hover, footer section.buttons #reset:focus, footer section.buttons #clear:hover, footer section.buttons #clear:focus {
@@ -596,6 +604,8 @@ footer section.settings > input#settings:checked ~ label svg {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  -webkit-transition: background-color 200ms ease-in-out;
+  transition: background-color 200ms ease-in-out;
 }
 
 .settings__toggle:hover, .settings__toggle:focus {

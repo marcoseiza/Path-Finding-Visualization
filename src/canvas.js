@@ -172,7 +172,10 @@ export default class Canvas {
     document.getElementById("diagonal_neighbor").disabled = bool;
     document.getElementById("algorithms").disabled = bool;
     document.getElementById("mazes").disabled = bool;
-    
+    if (bool)
+      this.el.classList.add("no_hover");
+    else 
+      this.el.classList.remove("no_hover");
   }
 
   get diagonal() {return this._diagonal}
@@ -270,11 +273,15 @@ export default class Canvas {
         if (!this.runningAlgo)
           this.em = 2;
       } else if (block.wall) {
-        this.em = 1;
-        block.wall = false;
+        if (!this.runningAlgo) {
+          this.em = 1;
+          block.wall = false;
+        }
       } else {
-        this.em = 0;
-        block.wall = true;
+        if (!this.runningAlgo) {
+          this.em = 0;
+          block.wall = true;
+        }
       }
     }
     
