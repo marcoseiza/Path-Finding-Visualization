@@ -5,9 +5,13 @@ import * as BFS from './algorithms/bfs.js';
 import * as DFS from './algorithms/dfs.js';
 import * as Recur_Div from './mazes/recursive_division.js';
 import * as Dfs_Maze from './mazes/dfs_maze.js';
+import * as Stair from './mazes/stair_pattern.js';
 
 export default function setupOptionButtons(canvas) {
-  let algo_title = document.getElementById("algo_title");
+  let algo_title = document.getElementById("algo_title"), 
+      row_slider = document.getElementById("row_slider"),
+      column_slider = document.getElementById("column_slider"),
+      size_slider = document.getElementById("size_slider");
 
 
   document.getElementById("startButton").onclick = function() {
@@ -110,45 +114,6 @@ export default function setupOptionButtons(canvas) {
     algo_title.innerText = this.innerText;
   }
 
-  let random_walls_els = document.getElementsByClassName("random");
-
-  for (let i = 0; i < random_walls_els.length; i++) {
-    random_walls_els[i].onclick = function(e) {
-      canvas.randomWalls(e.target.value);
-    }
-  }
-
-  let row_slider = document.getElementById("row_slider"),
-      column_slider = document.getElementById("column_slider"),
-      size_slider = document.getElementById("size_slider");
-
-  sliderCounter(row_slider);
-  row_slider.oninput = (e) => {
-    sliderCounter(e.target);
-    canvas.r = parseInt(e.target.value);
-  }
-  row_slider.onmouseup = (e) => {
-    canvas.r = parseInt(e.target.value);
-  }
-
-  sliderCounter(column_slider);
-  column_slider.oninput = (e) => {
-    sliderCounter(e.target);
-    canvas.c = parseInt(e.target.value);
-  }
-  column_slider.onmouseup = (e) => {
-    canvas.c = parseInt(e.target.value);
-  }
-
-  sliderCounter(size_slider);
-  size_slider.oninput = (e) => {
-    sliderCounter(e.target);
-    canvas.s = parseInt(e.target.value);
-  }
-  size_slider.onmouseup = (e) => {
-    canvas.s = parseInt(e.target.value);
-  }
-
   document.getElementById("recursive_division").onclick = function() {
     let prevAlgo = canvas.algo,
         prevAlgoSetup = canvas.algoSetup;
@@ -177,6 +142,58 @@ export default function setupOptionButtons(canvas) {
     column_slider.value = canvas.c;
     sliderCounter(row_slider);
     sliderCounter(column_slider);
+  }
+
+  let random_walls_els = document.getElementsByClassName("random");
+  for (let i = 0; i < random_walls_els.length; i++) {
+    random_walls_els[i].onclick = function(e) {
+      canvas.randomWalls(e.target.value);
+
+      setTimeout(function() {
+        for (let i = 0; i < canvas.r; i++) {
+          for (let j = 0; j < canvas.c; j++) {
+            canvas.blocks[canvas.index(i, j)].trans = true;
+          }
+        }
+      }, 500)
+    }
+  }
+
+  document.getElementById("stair").onclick = function() {
+    let prevAlgo = canvas.algo, prevAlgoSetup = canvas.algoSetup;
+
+    canvas.updateAlgo = false;
+    canvas.algo = Stair.algo; canvas.algoSetup = Stair.setup;
+    canvas.startAlgo();
+
+    canvas.algo = prevAlgo; canvas.algoSetup = prevAlgoSetup;
+  }
+
+  sliderCounter(row_slider);
+  row_slider.oninput = (e) => {
+    sliderCounter(e.target);
+    canvas.r = parseInt(e.target.value);
+  }
+  row_slider.onmouseup = (e) => {
+    canvas.r = parseInt(e.target.value);
+  }
+
+  sliderCounter(column_slider);
+  column_slider.oninput = (e) => {
+    sliderCounter(e.target);
+    canvas.c = parseInt(e.target.value);
+  }
+  column_slider.onmouseup = (e) => {
+    canvas.c = parseInt(e.target.value);
+  }
+
+  sliderCounter(size_slider);
+  size_slider.oninput = (e) => {
+    sliderCounter(e.target);
+    canvas.s = parseInt(e.target.value);
+  }
+  size_slider.onmouseup = (e) => {
+    canvas.s = parseInt(e.target.value);
   }
 
   document.getElementsByName("speed").forEach(el => {

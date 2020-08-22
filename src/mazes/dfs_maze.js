@@ -7,7 +7,7 @@ export function setup(canvas) {
 
   canvas.open = [];
   canvas.path = [];
-  canvas.path.push(canvas.blocks[Math.floor(random(1, canvas.r - 1) / 2) * 2 + 1][Math.floor(random(1, canvas.c - 1) / 2) * 2 + 1])
+  canvas.path.push(canvas.blocks[canvas.index(Math.floor(random(1, canvas.r - 1) / 2) * 2 + 1, Math.floor(random(1, canvas.c - 1) / 2) * 2 + 1)])
   canvas.closed = [];
 
   if (canvas.diagonal) {
@@ -17,14 +17,14 @@ export function setup(canvas) {
 
   for(let i = 0; i < canvas.r; i++) {
     for(let j = 0; j < canvas.c; j++) {
-      canvas.blocks[i][j].trans = false;
-      canvas.blocks[i][j].wall = true;
+      canvas.blocks[canvas.index(i, j)].trans = false;
+      canvas.blocks[canvas.index(i, j)].wall = true;
 
-      canvas.blocks[i][j].visited = false;
+      canvas.blocks[canvas.index(i, j)].visited = false;
       if (i == 0 || j == 0 || i == canvas.r - 1 || j == canvas.c - 1) 
-        canvas.blocks[i][j].visited = true;
+        canvas.blocks[canvas.index(i, j)].visited = true;
       if (i % 2 == 0 && j % 2 == 0) 
-        canvas.blocks[i][j].visited = true;
+        canvas.blocks[canvas.index(i, j)].visited = true;
     }
   }
 }
@@ -78,7 +78,7 @@ export function algo(canvas) {
     canvas.open = [];
     for(let i = 0; i < canvas.r; i++) {
       for(let j = 0; j < canvas.c; j++) {
-        canvas.blocks[i][j].trans = true;
+        canvas.blocks[canvas.index(i, j)].trans = true;
       }
     }
     if (prevDiagonal)

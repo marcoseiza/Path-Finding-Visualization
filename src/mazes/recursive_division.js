@@ -4,21 +4,20 @@ export function setup(canvas) {
   canvas.c = (canvas.c == 40)? 39: (canvas.c < 5)? 5: canvas.c + 1 - (canvas.c % 2);
 
   canvas.open = [ [[1, 1], [canvas.r - 2, canvas.c - 2]] ];
-  canvas.open.className = "wall";
   canvas.closed = [];
   canvas.path = [];
 
   for(let i = 0; i < canvas.r; i++) {
     for(let j = 0; j < canvas.c; j++) {
-      canvas.blocks[i][j].trans = false;
-      canvas.blocks[i][j].wall = false;
+      canvas.blocks[canvas.index(i, j)].trans = false;
+      canvas.blocks[canvas.index(i, j)].wall = false;
 
-      canvas.blocks[0][j].wall = true;
-      canvas.blocks[canvas.r-1][j].wall = true;
+      canvas.blocks[canvas.index(0, j)].wall = true;
+      canvas.blocks[canvas.index(canvas.r - 1, j)].wall = true;
     }
 
-    canvas.blocks[i][0].wall = true;
-    canvas.blocks[i][canvas.c-1].wall = true;
+    canvas.blocks[canvas.index(i, 0)].wall = true;
+    canvas.blocks[canvas.index(i, canvas.c - 1)].wall = true;
   }
 }
 
@@ -41,8 +40,8 @@ export function algo(canvas) {
         point = [Math.floor(random(cMin[0], cMax[0]+1) / 2) * 2 + 1, Math.floor(random(cMin[1] + 1, cMax[1]+1) / 2) * 2];
         
         for (let i = cMin[0]; i < cMax[0] + 1; i ++) {
-          if (i != point[0] && !canvas.blocks[i][point[1]].start && !canvas.blocks[i][point[1]].end) {
-            canvas.blocks[i][point[1]].wall = true;
+          if (i != point[0] && !canvas.blocks[canvas.index(i, point[1])].start && !canvas.blocks[canvas.index(i, point[1])].end) {
+            canvas.blocks[canvas.index(i, point[1])].wall = true;
           }
         }
 
@@ -53,8 +52,8 @@ export function algo(canvas) {
         point = [Math.floor(random(cMin[0] + 1, cMax[0]+1) / 2) * 2, Math.floor(random(cMin[1], cMax[1]+1) / 2) * 2 + 1];
         
         for (let j = cMin[1]; j < cMax[1] + 1; j ++) {
-          if (j != point[1] && !canvas.blocks[point[0]][j].start && !canvas.blocks[point[0]][j].end) {
-            canvas.blocks[point[0]][j].wall = true;
+          if (j != point[1] && !canvas.blocks[canvas.index(point[0], j)].start && !canvas.blocks[canvas.index(point[0], j)].end) {
+            canvas.blocks[canvas.index(point[0], j)].wall = true;
           }
         }
 
@@ -68,7 +67,7 @@ export function algo(canvas) {
 
     for(let i = 0; i < canvas.r; i++) {
       for(let j = 0; j < canvas.c; j++) {
-        canvas.blocks[i][j].trans = true;
+        canvas.blocks[canvas.index(i, j)].trans = true;
       }
     }
 
