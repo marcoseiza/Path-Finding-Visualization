@@ -110,6 +110,14 @@ export default function setupOptionButtons(canvas) {
     algo_title.innerText = this.innerText;
   }
 
+  let random_walls_els = document.getElementsByClassName("random");
+
+  for (let i = 0; i < random_walls_els.length; i++) {
+    random_walls_els[i].onclick = function(e) {
+      canvas.randomWalls(e.target.value);
+    }
+  }
+
   let row_slider = document.getElementById("row_slider"),
       column_slider = document.getElementById("column_slider"),
       size_slider = document.getElementById("size_slider");

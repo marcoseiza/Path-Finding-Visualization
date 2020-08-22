@@ -79,6 +79,26 @@
               Depth First
             </button>
           </li>
+          <li class="nested_menu">
+            <span>random</span>
+            <ul>
+              <li>
+                <button class="random" id="random_high" value="0.5">
+                  High Density
+                </button>
+              </li>
+              <li>
+                <button class="random" id="random_medium" value="0.3">
+                  Medium Density
+                </button>
+              </li>
+              <li>
+                <button class="random" id="random_low" value="0.15">
+                  Low Density
+                </button>
+              </li>
+            </ul>
+          </li>
         </ul>
       </label>
       <div id="algo_title">No Algorithm</div>
@@ -92,9 +112,8 @@
   <div for="playPause" class="pausedScreen">
     <label for="playPause">
       <span>Program Paused</span>
-      <svg id="pause" viewBox="0 0 20 20">
-        <path d="M2 2 v16 h6 v -16 z"/>
-        <path d="M12 2 v16 h6 v -16 z"/>
+      <svg id="play" viewBox="0 0 20 20">
+        <path d="M18 10 L2 2 2 18 Z"/>
       </svg>
     </label>
   </div>

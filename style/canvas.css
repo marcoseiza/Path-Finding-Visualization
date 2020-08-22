@@ -20,6 +20,7 @@ main {
           justify-content: center;
   height: 100%;
   width: 100%;
+  min-width: 0;
 }
 
 #canvas {
