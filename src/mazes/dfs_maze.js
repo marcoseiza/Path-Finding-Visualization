@@ -18,7 +18,7 @@ export function setup(canvas) {
   for(let i = 0; i < canvas.r; i++) {
     for(let j = 0; j < canvas.c; j++) {
       canvas.blocks[canvas.index(i, j)].trans = false;
-      canvas.blocks[canvas.index(i, j)].wall = true;
+      canvas.blocks[canvas.index(i, j)].wallNoTrans(true);
 
       canvas.blocks[canvas.index(i, j)].visited = false;
       if (i == 0 || j == 0 || i == canvas.r - 1 || j == canvas.c - 1) 
@@ -32,7 +32,7 @@ export function setup(canvas) {
 export function algo(canvas) {
   if (canvas.path.length > 0) {
     let current = canvas.path.pop();
-    current.wall = false;
+    current.wallNoTrans(false);
     current.visited = true;
 
     let neighbors = [];
