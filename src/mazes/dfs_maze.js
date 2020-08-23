@@ -7,7 +7,7 @@ export function setup(canvas) {
 
   canvas.open = [];
   canvas.path = [];
-  canvas.path.push(canvas.blocks[canvas.index(Math.floor(random(1, canvas.r - 1) / 2) * 2 + 1, Math.floor(random(1, canvas.c - 1) / 2) * 2 + 1)])
+  canvas.path.push(canvas.blocks[canvas.index(Math.floor(random(1, canvas.r - 1) / 2) * 2 + 1, Math.floor(random(1, canvas.c - 1) / 2) * 2 + 1)]);
   canvas.closed = [];
 
   if (canvas.diagonal) {
@@ -21,9 +21,7 @@ export function setup(canvas) {
       canvas.blocks[canvas.index(i, j)].wallNoTrans(true);
 
       canvas.blocks[canvas.index(i, j)].visited = false;
-      if (i == 0 || j == 0 || i == canvas.r - 1 || j == canvas.c - 1) 
-        canvas.blocks[canvas.index(i, j)].visited = true;
-      if (i % 2 == 0 && j % 2 == 0) 
+      if ((i % 2 == 0 && j % 2 == 0) || i == 0 || j == 0 || i == canvas.r - 1 || j == canvas.c - 1) 
         canvas.blocks[canvas.index(i, j)].visited = true;
     }
   }

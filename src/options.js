@@ -7,6 +7,8 @@ import * as Recur_Div from './mazes/recursive_division.js';
 import * as Dfs_Maze from './mazes/dfs_maze.js';
 import * as Stair from './mazes/stair_pattern.js';
 import * as Krusal from './mazes/kruskal.js';
+import * as Prim from './mazes/prim.js';
+
 
 export default function setupOptionButtons(canvas) {
   let algo_title = document.getElementById("algo_title"), 
@@ -178,6 +180,21 @@ export default function setupOptionButtons(canvas) {
 
     canvas.updateAlgo = false;
     canvas.algo = Krusal.algo; canvas.algoSetup = Krusal.setup;
+    canvas.startAlgo();
+
+    canvas.algo = prevAlgo; canvas.algoSetup = prevAlgoSetup;
+
+    row_slider.value = canvas.r;
+    column_slider.value = canvas.c;
+    sliderCounter(row_slider);
+    sliderCounter(column_slider);
+  }
+
+  document.getElementById("prim").onclick = function() {
+    let prevAlgo = canvas.algo, prevAlgoSetup = canvas.algoSetup;
+
+    canvas.updateAlgo = false;
+    canvas.algo = Prim.algo; canvas.algoSetup = Prim.setup;
     canvas.startAlgo();
 
     canvas.algo = prevAlgo; canvas.algoSetup = prevAlgoSetup;
