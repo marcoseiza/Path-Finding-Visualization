@@ -241,16 +241,15 @@ export default class Canvas {
       if (!e.path.includes(this.el))  {
         main.style.cursor = "grabbing";
 
-        let dx = e.clientX - wrap.getBoundingClientRect().left;
-        let dy = e.clientY - wrap.getBoundingClientRect().top;
+        let dx = e.pageX - wrap.getBoundingClientRect().left;
+        let dy = e.pageY - wrap.getBoundingClientRect().top;
       
         wrap.style.position = 'absolute';
-      
-        moveAt(e.pageX, e.pageY);
+        moveAt(e.pageX , e.pageY);
       
         function moveAt(px, py) {
-          wrap.style.left = px - dx + 'px';
-          wrap.style.top = py - dy + 'px';
+          wrap.style.left = (px - dx) / window.innerWidth * 100 + '%';
+          wrap.style.top = (py - dy) / window.innerHeight * 100 + '%';
         }
       
         main.onmousemove = (e) => {
