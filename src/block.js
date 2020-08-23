@@ -81,7 +81,7 @@ export default class Block {
     }
   }
 
-  wallNoTransSet(bool) {
+  wallNoTrans(bool) {
     this._wall = bool;
     if (bool) {
       if (!this.start && !this.end) {

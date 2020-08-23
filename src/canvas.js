@@ -448,18 +448,8 @@ export default class Canvas {
 
     for (let i = 0; i < this.r; i++) {
       for (let j = 0; j < this.c; j++) {
-        // Remove css transitions to make it faster
-        this.blocks[this.index(i, j)].el.classList.add("no_trans");
-        this.blocks[this.index(i, j)].wallNoTransSet((Math.random() < prob)? true: false)
-      }
-    }
-  }
-
-  randomWallsTransitionReset() {
-    for (let i = 0; i < this.r; i++) {
-      for (let j = 0; j < this.c; j++) {
-        // Reset css transitions ones the random slider stops giving inputs
-        this.blocks[this.index(i, j)].el.classList.remove("no_trans");
+        this.blocks[this.index(i, j)].trans = false;
+        this.blocks[this.index(i, j)].wallNoTrans((Math.random() < prob)? true: false);
       }
     }
   }
