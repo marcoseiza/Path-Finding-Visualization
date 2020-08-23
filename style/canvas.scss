@@ -6,13 +6,15 @@ body {
 }
 
 main {
-  pointer-events: none;
+  cursor: grab;
   display: flex;
   align-items: center; justify-content: center;
   height: 100%; width: 100%;
+  min-width: 0;
 }
 
 #canvas {
+  cursor: default;
   pointer-events: all;
   --size: 20px;
   --scale: 1;
@@ -59,10 +61,6 @@ main {
   &.path {
     background: blue;
     box-shadow: inset 0 0 0 1px darken(blue, 5);
-  }
-
-  &:hover {
-    box-shadow: inset 0 0 0 2px black;
   }
 
   &.endc::before, &.endr::after,
@@ -117,6 +115,10 @@ main {
     display: none;
   }
   
+}
+
+#canvas:not(.no_hover) div:hover {
+  box-shadow: inset 0 0 0 2px black;
 }
 
 @import "./canvas2d";

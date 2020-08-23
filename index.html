@@ -76,14 +76,50 @@
           </li>
           <li>
             <button id="dps_maze">
-              Depth First
+              Depth First Maze
+            </button>
+          </li>
+          <li class="nested_menu">
+            <span>random walls</span>
+            <ul>
+              <li>
+                <button class="random" id="random_high" value="0.5">
+                  High Density
+                </button>
+              </li>
+              <li>
+                <button class="random" id="random_medium" value="0.3">
+                  Medium Density
+                </button>
+              </li>
+              <li>
+                <button class="random" id="random_low" value="0.15">
+                  Low Density
+                </button>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <button id="stair">
+              Stair Pattern
+            </button>
+          </li>
+          <li>
+            <button id="krusal">
+              Krusal's Maze
+            </button>
+          </li>
+          <li>
+            <button id="prim">
+              Prim's Maze
             </button>
           </li>
         </ul>
       </label>
-      <div id="algo_title">No Algorithm</div>
 
-      <button id="startButton">VISUALIZE</button>
+      <label for="algorithms" id="algo_title">No Algorithm</label>
+
+      <button id="startButton">VISUALIZE!</button>
 
     </section>
 
@@ -92,15 +128,16 @@
   <div for="playPause" class="pausedScreen">
     <label for="playPause">
       <span>Program Paused</span>
-      <svg id="pause" viewBox="0 0 20 20">
-        <path d="M2 2 v16 h6 v -16 z"/>
-        <path d="M12 2 v16 h6 v -16 z"/>
+      <svg id="play" viewBox="0 0 20 20">
+        <path d="M18 10 L2 2 2 18 Z"/>
       </svg>
     </label>
   </div>
 
   <main>
-    <div id="canvas"></div>
+    <div class="canvas_wrap">
+      <div id="canvas"></div>
+    </div>
   </main>
 
   <footer>
@@ -215,6 +252,15 @@
             <input type="range" min="3" max="40" step="1" value="21" id="column_slider">
             <div id="columns_sld_value">
               <span>21</span>
+            </div>
+          </label>
+        </li>
+        <li>
+          <span class="title">Size</span>
+          <label for="size" class="slider">
+            <input type="range" min="10" max="50" step="1" value="30" id="size_slider">
+            <div id="size_sld_value">
+              <span>30</span>
             </div>
           </label>
         </li>

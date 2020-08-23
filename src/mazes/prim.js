@@ -7,7 +7,6 @@ export function setup(canvas) {
 
   canvas.open = [];
   canvas.path = [];
-  canvas.path.push(canvas.blocks[canvas.index(Math.floor(random(1, canvas.r - 1) / 2) * 2 + 1, Math.floor(random(1, canvas.c - 1) / 2) * 2 + 1)]);
   canvas.closed = [];
 
   if (canvas.diagonal) {
@@ -25,52 +24,48 @@ export function setup(canvas) {
         canvas.blocks[canvas.index(i, j)].visited = true;
     }
   }
+
+  let random_i = Math.floor((Math.random() * (canvas.r - 2) + 1) / 2) * 2 + 1,
+      random_j = Math.floor((Math.random() * (canvas.c - 2) + 1) / 2) * 2 + 1,
+      first_block = canvas.blocks[canvas.index(random_i, random_j)];
+
+  for (let i = 0; i < first_block.neighbors.length; i++) {
+    canvas.path.push(first_block.neighbors[i]);
+  }
 }
 
 export function algo(canvas) {
   if (canvas.path.length > 0) {
-    let current = canvas.path.pop();
-    current.wallNoTrans(false);
-    current.visited = true;
+    let rand_i = Math.floor(Math.random() * canvas.path.length),
+        current_edge = canvas.path.splice(rand_i, 1)[0];
 
-    let neighbors = [];
+    // Define valid cells in the grid
+    // cell  edge  cell
+    // []     |     []
+    // edge is a block
+    let cells = [];
+    for (let i = 0; i < current_edge.neighbors.length; i++) {
+      if (!current_edge.neighbors[i].visited)
+        cells.push(current_edge.neighbors[i]);
+    }
 
-    if (current.x % 2 == 1 && current.y % 2 == 1) {
-      for (let i = 0; i < current.neighbors.length; i++) {
-        let deadEnd = true;
-        if (!current.neighbors[i].visited) {
-          for (let j = 0; j < current.neighbors[i].neighbors.length; j ++) {
-            if (!current.neighbors[i].neighbors[j].visited) {
-              deadEnd = false;
-            }
-          }
-          if (!deadEnd) {
-            neighbors.push(current.neighbors[i]);
+    // Algo logic
+    if (cells.length >= 1) {
+      current_edge.wallNoTrans(false);
+
+      for (let i = 0; i < cells.length; i++) {
+        cells[i].wallNoTrans(false);
+        if (!cells[i].visited) {
+          for (let j = 0; j < cells[i].neighbors.length; j++) {
+            canvas.path.push(cells[i].neighbors[j]);
           }
         }
-      }
-    } else {
-      for (let i = 0; i < current.neighbors.length; i++) {
-        if (!current.neighbors[i].visited) {
-          neighbors.push(current.neighbors[i]);
-        }
+        cells[i].visited = true;
       }
     }
-    
-    if (neighbors.length > 0) {
-      canvas.path.push(current);
-    } else {
-      canvas.open.pushBlock(current);
-    }
 
-    let next = neighbors[Math.floor(random(0, neighbors.length))];
-
-    if (next) {
-      canvas.path.push(next);
-    }
-
-    
     return true
+
   } else {
     canvas.path = [];
     canvas.open = [];
@@ -83,8 +78,4 @@ export function algo(canvas) {
       canvas.diagonal = true;
     return false
   }
-}
-
-function random(min, max) {
-  return Math.random() * (max - min) + min;
 }

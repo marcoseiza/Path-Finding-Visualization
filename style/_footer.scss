@@ -4,8 +4,10 @@ footer {
   z-index: 999;
   display: flex;
   justify-content: space-between;
+  pointer-events: none;
 
   section {
+    pointer-events: all;
     display: flex;
     padding: 10px;
     padding-bottom: 8px;
@@ -43,6 +45,8 @@ footer {
       width: 30px; height: 30px;
       padding: 10px;
       border-radius: 10px;
+      transition: background-color 200ms ease-in-out;
+
       &:hover, &:focus {
         background-color: rgba(0,0,0,0.3);
         cursor: pointer;
@@ -78,6 +82,7 @@ footer {
       position: relative;
       padding: 10px;
       border-radius: 10px;
+      transition: background-color 200ms ease-in-out;
   
       &:hover, &:focus {
         background-color: rgba(0,0,0,0.3);

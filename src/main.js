@@ -8,11 +8,9 @@ let blocks = [],
 
 
 for (let i = 0; i < max_rows; i++) {
-  let row = [];
   for (let j = 0; j < max_cols; j++) {
-    row[j] = new Block(i, j);
+    blocks[max_rows * i + j] = new Block(i, j);
   }
-  blocks[i] = row;
 }
 
 canvas.blocks = blocks;
