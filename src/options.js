@@ -11,13 +11,19 @@ import * as Stair from './mazes/stair_pattern.js';
 import * as Krusal from './mazes/kruskal.js';
 import * as Prim from './mazes/prim.js';
 
+function changeAlgoTitle(title, warning = false) {
+  document.getElementById("algo_title").innerText = title;
+
+  if (warning)
+    document.getElementById("warning").style.maxHeight = "40px";
+  else
+    document.getElementById("warning").style.maxHeight = "0";
+}
 
 export default function setupOptionButtons(canvas) {
-  let algo_title = document.getElementById("algo_title"), 
-      row_slider = document.getElementById("row_slider"),
+  let row_slider = document.getElementById("row_slider"),
       column_slider = document.getElementById("column_slider"),
       size_slider = document.getElementById("size_slider");
-
 
   document.getElementById("startButton").onclick = function() {
     if (document.getElementById("playPause").checked)
@@ -95,42 +101,42 @@ export default function setupOptionButtons(canvas) {
   document.getElementById("a_star").onclick = function() {
     canvas.updateAlgo = false;
     canvas.algo = A_Star.algo; canvas.algoSetup = A_Star.setup;
-    algo_title.innerText = this.getAttribute("algo_title");
+    changeAlgoTitle(this.getAttribute("algo_title"));
   }
 
   document.getElementById("bi_a_star").onclick = function() {
     canvas.updateAlgo = false;
     canvas.algo = Bi_A_Star.algo; canvas.algoSetup = Bi_A_Star.setup;
-    algo_title.innerText = this.getAttribute("algo_title");
+    changeAlgoTitle(this.getAttribute("algo_title"), true);
   }
 
   document.getElementById("dijkstra").onclick = function() {
     canvas.updateAlgo = false;
     canvas.algo = Dijk.algo; canvas.algoSetup = Dijk.setup;
-    algo_title.innerText = this.getAttribute("algo_title");
+    changeAlgoTitle(this.getAttribute("algo_title"));
   }
   document.getElementById("bi_dijkstra").onclick = function() {
     canvas.updateAlgo = false;
     canvas.algo = Bi_Dijk.algo; canvas.algoSetup = Bi_Dijk.setup;
-    algo_title.innerText = this.getAttribute("algo_title");
+    changeAlgoTitle(this.getAttribute("algo_title"));
   }
 
   document.getElementById("greedy_search").onclick = function() {
     canvas.updateAlgo = false;
     canvas.algo = Greedy.algo; canvas.algoSetup = Greedy.setup;
-    algo_title.innerText = this.innerText;
+    changeAlgoTitle(this.innerText, true);
   }
 
   document.getElementById("bfs").onclick = function() {
     canvas.updateAlgo = false;
     canvas.algo = BFS.algo; canvas.algoSetup = BFS.setup;
-    algo_title.innerText = this.innerText;
+    changeAlgoTitle(this.innerText)
   }
 
   document.getElementById("dfs").onclick = function() {
     canvas.updateAlgo = false;
     canvas.algo = DFS.algo; canvas.algoSetup = DFS.setup;
-    algo_title.innerText = this.innerText;
+    changeAlgoTitle(this.innerText, true);
   }
 
   document.getElementById("recursive_division").onclick = function() {

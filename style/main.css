@@ -135,6 +135,7 @@ main {
 }
 
 .optionsMenu .menu_section {
+  position: relative;
   pointer-events: all;
   display: -ms-grid;
   display: grid;
@@ -147,7 +148,7 @@ main {
   border-bottom-right-radius: 10px;
 }
 
-.optionsMenu .menu_section > * {
+.optionsMenu .menu_section > label, .optionsMenu .menu_section button {
   border-radius: 10px;
 }
 
@@ -445,6 +446,30 @@ main {
 
 .optionsMenu .menu_section #startButton.error {
   background-color: #df0101;
+}
+
+.optionsMenu #warning {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  -webkit-transform: translate(-50%);
+          transform: translate(-50%);
+  white-space: nowrap;
+  overflow: hidden;
+  max-height: 0;
+  background-color: #df0101;
+  color: white;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  -webkit-transition: max-height 200ms ease-in-out;
+  transition: max-height 200ms ease-in-out;
+}
+
+.optionsMenu #warning span {
+  display: block;
+  padding: 10px;
 }
 
 footer {
