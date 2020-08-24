@@ -33,21 +33,6 @@
         </span>
         <ul>
           <li>
-            <button id="a_star">
-              A* Search
-            </button>
-          </li>
-          <li>
-            <button id="dijkstra">
-              Dijkstra's
-            </button>
-          </li>
-          <li>
-            <button id="greedy_search">
-              Greedy BFS
-            </button>
-          </li>
-          <li>
             <button id="bfs">
               Breadth First
             </button>
@@ -55,6 +40,41 @@
           <li>
             <button id="dfs">
               Depth First
+            </button>
+          </li>
+          <li class="nested_menu">
+            <span>A* Search</span>
+            <ul>
+              <li>
+                <button id="a_star" algo_title="A* Search">
+                  Uni-Directional
+                </button>
+              </li>
+              <li>
+                <button id="bi_a_star" algo_title="Bi-Dir A* Search">
+                  Bi-Directional
+                </button>
+              </li>
+            </ul>
+          </li>
+          <li class="nested_menu">
+            <span>Dijkstra's</span>
+            <ul>
+              <li>
+                <button id="dijkstra" algo_title="Dijkstra's">
+                  Uni-Directional
+                </button>
+              </li>
+              <li>
+                <button id="bi_dijkstra" algo_title="Bi-Dir Dijkstra's">
+                  Bi-Directional
+                </button>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <button id="greedy_search">
+              Greedy BFS
             </button>
           </li>
         </ul>
@@ -121,8 +141,10 @@
 
       <button id="startButton">VISUALIZE!</button>
 
+      <div id="warning">
+        <span><strong>WARNING:</strong> Algorithm may <strong>NOT</strong> produce shortest path</span>
+      </div>
     </section>
-
   </div>
 
   <div for="playPause" class="pausedScreen">

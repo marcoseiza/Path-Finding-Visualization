@@ -26,6 +26,7 @@
   }
 
   .menu_section {
+    position: relative;
     pointer-events: all;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -35,7 +36,7 @@
     background-color: rgb(38, 79, 112);
     border-bottom-right-radius: 10px;
 
-    > * {
+    > label, button {
       border-radius: 10px;
     }
 
@@ -261,6 +262,27 @@
       &.error {
         background-color: rgb(223, 1, 1);
       }
+    }
+  }
+
+  #warning {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%);
+    white-space: nowrap;
+    overflow: hidden;
+    max-height: 0;
+    background-color: rgb(223, 1, 1);
+    color: white;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    transition: max-height 200ms ease-in-out;
+    span {
+      display: block;
+      padding: 10px;
     }
   }
 
