@@ -33,9 +33,29 @@
         </span>
         <ul>
           <li>
-            <button id="a_star">
-              A* Search
+            <button id="bfs">
+              Breadth First
             </button>
+          </li>
+          <li>
+            <button id="dfs">
+              Depth First
+            </button>
+          </li>
+          <li class="nested_menu">
+            <span>A* Search</span>
+            <ul>
+              <li>
+                <button id="a_star" algo_title="A* Search">
+                  Uni-Directional
+                </button>
+              </li>
+              <li>
+                <button id="bi_a_star" algo_title="Bi-Dir A* Search">
+                  Bi-Directional
+                </button>
+              </li>
+            </ul>
           </li>
           <li class="nested_menu">
             <span>Dijkstra's</span>
@@ -55,16 +75,6 @@
           <li>
             <button id="greedy_search">
               Greedy BFS
-            </button>
-          </li>
-          <li>
-            <button id="bfs">
-              Breadth First
-            </button>
-          </li>
-          <li>
-            <button id="dfs">
-              Depth First
             </button>
           </li>
         </ul>

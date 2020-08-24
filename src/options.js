@@ -1,6 +1,7 @@
 import * as Dijk from './algorithms/dijkstra.js';
 import * as Bi_Dijk from './algorithms/bi_dijkstra.js';
 import * as A_Star from './algorithms/a_star.js';
+import * as Bi_A_Star from './algorithms/bi_a_star.js';
 import * as Greedy from './algorithms/greedySearch.js';
 import * as BFS from './algorithms/bfs.js';
 import * as DFS from './algorithms/dfs.js';
@@ -94,7 +95,13 @@ export default function setupOptionButtons(canvas) {
   document.getElementById("a_star").onclick = function() {
     canvas.updateAlgo = false;
     canvas.algo = A_Star.algo; canvas.algoSetup = A_Star.setup;
-    algo_title.innerText = this.innerText;
+    algo_title.innerText = this.getAttribute("algo_title");
+  }
+
+  document.getElementById("bi_a_star").onclick = function() {
+    canvas.updateAlgo = false;
+    canvas.algo = Bi_A_Star.algo; canvas.algoSetup = Bi_A_Star.setup;
+    algo_title.innerText = this.getAttribute("algo_title");
   }
 
   document.getElementById("dijkstra").onclick = function() {

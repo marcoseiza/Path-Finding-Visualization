@@ -28,8 +28,11 @@ export function algo(canvas) {
   if (calcPath) {
     return findBiPath(canvas)
   }
+
   if (openFor.length > 0 || openBack.length > 0) {
-    
+
+// ================== FORWARD =====================
+
     if (openFor.length > 0) {
       biSortBlocks(openFor, true);
       let current = openFor[0]
@@ -64,6 +67,9 @@ export function algo(canvas) {
         }
       }
     }
+
+// ================== BACKWARDS =====================
+
     if (openBack.length > 0) {
       biSortBlocks(openBack, false);
       let current = openBack[0]
@@ -98,6 +104,8 @@ export function algo(canvas) {
         }
       }
     }
+
+
     return true
   } else {
     // no solution
@@ -107,7 +115,7 @@ export function algo(canvas) {
   }
 }
 
-function biSortBlocks(open, forwards) {
+export function biSortBlocks(open, forwards) {
   let win_i = 0,
       fa_i = (forwards)? 0: 1;
 
@@ -120,7 +128,8 @@ function biSortBlocks(open, forwards) {
   open.unshift(open.splice(win_i, 1)[0]);
 }
 
-function findBiPath(canvas) {
+export function findBiPath(canvas) {
+  // Figure out path from connecting frontiers
   let tempFor = canvas.path[0],
       tempBack = canvas.path[canvas.path.length - 1];
 
