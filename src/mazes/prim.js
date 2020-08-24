@@ -25,10 +25,10 @@ export function setup(canvas) {
     }
   }
 
-  let random_i = Math.floor((Math.random() * (canvas.r - 2) + 1) / 2) * 2 + 1,
-      random_j = Math.floor((Math.random() * (canvas.c - 2) + 1) / 2) * 2 + 1,
+  let random_i = Math.floor((Math.random() * (canvas.r - 2) + 1) / 2) * 2,
+      random_j = Math.floor((Math.random() * (canvas.c - 2) + 1) / 2) * 2,
       first_block = canvas.blocks[canvas.index(random_i, random_j)];
-
+  
   for (let i = 0; i < first_block.neighbors.length; i++) {
     canvas.path.push(first_block.neighbors[i]);
   }

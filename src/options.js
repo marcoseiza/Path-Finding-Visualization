@@ -1,4 +1,5 @@
 import * as Dijk from './algorithms/dijkstra.js';
+import * as Bi_Dijk from './algorithms/bi_dijkstra.js';
 import * as A_Star from './algorithms/a_star.js';
 import * as Greedy from './algorithms/greedySearch.js';
 import * as BFS from './algorithms/bfs.js';
@@ -99,7 +100,12 @@ export default function setupOptionButtons(canvas) {
   document.getElementById("dijkstra").onclick = function() {
     canvas.updateAlgo = false;
     canvas.algo = Dijk.algo; canvas.algoSetup = Dijk.setup;
-    algo_title.innerText = this.innerText;
+    algo_title.innerText = this.getAttribute("algo_title");
+  }
+  document.getElementById("bi_dijkstra").onclick = function() {
+    canvas.updateAlgo = false;
+    canvas.algo = Bi_Dijk.algo; canvas.algoSetup = Bi_Dijk.setup;
+    algo_title.innerText = this.getAttribute("algo_title");
   }
 
   document.getElementById("greedy_search").onclick = function() {

@@ -22,7 +22,7 @@ export function algo(canvas) {
 
     let current = canvas.open[0];
 
-    if (current == canvas.endBlock) {
+    if (current.end) {
       if (canvas.path.length == 0)
         canvas.path.pushBlock(current);
 
