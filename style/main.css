@@ -713,19 +713,33 @@ footer section.settings > input#settings {
   display: none;
 }
 
+footer section.settings > input#settings:checked ~ .background {
+  opacity: 1;
+}
+
 footer section.settings > input#settings:checked ~ ul {
   -webkit-transform: translate(0);
           transform: translate(0);
-}
-
-footer section.settings > input#settings:checked ~ ul .background {
-  opacity: 1;
 }
 
 footer section.settings > input#settings:checked ~ label svg {
   fill: #182f42;
   -webkit-animation: none;
           animation: none;
+}
+
+footer section.settings .background {
+  pointer-events: none;
+  position: absolute;
+  z-index: 9;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  -webkit-transition: opacity 200ms linear;
+  transition: opacity 200ms linear;
 }
 
 .settings__toggle {
@@ -809,22 +823,10 @@ footer section.settings > input#settings:checked ~ label svg {
           transform-origin: right;
   -webkit-transform: translate(100%);
           transform: translate(100%);
-  -webkit-transition: -webkit-transform 300ms ease-in;
-  transition: -webkit-transform 300ms ease-in;
-  transition: transform 300ms ease-in;
-  transition: transform 300ms ease-in, -webkit-transform 300ms ease-in;
-}
-
-.settings__menu .background {
-  pointer-events: none;
-  position: absolute;
-  z-index: 9;
-  right: 100%;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  opacity: 0;
-  background-color: rgba(0, 0, 0, 0.3);
+  -webkit-transition: -webkit-transform 300ms ease-in-out;
+  transition: -webkit-transform 300ms ease-in-out;
+  transition: transform 300ms ease-in-out;
+  transition: transform 300ms ease-in-out, -webkit-transform 300ms ease-in-out;
 }
 
 .settings__menu #signature {
@@ -872,6 +874,10 @@ footer section.settings > input#settings:checked ~ label svg {
   margin-right: 0.5ch;
   width: auto;
   fill: #182f42;
+}
+
+.settings__menu li span.title svg.remove_diag .diag {
+  opacity: 0.3;
 }
 
 .settings__menu li div.options {

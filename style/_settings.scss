@@ -1,3 +1,32 @@
+footer section.settings {
+  > input#settings {
+    display: none;
+    &:checked {
+      & ~ .background {
+        opacity: 1;
+      }
+      & ~ ul {
+        transform: translate(0);
+      }
+      & ~ label svg {
+        fill: rgb(24, 47, 66);
+        animation: none;
+      }
+    }
+  }
+
+  .background {
+    pointer-events: none;
+    position: absolute;
+    z-index: 9;
+    right: 0;
+    bottom: 0;
+    width: 100vw; height: 100vh;
+    opacity: 0;
+    background-color: rgba(0,0,0,0.3);
+    transition: opacity 200ms linear;
+  }
+}
 .settings__toggle {
   padding: 10px;
   border-radius: 10px;
@@ -49,18 +78,7 @@
   min-width: 300px;
   transform-origin: right;
   transform: translate(100%);
-  transition: transform 300ms ease-in;
-
-  .background {
-    pointer-events: none;
-    position: absolute;
-    z-index: 9;
-    right: 100%;
-    top: 0;
-    width: 100vw; height: 100vh;
-    opacity: 0;
-    background-color: rgba(0,0,0,0.3);
-  }
+  transition: transform 300ms ease-in-out;
 
   #signature {
     position: absolute;
@@ -97,6 +115,10 @@
         margin-right: 0.5ch;
         width: auto;
         fill: rgb(24, 47, 66);
+
+        &.remove_diag .diag {
+          opacity: 0.3;
+        }
       }
     }
 
