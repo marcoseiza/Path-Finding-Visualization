@@ -15,17 +15,17 @@ export function setup(canvas) {
 }
 
 export function algo(canvas) {
-  console.log(canvas.endBlock.visited, canvas.endBlock);
   
   if (canvas.open.length > 0) {
     canvas.sortBlocks();
 
     let current = canvas.open[0];
 
-    if (current == canvas.endBlock) {
-      if (canvas.path.length == 0)
+    if (current.end) {
+      if (canvas.path.length == 0) {
         canvas.path.pushBlock(current);
-
+        console.log(current.fa);
+      }
       let temp = canvas.path[0];
 
       if (temp.previous) {

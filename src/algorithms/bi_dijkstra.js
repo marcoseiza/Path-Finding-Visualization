@@ -1,122 +1,150 @@
 let openFor = [],
     openBack = [],
-    closedFor = [],
-    closedBack = [],
-    p = Infinity;
-    pNode = undefined;
+    calcPath = false;
 
-function biPath(current) {
-  var temp = current;
-  path.push(temp);
-  while (temp.previous[0]) {
-    path.push(temp.previous[0]);
-    temp = temp.previous[0];
-    if (temp.start) {
-      temp.previous = [undefined, undefined];
+export function setup(canvas) {
+  canvas.open = [];
+  canvas.closed = [];
+  canvas.path = [];
+  openFor = [];
+  openBack = [];
+  calcPath = false;
+
+  openFor.pushBlock(canvas.startBlock);
+  openBack.pushBlock(canvas.endBlock);
+  
+
+  for (let i = 0; i < canvas.r; i++) {
+    for (let j = 0; j < canvas.c; j++) {
+      canvas.blocks[canvas.index(i, j)].ga = [0, 0];
+      canvas.blocks[canvas.index(i, j)].fa = [Infinity, Infinity];
+      canvas.blocks[canvas.index(i, j)].visited = [false, false];
+      canvas.blocks[canvas.index(i, j)].previous = [undefined, undefined];
     }
   }
-  temp = current;
-  while (temp.previous[1]) {
-    path.push(temp.previous[1]);
-    temp = temp.previous[1];
-    if (temp.end) {
-      temp.previous = [undefined, undefined];
-    }
-  }
-  progressPercent.innerText = 'Done!';
-  progressBar.style.strokeDashoffset = 0;
 }
 
-function biDijkstra() {
-  if (openFor.length > 0 && openBack.length > 0) {
-    currentFor = openFor[0];
-    currentBack = openBack[0];
-    currentFor.visited = [true, false];
-    currentBack.visited = [false, true];
+export function algo(canvas) {
+  if (calcPath) {
+    return findBiPath(canvas)
+  }
 
-    if (currentFor.fa + currentBack.fa + 1 >= p) {
-      biPath(pNode);
-      return false;
-    }
-    
-    // FORWARD
+  if (openFor.length > 0 || openBack.length > 0) {
 
-    openFor.shift();
-    closedFor.push(currentFor);
+// ================== FORWARD =====================
 
-    for (let i = 0; i < currentFor.neighbors.length; i++) {
-      let neighbor = currentFor.neighbors[i];
+    if (openFor.length > 0) {
+      biSortBlocks(openFor, true);
+      let current = openFor[0]
 
-      if (!neighbor.visited[0] && !neighbor.wall) {
-        let tentFa = currentFor.fa + 1;;
-        if (openFor.includes(neighbor)) {
-          if (tentFa < neighbor.fa) {
-            neighbor.fa = tentFa;
+      // if (end || in openBack);
+      if (current.end || openBack.includes(current)) {
+        calcPath = true;
+        canvas.path.pushBlock(current);
+        return findBiPath(canvas);
+      }
+
+      openFor.shift();
+      canvas.closed.pushBlock(current);
+      current.visited[0] = true;
+
+      for (let i = 0; i < current.neighbors.length; i++) {
+        let neighbor = current.neighbors[i];
+        if (!neighbor.visited[0] && !neighbor.wall) {
+          
+          let tentGa = current.ga[0] + canvas.calcHa(neighbor, current);
+  
+          if (!openFor.includes(neighbor)) {
+            openFor.push(neighbor)
+            canvas.open.pushBlock(neighbor);
+          } else if (tentGa >= neighbor.ga[0]) {
+            continue
           }
-        } else {
-          neighbor.fa = tentFa;
-          openFor.push(neighbor);
-        }
-        if (neighbor.previous == undefined) neighbor.previous = [undefined, undefined];
-        neighbor.previous[0] = currentFor;
-
-        if (neighbor.end) {
-          biPath(neighbor);
-          progressPercent.innerText = 'Done!';
-          progressBar.style.strokeDashoffset = 0;
-          return false;
+          
+          neighbor.ga[0] = tentGa;
+          neighbor.fa[0] = neighbor.ga[0];
+          neighbor.previous[0] = current;
         }
       }
-      if (!neighbor.end && openBack.includes(neighbor) && neighbor.previous[0].fa + neighbor.previous[1].fa + 2 < p) {
-        p = neighbor.previous[0].fa + neighbor.previous[1].fa + 2;
-        pNode = neighbor;
-      } 
     }
 
-    // BACKWARD
+// ================== BACKWARDS =====================
 
-    openBack.shift();
-    closedBack.push(currentBack);
+    if (openBack.length > 0) {
+      biSortBlocks(openBack, false);
+      let current = openBack[0]
 
-    for (let i = 0; i < currentBack.neighbors.length; i++) {
-      let neighbor = currentBack.neighbors[i];
+      // if (start || in openFor);
+      if (current.start || openFor.includes(current)) {
+        calcPath = true;
+        canvas.path.pushBlock(current);
+        return findBiPath(canvas);
+      }
 
-      if (!neighbor.visited[1] && !neighbor.wall) {
-        let tentFa = currentBack.fa + 1;;
-        if (openBack.includes(neighbor)) {
-          if (tentFa < neighbor.fa) {
-            neighbor.fa = tentFa;
+      openBack.shift();
+      canvas.closed.pushBlock(current);
+      current.visited[1] = true;
+
+      for (let i = 0; i < current.neighbors.length; i++) {
+        let neighbor = current.neighbors[i];
+        if (!neighbor.visited[1] && !neighbor.wall) {
+          
+          let tentGa = current.ga[1] + canvas.calcHa(neighbor, current);
+  
+          if (!openBack.includes(neighbor)) {
+            openBack.push(neighbor)
+            canvas.open.pushBlock(neighbor);
+          } else if (tentGa >= neighbor.ga[1]) {
+            continue
           }
-        } else {
-          neighbor.fa = tentFa;
-          openBack.push(neighbor);
+          
+          neighbor.ga[1] = tentGa;
+          neighbor.fa[1] = neighbor.ga[1];
+          neighbor.previous[1] = current;
         }
-        if (neighbor.previous == undefined) neighbor.previous = [undefined, undefined];
-        neighbor.previous[1] = currentBack;
-
-        if (neighbor.start) {
-          biPath(neighbor);
-          return false;
-        }
-      }
-      if (!neighbor.start && openFor.includes(neighbor) && neighbor.previous[0].fa + neighbor.previous[1].fa + 2 < p) {
-        p = neighbor.previous[0].fa + neighbor.previous[1].fa + 2;
-        pNode = neighbor;
       }
     }
-    
-    
+
+
     return true
   } else {
     // no solution
-    console.log(p, openFor, openBack);
-    // if (p < Infinity) {
-    //   biPath(pNode);
-    //   return false
-    // }
-    progressPercent.innerText = 'Error';
-    progressBar.style.strokeDashoffset = 0;
-    progressBar.style.stroke = 'red';
+    canvas.successfulAlgo = false;
+    canvas.updateAlgo = true;
     return false
   }
+}
+
+export function biSortBlocks(open, forwards) {
+  let win_i = 0,
+      fa_i = (forwards)? 0: 1;
+
+  for (let i = 0; i < open.length; i++) {
+    if (open[i].fa[fa_i] < open[win_i].fa[fa_i]) {
+      win_i = i;
+    }
+  }
+
+  open.unshift(open.splice(win_i, 1)[0]);
+}
+
+export function findBiPath(canvas) {
+  // Figure out path from connecting frontiers
+  let tempFor = canvas.path[0],
+      tempBack = canvas.path[canvas.path.length - 1];
+
+  if (tempFor.previous[0]) {
+    canvas.path.unshiftBlock(tempFor.previous[0]);
+  }
+
+  if (tempBack.previous[1]) {
+    canvas.path.pushBlock(tempBack.previous[1]);
+  } 
+  
+  if (!tempFor.previous[0] && !tempBack.previous[1]) {
+    canvas.updateAlgo = true;
+    return false;
+  }
+
+  return true;
 }
