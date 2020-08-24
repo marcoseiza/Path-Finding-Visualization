@@ -827,6 +827,15 @@ footer section.settings > input#settings:checked ~ label svg {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
+.settings__menu #signature {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 1em 1.4em;
+  font-size: 0.7em;
+  font-weight: 500;
+}
+
 .settings__menu li {
   position: relative;
   list-style: none;
