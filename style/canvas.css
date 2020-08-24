@@ -77,21 +77,21 @@ main {
 }
 
 #canvas div.open {
-  background: green;
-  -webkit-box-shadow: inset 0 0 0 1px #006700;
-          box-shadow: inset 0 0 0 1px #006700;
+  background: #86df00;
+  -webkit-box-shadow: inset 0 0 0 1px #77c600;
+          box-shadow: inset 0 0 0 1px #77c600;
 }
 
 #canvas div.closed {
-  background: red;
-  -webkit-box-shadow: inset 0 0 0 1px #e60000;
-          box-shadow: inset 0 0 0 1px #e60000;
+  background: #F06141;
+  -webkit-box-shadow: inset 0 0 0 1px #ee4d29;
+          box-shadow: inset 0 0 0 1px #ee4d29;
 }
 
 #canvas div.path {
-  background: blue;
-  -webkit-box-shadow: inset 0 0 0 1px #0000e6;
-          box-shadow: inset 0 0 0 1px #0000e6;
+  background: #2960F0;
+  -webkit-box-shadow: inset 0 0 0 1px #114eee;
+          box-shadow: inset 0 0 0 1px #114eee;
 }
 
 #canvas div.endc::before, #canvas div.endr::after, #canvas div.wall_down::before, #canvas div.wall_down::after, #canvas div.wall::after, #canvas div.wall::before {
