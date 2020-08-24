@@ -465,11 +465,31 @@ main {
   text-transform: uppercase;
   -webkit-transition: max-height 200ms ease-in-out;
   transition: max-height 200ms ease-in-out;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .optionsMenu #warning span {
   display: block;
   padding: 10px;
+}
+
+.optionsMenu #warning svg {
+  margin-left: 10px;
+  height: 1.3em;
+  fill: white;
+}
+
+.optionsMenu #warning svg .a {
+  fill: none;
+  stroke: white;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2px;
 }
 
 footer {
@@ -843,14 +863,6 @@ footer section.settings > input#settings:checked ~ label svg {
   margin-right: 0.5ch;
   width: auto;
   fill: #182f42;
-}
-
-.settings__menu li span.title svg .a {
-  fill: rgba(24, 47, 66, 0.5);
-}
-
-.settings__menu li span.title svg .b {
-  fill: rgba(24, 47, 66, 0.8);
 }
 
 .settings__menu li div.options {
