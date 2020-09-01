@@ -161,47 +161,6 @@ main {
           box-shadow: inset 0 0 0 2px black;
 }
 
-#canvas.twoD div {
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-  width: var(--size);
-  height: var(--size);
-  background-color: beige;
-  -webkit-box-shadow: inset 0 0 0 1px #efefc8;
-          box-shadow: inset 0 0 0 1px #efefc8;
-  -webkit-transform-style: unset;
-          transform-style: unset;
-  -webkit-transform: unset;
-          transform: unset;
-  -webkit-transition: background-color var(--anitime) ease-in-out;
-  transition: background-color var(--anitime) ease-in-out;
-}
-
-#canvas.twoD div.open {
-  background-color: green;
-  -webkit-box-shadow: inset 0 0 0 1px #006700;
-          box-shadow: inset 0 0 0 1px #006700;
-}
-
-#canvas.twoD div.closed {
-  background-color: red;
-  -webkit-box-shadow: inset 0 0 0 1px #e60000;
-          box-shadow: inset 0 0 0 1px #e60000;
-}
-
-#canvas.twoD div.path {
-  background-color: blue;
-  -webkit-box-shadow: inset 0 0 0 1px #0000e6;
-          box-shadow: inset 0 0 0 1px #0000e6;
-}
-
-#canvas.twoD div:hover {
-  -webkit-box-shadow: inset 0 0 0 2px black;
-          box-shadow: inset 0 0 0 2px black;
-}
-
 #canvas.twoD div.endc::before, #canvas.twoD div.endr::after, #canvas.twoD div.wall_down::before, #canvas.twoD div.wall_down::after, #canvas.twoD div.wall::after, #canvas.twoD div.wall::before {
   display: none;
   content: unset;
@@ -219,17 +178,5 @@ main {
   border: none;
   -webkit-transform: unset;
           transform: unset;
-}
-
-#canvas.twoD div#start {
-  background-image: url("../svg/start.svg");
-}
-
-#canvas.twoD div#end {
-  background-image: url("../svg/end.svg");
-}
-
-#canvas.twoD div.hide {
-  display: none;
 }
 /*# sourceMappingURL=canvas.css.map */
