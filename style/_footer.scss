@@ -144,23 +144,6 @@ footer {
     }
   }
 
-  section.settings {
-    > input#settings {
-      display: none;
-      &:checked {
-        & ~ ul {
-          transform: translate(0);
-          .background {
-            opacity: 1;
-          }
-        }
-        & ~ label svg {
-          fill: rgb(24, 47, 66);
-          animation: none;
-        }
-      }
-    }
-  }
 }
 
 @import "./settings.scss";
