@@ -3,9 +3,9 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/eef8eed6-8fcd-4df6-906a-43a281ae88d8/deploy-status)](https://app.netlify.com/sites/ecstatic-lewin-ccba61/deploys)
 
 ## Overview
-This is a web app written primarilly javascript with HTML5 and CSS library to visualize path finding and maze generation algorithms. 
+This is a web app written primarilly javascript with HTML5 and CSS to visualize path finding and maze generation algorithms. 
 
-**LIVE LINK:** [http://path-finding-visualization.meizayaga.com](http://path-finding-visualization.meizayaga.com)
+**LIVE LINK:** [http://path-finding-visualization.meizayaga.com](http://path.meizayaga.com)
 
 The path finding algorithms currently available are:  
 * Uni-directional Djikstra's
