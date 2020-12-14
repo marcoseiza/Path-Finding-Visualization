@@ -44,7 +44,7 @@ export function algo(canvas) {
     for (let i = 0; i < current.neighbors.length; i++) {
       let neighbor = current.neighbors[i];
       if (!neighbor.visited && !neighbor.wall) {
-        
+          
         let tentGa = current.ga + canvas.calcHa(neighbor, current)
 
         if (!canvas.open.includes(neighbor)) {

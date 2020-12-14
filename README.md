@@ -5,16 +5,22 @@
 ## Overview
 This is a web app written in javascript with the [p5.js](http://p5js.org) library to visualize path finding and maze generation algorithms. 
 
-**LIVE LINK:** [Path Finding Visualization](http://path-finding-visualization.meizayaga.com/)
+**LIVE LINK:** [Path Finding Visualization](http://path.meizayaga.com/)
 
 The path finding algorithms currently available are:  
 * Djikstra's
 * A*
 * Greedy BFS
+* DFS
+* BFS
+* Djikstra Bidirectional
+* A* Bidirectional
 
 The maze generation algorithms are:
 * Recursive Division
 * Depth First Search
+* Prim's
+* Krusal's
 
 This project should be viewed on a desktop or laptop computer.
 
