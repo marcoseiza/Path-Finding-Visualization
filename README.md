@@ -5,7 +5,7 @@
 ## Overview
 This is a web app written primarilly javascript with HTML5 and CSS to visualize path finding and maze generation algorithms. 
 
-**LIVE LINK:** [http://path-finding-visualization.meizayaga.com](http://path.meizayaga.com)
+**LIVE LINK:** [http://path.meizayaga.com](http://path.meizayaga.com)
 
 The path finding algorithms currently available are:  
 * Uni-directional Djikstra's
