@@ -1,4 +1,5 @@
-# Path Finding and Maze Generation Visualization  
+# Path Finding and Maze Generation Visualization   
+
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/eef8eed6-8fcd-4df6-906a-43a281ae88d8/deploy-status)](https://app.netlify.com/sites/ecstatic-lewin-ccba61/deploys)
 
@@ -24,7 +25,7 @@ The maze generation algorithms are:
 * Random Walls (high, medium, low density)
 * Stair Pattern
 
-This project should be viewed on a desktop or laptop computer.
+This project should be viewed on a desktop or laptop computer
 
 <br>
 
