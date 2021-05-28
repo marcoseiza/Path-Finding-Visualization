@@ -6,5 +6,12 @@
     "scope": "",
     "display": "standalone",
     "orientation": "landscape-primary",
-    "lang": "en"
+    "lang": "en",
+    "icons": [
+        {
+          "src": "images/fav1.png",
+          "sizes": "167x167",
+          "type": "image/webp"
+        }
+      ]
 }
