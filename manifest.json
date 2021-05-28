@@ -1,0 +1,10 @@
+{
+    "name": "Path Finding Visualization - Marcos Eizayaga",
+    "short_name": "Path",
+    "description": "A visualization for different path finding algorithms.",
+    "start_url": "path.meizayaga.com",
+    "scope": "",
+    "display": "standalone",
+    "orientation": "landscape-primary",
+    "lang": "en"
+}

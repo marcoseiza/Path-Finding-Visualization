@@ -11,12 +11,30 @@
   <meta property="og:image" content="images/meta.png" />
 
   <link rel="shortcut icon" href="images/fav1.png" type="image/x-icon">
-  
+  <link rel='manifest' href='/manifest.json'>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style/main.css">
   <link rel="stylesheet" href="style/canvas.css">
 </head>
 <body>
+
+  <script>
+    // This is the "Offline copy of pages" service worker
+
+    // Add this below content to your HTML page inside a <script type="module"></script> tag, or add the js file to your page at the very top to register service worker
+    // If you get an error about not being able to import, double check that you have type="module" on your <script /> tag
+
+    /*
+    This code uses the pwa-update web component https://github.com/pwa-builder/pwa-update to register your service worker,
+    tell the user when there is an update available and let the user know when your PWA is ready to use offline.
+    */
+
+    import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';
+
+    const el = document.createElement('pwa-update');
+    document.body.appendChild(el);
+
+  </script>
 
   <input type="checkbox" id="playPause">
 
